@@ -5,6 +5,8 @@ from gi.repository import Gtk,Gio,Gdk,GdkPixbuf
 import sqlite3
 dbfile = 'db.sqlite3'
 
+import os
+
 
 class Book:
     def __init__(self,
@@ -42,12 +44,9 @@ class Chapter:
         self.n_letters = n_letters
 
 
-
 class User:
     def __init__(self,
         username         :str = '',
-        full_name        :str = '',
-        country          :str = '',
         n_mem_chapters   :int = 0,
         n_mem_words      :int = 0,
         n_mem_verses     :int = 0,
@@ -62,8 +61,6 @@ class User:
         # mem_letters      :list = []
     ):
         self.username = username
-        self.full_name = full_name
-        self.country = country
         self.mem_chapters = mem_chapters
         self.n_mem_chapters = n_mem_chapters
         self.n_mem_words = n_mem_words
@@ -109,47 +106,33 @@ class GTKHafizWindow(Gtk.Window):
     def __init__(self):
         super().__init__()
 
-
-
         ## Window
-        self.win_default_l = 300
-        self.win_default_h = 440
+        self.win_default_l = 350
+        self.win_default_h = 400
         self.set_border_width(6)
         self.set_default_size(self.win_default_l, self.win_default_h)
 
+        self.set_size_request(580, 550)
         # print(self.get_size())
 
-        self.color_c1  = (255/255, 255/255, 255/255) # (183/255, 157/255, 76/255)
-        self.color_c2  = (255/255, 255/255, 255/255) # (155/255, 197/255, 126/255)
-        self.color_c3  = (255/255, 255/255, 255/255) # (140/255, 185/255, 225/255)
-        self.color_c4  = (255/255, 255/255, 255/255) # (255/255, 211/255, 76/255)
-        self.color_c5  = (255/255, 255/255, 255/255) # (192/255, 192/255, 192/255)
-        self.color_c6  = (255/255, 255/255, 255/255) # (242/255, 164/255, 110/255)
-        self.color_c7  = (255/255, 255/255, 255/255) # (124/255, 156/255, 214/255)
-        self.color_c8  = (255/255, 255/255, 255/255) # (204/255, 228/255, 189/255)
-        self.color_c9  = (255/255, 255/255, 255/255) # (197/255, 220/255, 240/255)
-        self.color_c10 = (255/255, 255/255, 255/255) # (255/255, 232/255, 165/255)
-        self.color_c11 = (255/255, 255/255, 255/255) # (223/255, 223/255, 223/255)
-        self.color_c12 = (255/255, 255/255, 255/255) # (249/255, 209/255, 183/255)
-        self.color_c13 = (255/255, 255/255, 255/255) # (190/255, 206/255, 235/255)
-        self.color_c14 = (255/255, 255/255, 255/255) # (131/255, 161/255, 111/255)
+        self.color_c1  = (255/255, 255/255, 255/255)
+        self.color_c2  = (255/255, 255/255, 255/255)
+        self.color_c3  = (255/255, 255/255, 255/255)
+        self.color_c4  = (255/255, 255/255, 255/255)
+        self.color_c5  = (255/255, 255/255, 255/255)
+        self.color_c6  = (255/255, 255/255, 255/255)
+        self.color_c7  = (255/255, 255/255, 255/255)
+        self.color_c8  = (255/255, 255/255, 255/255)
+        self.color_c9  = (255/255, 255/255, 255/255)
+        self.color_c10 = (255/255, 255/255, 255/255)
+        self.color_c11 = (255/255, 255/255, 255/255)
+        self.color_c12 = (255/255, 255/255, 255/255)
+        self.color_c13 = (255/255, 255/255, 255/255)
+        self.color_c14 = (255/255, 255/255, 255/255)
 
 
         self.on_color  = (0.5, 0.5, 0.5)
         self.off_color = (0.0, 0.8, 0.0)
-
-
-        # self.drawingarea = Gtk.DrawingArea()
-        # self.drawingarea.connect("draw", self.on_draw)
-        # self.add(self.drawingarea)
-
-        # # Example data for rectangles: (x, y, width, height, r, g, b)
-        # self.rectangles = [
-        #     (50, 50, 50, 50, 1.0, 0.0, 0.0),   # Red rectangle
-        #     (110, 50, 50, 50, 0.0, 1.0, 0.0),  # Green rectangle
-        #     (50, 110, 50, 50, 0.0, 0.0, 1.0),  # Blue rectangle
-        #     (110, 110, 50, 50, 1.0, 1.0, 0.0), # Yellow rectangle
-        # ]
 
 
         ## Vertical Box
@@ -182,14 +165,6 @@ class GTKHafizWindow(Gtk.Window):
         bt_menu.add(image)
         headerbar.pack_end(bt_menu)
 
-        # Profile Button
-        # bt_profile = Gtk.Button()
-        # bt_profile.connect("clicked", self.on_profile_clicked)
-        # icon = Gio.ThemedIcon(name="user-info-symbolic")
-        # image = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.BUTTON)
-        # bt_profile.add(image)
-        # headerbar.pack_end(bt_profile)
-
 
         ## Stack
         stack = Gtk.Stack()
@@ -197,23 +172,8 @@ class GTKHafizWindow(Gtk.Window):
         stack.set_transition_duration(1000)
 
 
-        # Matrix Tab
-        # label_matrix = Gtk.Label(label="Matrix!")
-        # stack.add_titled(label_matrix, "matrix", "Matrix")
-        
-        
-        ## Matrix Tab with DrawingArea
-        # self.rects_per_col  = 19
-        # self.rects_per_line = 6
-        # drawingarea = Gtk.DrawingArea()
-        # drawingarea.connect("draw", self.on_draw_matrix)
-        # self.refresh_rectangles()
-        # stack.add_titled(drawingarea, "matrix", "Matrix")
-
         ## Progress Bar Tab with DrawingArea
-        self.rectangles_progess_bar = []
-
-        self.pb_start_x = 50
+        self.pb_start_x = 10
         self.pb_start_y = 20
         self.pb_start_h = 10
         self.pb_vd = self.pb_start_h + 2
@@ -434,16 +394,14 @@ class GTKHafizWindow(Gtk.Window):
 
 
         # Profile Tab
-        label_profile = Gtk.Label()
-        label_profile.set_markup(
-            f"<b>Name:</b> {user.full_name}\n"
-            f"<b>Username:</b> {user.username}\n"
-            f"<b>Country:</b> {user.country}\n\n"
+        # label_profile = Gtk.Label()
+        # label_profile.set_markup(
+        #     f"<b>Username:</b> {user.username}\n"
 
-            '<a href="https://github.com/omarelladen" '
-            'title="Visit website">GitHub</a>'
-        )
-        stack.add_titled(label_profile, "profile", "Profile")
+        #     # '<a href="https://github.com/omarelladen" '
+        #     # 'title="Visit website">GitHub</a>'
+        # )
+        # stack.add_titled(label_profile, "profile", "Profile")
 
 
 
@@ -521,20 +479,19 @@ class GTKHafizWindow(Gtk.Window):
         about.present()
 
     def refresh_rectangles(self):
-        # Update rectangle colors based on mem_chapters
+        # Update rectangle colors based on  by creating a new list
         self.rectangles_matrix = []
         for i in range(self.rects_per_col):
             for j in range(self.rects_per_line):
-                x = 188 + j * 40
+                x = 155+ (self.rects_per_line-1-j) * 35 # from left to right
                 y = 15 + i * 20
                 chapter_num = i * (self.rects_per_line) + j + 1
                 r, g, b = self.off_color if chapter_num in user.mem_chapters else self.on_color
-                self.rectangles_matrix.append((x, y, 30, 10, r, g, b))##################append?
+                self.rectangles_matrix.append((x, y, 30, 10, r, g, b))
         
         for rect in self.rectangles_progress_bar:
             rect.color = self.off_color if rect.chapter in user.mem_chapters else self.on_color
 
-        
         self.queue_draw() # Redraw the matrix tab
 
     def on_checkbox_toggled(self, button, c=''):
@@ -557,6 +514,7 @@ class GTKHafizWindow(Gtk.Window):
 
     def refresh_stats_label(self):
         self.label_stats.set_markup(
+            f"<big><b>Username:</b> {user.username}</big>\n\n"
             f"<big><b>Chapters:</b> {user.n_mem_chapters} ({user.calc_pct_mem_chapters()}%)</big>\n"
             f"<big><b>Verses:</b> {user.n_mem_verses} ({user.calc_pct_mem_verses()}%)</big>\n"
             f"<big><b>Words:</b> {user.n_mem_words} ({user.calc_pct_mem_words()}%)</big>\n"
@@ -590,8 +548,6 @@ class GTKHafizWindow(Gtk.Window):
 
 
 
-
-
 def load_db_data():
     con = sqlite3.connect(dbfile)
     cur = con.cursor()
@@ -611,22 +567,20 @@ def load_db_data():
     if len(table_user) > 0:
         list_obj_user =[]
         for u in table_user:
-            list_obj_user.append(User(u[0], u[1], u[2], u[3], u[4], u[5], u[6]))
+            list_obj_user.append(User(u[0], u[1], u[2], u[3], u[4]))
         user = list_obj_user[0]
 
         table_user_mem_chapters = [a for a in cur.execute("SELECT * FROM mem_chapters")]
         for t in table_user_mem_chapters:
             user.mem_chapters.append(t[1])
     else:
-        username  = input("Username: ")
-        full_name = input("Full Name: ")
-        country   = input("Country: ")
-        user = User(username, full_name, country)
+        username = os.getlogin()
+        user = User(username)
 
         cur.execute("""
             INSERT INTO users
-            (username, full_name, country, n_mem_chapters, n_mem_words, n_mem_verses, n_mem_letters) VALUES (?, ?, ?, ?, ?, ?, ?)
-            """, (user.username, user.full_name, user.country, user.n_mem_chapters, user.n_mem_words, user.n_mem_verses, user.n_mem_letters))
+            (username, n_mem_chapters, n_mem_words, n_mem_verses, n_mem_letters) VALUES (?, ?, ?, ?, ?)
+            """, (user.username, user.n_mem_chapters, user.n_mem_words, user.n_mem_verses, user.n_mem_letters))
     
     con.commit()
     con.close()
@@ -634,6 +588,7 @@ def load_db_data():
     return user, list_obj_book, list_obj_chapter
 
 if __name__ == '__main__':
+
     user, list_obj_book, list_obj_chapter = load_db_data()
     book = list_obj_book[0]
 
