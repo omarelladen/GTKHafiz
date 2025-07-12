@@ -24,6 +24,8 @@ tela de cadastro de nome caso banco esteja vazio, ou so tela de config pra usuar
 obter quais palavras ja estao na memorizacao - colocar ao lado campo de significados ou para ser preenchido pelo usuario
 aprender a manipular str de arabe com tashkil
 logo
+modo igual ao do sistema
+creditos ao progress bar da wikik
 metas
 zoom
 ver como empacotar
