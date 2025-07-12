@@ -1,6 +1,6 @@
 import gi
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk,Gio,Gdk
+from gi.repository import Gtk,Gio,Gdk,GdkPixbuf
 
 import sqlite3
 dbfile = 'db.sqlite3'
@@ -108,9 +108,13 @@ class ProgressBar:
 
 
 
+
+
 class GTKHafizWindow(Gtk.Window):
     def __init__(self):
         super().__init__()
+
+
 
         ## Window
         self.win_default_l = 300
@@ -397,7 +401,17 @@ class GTKHafizWindow(Gtk.Window):
             cr.fill()
 
     def on_about_clicked(self, widget):
-        print("https://github.com/omarelladen")
+        about = Gtk.AboutDialog(transient_for=self, modal=True)
+        about.set_program_name("GTK Hafiz")
+        about.set_version("0.0")
+        about.set_comments("Track Qur'an memorization visualy")
+        about.set_website("https://github.com/omarelladen")
+        about.set_website_label("Repository")
+        about.set_authors(["Omar El Laden"])
+        about.set_license_type(Gtk.License.GPL_3_0)
+        about.set_copyright("Copyright © 2025 Omar El Laden")
+        about.set_logo_icon_name("application-x-executable")
+        about.present()
 
     def refresh_rectangles_matrix(self):
         # Update rectangle colors based on mem_chapters
