@@ -44,20 +44,19 @@ mem_chapters(
     chapters_number INTEGER REFERENCES chapters(number)
 );
 
-CREATE TABLE IF NOT EXISTS
-parts(
-    number        INTEGER PRIMARY KEY,
-    start_chapter INTEGER DEFAULT 0,
-    start_verse   INTEGER DEFAULT 0,
-    end_chapter   INTEGER DEFAULT 0,
-    end_verse     INTEGER DEFAULT 0
-);
+# CREATE TABLE IF NOT EXISTS
+# parts(
+#     number        INTEGER PRIMARY KEY,
+#     start_chapter INTEGER DEFAULT 0,
+#     start_verse   INTEGER DEFAULT 0,
+#     end_chapter   INTEGER DEFAULT 0,
+#     end_verse     INTEGER DEFAULT 0
+# );
 
 .mode csv
 
 .import csv/books.csv books
 .import csv/chapters.csv chapters
-#.import csv/users.csv users
-.import csv/parts.csv parts
+# .import csv/parts.csv parts
 
 EOF
