@@ -32,8 +32,6 @@ chapters(
 CREATE TABLE IF NOT EXISTS
 users(
     username       TEXT PRIMARY KEY,
-    full_name      TEXT DEFAULT '',
-    country        TEXT DEFAULT '',
     n_mem_chapters INTEGER DEFAULT 0,
     n_mem_words    INTEGER DEFAULT 0,
     n_mem_verses   INTEGER DEFAULT 0,
