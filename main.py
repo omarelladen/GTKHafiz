@@ -25,7 +25,6 @@ class Book:
         self.n_letters = n_letters
 
 
-
 class Chapter:
     def __init__(self,
         number      :int = 0,
@@ -95,19 +94,15 @@ class ProgressBar:
         y       :int = 0,
         width   :int = 0,
         height  :int = 0,
-        color  :int = 0,
         chapter :int = 0,
+        color   :int = (0.0, 0.8, 0.0),
     ):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.color = color
         self.chapter = chapter
-
-
-
-
+        self.color = color
 
 
 class GTKHafizWindow(Gtk.Window):
@@ -124,44 +119,25 @@ class GTKHafizWindow(Gtk.Window):
 
         # print(self.get_size())
 
-        self.color_c1  = (183/255, 157/255, 76/255)
-        self.color_c2  = (155/255, 197/255, 126/255)
-        self.color_c3  = (140/255, 185/255, 225/255)
-        self.color_c4  = (255/255, 211/255, 76/255)
-        self.color_c5  = (192/255, 192/255, 192/255)
-        self.color_c6  = (242/255, 164/255, 110/255)
-        self.color_c7  = (124/255, 156/255, 214/255)
-        self.color_c8  = (204/255, 228/255, 189/255)
-        self.color_c9  = (197/255, 220/255, 240/255)
-        self.color_c10 = (255/255, 232/255, 165/255)
-        self.color_c11 = (223/255, 223/255, 223/255)
-        self.color_c12 = (249/255, 209/255, 183/255)
-        self.color_c13 = (190/255, 206/255, 235/255)
-        self.color_c14 = (131/255, 161/255, 111/255)
-        self.color_c15 = (255/255, 255/255, 255/255)
-        self.color_c16 = (255/255, 255/255, 255/255)
-        self.color_c17 = (255/255, 255/255, 255/255)
-        self.color_c18 = (255/255, 255/255, 255/255)
-        self.color_c19 = (255/255, 255/255, 255/255)
-        self.color_c20 = (255/255, 255/255, 255/255) 
-        self.color_c21 = (255/255, 255/255, 255/255)
-        self.color_c22 = (255/255, 255/255, 255/255)
-        self.color_c23 = (255/255, 255/255, 255/255)
-        self.color_c24 = (255/255, 255/255, 255/255)
-        self.color_c25 = (255/255, 255/255, 255/255)
-        self.color_c26 = (255/255, 255/255, 255/255)
-        self.color_c27 = (255/255, 255/255, 255/255)
-        self.color_c28 = (255/255, 255/255, 255/255)
-        self.color_c29 = (255/255, 255/255, 255/255)
-        self.color_c30 = (255/255, 255/255, 255/255)
-        self.color_c31 = (255/255, 255/255, 255/255)
+        self.color_c1  = (255/255, 255/255, 255/255) # (183/255, 157/255, 76/255)
+        self.color_c2  = (255/255, 255/255, 255/255) # (155/255, 197/255, 126/255)
+        self.color_c3  = (255/255, 255/255, 255/255) # (140/255, 185/255, 225/255)
+        self.color_c4  = (255/255, 255/255, 255/255) # (255/255, 211/255, 76/255)
+        self.color_c5  = (255/255, 255/255, 255/255) # (192/255, 192/255, 192/255)
+        self.color_c6  = (255/255, 255/255, 255/255) # (242/255, 164/255, 110/255)
+        self.color_c7  = (255/255, 255/255, 255/255) # (124/255, 156/255, 214/255)
+        self.color_c8  = (255/255, 255/255, 255/255) # (204/255, 228/255, 189/255)
+        self.color_c9  = (255/255, 255/255, 255/255) # (197/255, 220/255, 240/255)
+        self.color_c10 = (255/255, 255/255, 255/255) # (255/255, 232/255, 165/255)
+        self.color_c11 = (255/255, 255/255, 255/255) # (223/255, 223/255, 223/255)
+        self.color_c12 = (255/255, 255/255, 255/255) # (249/255, 209/255, 183/255)
+        self.color_c13 = (255/255, 255/255, 255/255) # (190/255, 206/255, 235/255)
+        self.color_c14 = (255/255, 255/255, 255/255) # (131/255, 161/255, 111/255)
 
-        self.on_color_r = 0.5
-        self.on_color_g = 0.5
-        self.on_color_b = 0.5
-        self.off_color_r = 0.0
-        self.off_color_g = 0.8
-        self.off_color_b = 0.0
+
+        self.on_color  = (0.5, 0.5, 0.5)
+        self.off_color = (0.0, 0.8, 0.0)
+
 
         # self.drawingarea = Gtk.DrawingArea()
         # self.drawingarea.connect("draw", self.on_draw)
@@ -231,7 +207,7 @@ class GTKHafizWindow(Gtk.Window):
         # self.rects_per_line = 6
         # drawingarea = Gtk.DrawingArea()
         # drawingarea.connect("draw", self.on_draw_matrix)
-        # self.refresh_rectangles_matrix()
+        # self.refresh_rectangles()
         # stack.add_titled(drawingarea, "matrix", "Matrix")
 
         ## Progress Bar Tab with DrawingArea
@@ -239,48 +215,177 @@ class GTKHafizWindow(Gtk.Window):
 
         self.pb_start_x = 50
         self.pb_start_y = 20
-        self.pb_start_h = 13
+        self.pb_start_h = 10
         self.pb_vd = self.pb_start_h + 2
         self.pb_hd = 2
         self.rectangles_progress_bar = [
-            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*0, 490, self.pb_start_h, self.color_c2, 2),
-            ProgressBar(self.pb_start_x+490+self.pb_hd, self.pb_start_y + self.pb_vd*0, 10, self.pb_start_h, self.color_c1, 1),
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*0, 490, self.pb_start_h, 2),
+            ProgressBar(self.pb_start_x+self.pb_hd+490, self.pb_start_y + self.pb_vd*0, 8, self.pb_start_h, 1),
 
-            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*1, 500, self.pb_start_h, self.color_c2, 2),
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*1, 500, self.pb_start_h, 2),
 
-            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*2, 300, self.pb_start_h, self.color_c3, 3),
-            ProgressBar(self.pb_start_x+300+self.pb_hd, self.pb_start_y + self.pb_vd*2, 200, self.pb_start_h, self.color_c2, 2),
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*2, 300, self.pb_start_h, 3),
+            ProgressBar(self.pb_start_x+self.pb_hd+300, self.pb_start_y + self.pb_vd*2, 198, self.pb_start_h, 2),
             
-            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*3, 120, self.pb_start_h, self.color_c4, 4),
-            ProgressBar(self.pb_start_x+120+self.pb_hd, self.pb_start_y + self.pb_vd*3, 380, self.pb_start_h, self.color_c3, 3),
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*3, 120, self.pb_start_h, 4),
+            ProgressBar(self.pb_start_x+self.pb_hd+120, self.pb_start_y + self.pb_vd*3, 378, self.pb_start_h, 3),
 
-            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*4, 500, self.pb_start_h, self.color_c4, 4),
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*4, 500, self.pb_start_h, 4),
 
-            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*5, 380, self.pb_start_h, self.color_c5, 5),
-            ProgressBar(self.pb_start_x+380+self.pb_hd, self.pb_start_y + self.pb_vd*5, 120, self.pb_start_h, self.color_c4, 4),
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*5, 380, self.pb_start_h, 5),
+            ProgressBar(self.pb_start_x+self.pb_hd+380, self.pb_start_y + self.pb_vd*5, 118, self.pb_start_h, 4),
 
-            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*6, 320, self.pb_start_h, self.color_c6, 6),
-            ProgressBar(self.pb_start_x+320+self.pb_hd, self.pb_start_y + self.pb_vd*6, 180, self.pb_start_h, self.color_c5, 5),
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*6, 320, self.pb_start_h, 6),
+            ProgressBar(self.pb_start_x+self.pb_hd+320, self.pb_start_y + self.pb_vd*6, 178, self.pb_start_h, 5),
     
-            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*7, 260, self.pb_start_h, self.color_c7, 7),
-            ProgressBar(self.pb_start_x+260+self.pb_hd, self.pb_start_y + self.pb_vd*7, 240, self.pb_start_h, self.color_c6, 6),
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*7, 260, self.pb_start_h, 7),
+            ProgressBar(self.pb_start_x+self.pb_hd+260, self.pb_start_y + self.pb_vd*7, 238, self.pb_start_h, 6),
 
-            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*8, 120, self.pb_start_h, self.color_c8, 8),
-            ProgressBar(self.pb_start_x+120+self.pb_hd, self.pb_start_y + self.pb_vd*8, 380, self.pb_start_h, self.color_c7, 7),
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*8, 120, self.pb_start_h, 8),
+            ProgressBar(self.pb_start_x+self.pb_hd+120, self.pb_start_y + self.pb_vd*8, 378, self.pb_start_h, 7),
 
-            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*9, 350, self.pb_start_h, self.color_c9, 9),
-            ProgressBar(self.pb_start_x+350+self.pb_hd, self.pb_start_y + self.pb_vd*9, 150, self.pb_start_h, self.color_c8, 8),
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*9, 350, self.pb_start_h, 9),
+            ProgressBar(self.pb_start_x+self.pb_hd+350, self.pb_start_y + self.pb_vd*9, 148, self.pb_start_h, 8),
 
-            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*10, 20, self.pb_start_h, self.color_c11, 11),
-            ProgressBar(self.pb_start_x+20+self.pb_hd, self.pb_start_y + self.pb_vd*10, 315, self.pb_start_h, self.color_c10, 10),
-            ProgressBar(self.pb_start_x+20+315+2*self.pb_hd, self.pb_start_y + self.pb_vd*10, 165, self.pb_start_h, self.color_c9, 9),
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*10, 20, self.pb_start_h, 11),
+            ProgressBar(self.pb_start_x+self.pb_hd+20, self.pb_start_y + self.pb_vd*10, 315, self.pb_start_h, 10),
+            ProgressBar(self.pb_start_x+2*self.pb_hd+20+315, self.pb_start_y + self.pb_vd*10, 161, self.pb_start_h, 9),
             
-            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*11, 160, self.pb_start_h, self.color_c12, 12),
-            ProgressBar(self.pb_start_x+160, self.pb_start_y + self.pb_vd*11, 340, self.pb_start_h, self.color_c11, 11),
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*11, 160, self.pb_start_h, 12),
+            ProgressBar(self.pb_start_x+self.pb_hd+160, self.pb_start_y + self.pb_vd*11, 338, self.pb_start_h, 11),
 
-            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*12, 170, self.pb_start_h, self.color_c14, 14),
-            ProgressBar(self.pb_start_x+170+self.pb_hd, self.pb_start_y + self.pb_vd*12, 180, self.pb_start_h, self.color_c13, 13),
-            ProgressBar(self.pb_start_x+170+180+2*self.pb_hd, self.pb_start_y + self.pb_vd*12, 150, self.pb_start_h, self.color_c12, 12),
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*12, 170, self.pb_start_h, 14),
+            ProgressBar(self.pb_start_x+self.pb_hd+170, self.pb_start_y + self.pb_vd*12, 140, self.pb_start_h, 13),
+            ProgressBar(self.pb_start_x+2*self.pb_hd+170+140, self.pb_start_y + self.pb_vd*12, 186, self.pb_start_h, 12),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*13, 350, self.pb_start_h, 16),
+            ProgressBar(self.pb_start_x+self.pb_hd+350, self.pb_start_y + self.pb_vd*13, 148, self.pb_start_h, 15),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*14, 200, self.pb_start_h, 18),
+            ProgressBar(self.pb_start_x+self.pb_hd+200, self.pb_start_y + self.pb_vd*14, 298, self.pb_start_h, 17),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*15, 220, self.pb_start_h, 20),
+            ProgressBar(self.pb_start_x+self.pb_hd+220, self.pb_start_y + self.pb_vd*15, 170, self.pb_start_h, 19),
+            ProgressBar(self.pb_start_x+2*self.pb_hd+220+170, self.pb_start_y + self.pb_vd*15, 106, self.pb_start_h, 18),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*16, 240, self.pb_start_h, 22),
+            ProgressBar(self.pb_start_x+self.pb_hd+240, self.pb_start_y + self.pb_vd*16, 258, self.pb_start_h, 21),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*17, 60, self.pb_start_h, 23),
+            ProgressBar(self.pb_start_x+self.pb_hd+60, self.pb_start_y + self.pb_vd*17, 240, self.pb_start_h, 24),
+            ProgressBar(self.pb_start_x+2*self.pb_hd+60+240, self.pb_start_y + self.pb_vd*17, 196, self.pb_start_h, 25),
+    
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*18, 120, self.pb_start_h, 27),
+            ProgressBar(self.pb_start_x+self.pb_hd+120, self.pb_start_y + self.pb_vd*18, 250, self.pb_start_h, 26),
+            ProgressBar(self.pb_start_x+2*self.pb_hd+120+250, self.pb_start_y + self.pb_vd*18, 126, self.pb_start_h, 25),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*19, 130, self.pb_start_h, 29),
+            ProgressBar(self.pb_start_x+self.pb_hd+130, self.pb_start_y + self.pb_vd*19, 270, self.pb_start_h, 28),
+            ProgressBar(self.pb_start_x+2*self.pb_hd+130+270, self.pb_start_y + self.pb_vd*19, 96, self.pb_start_h, 27),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*20, 100, self.pb_start_h, 33),
+            ProgressBar(self.pb_start_x+self.pb_hd+100, self.pb_start_y + self.pb_vd*20, 60, self.pb_start_h, 32),
+            ProgressBar(self.pb_start_x+2*self.pb_hd+100+60, self.pb_start_y + self.pb_vd*20, 70, self.pb_start_h, 31),
+            ProgressBar(self.pb_start_x+3*self.pb_hd+100+60+70, self.pb_start_y + self.pb_vd*20, 200, self.pb_start_h, 30),
+            ProgressBar(self.pb_start_x+4*self.pb_hd+100+60+70+200, self.pb_start_y + self.pb_vd*20, 62, self.pb_start_h, 29),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*21, 40, self.pb_start_h, 36),
+            ProgressBar(self.pb_start_x+self.pb_hd+40, self.pb_start_y + self.pb_vd*21, 140, self.pb_start_h, 35),
+            ProgressBar(self.pb_start_x+2*self.pb_hd+40+140, self.pb_start_y + self.pb_vd*21, 120, self.pb_start_h, 34),
+            ProgressBar(self.pb_start_x+3*self.pb_hd+40+140+120, self.pb_start_y + self.pb_vd*21, 194, self.pb_start_h, 33),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*22, 100, self.pb_start_h, 39),
+            ProgressBar(self.pb_start_x+self.pb_hd+100, self.pb_start_y + self.pb_vd*22, 140, self.pb_start_h, 38),
+            ProgressBar(self.pb_start_x+2*self.pb_hd+100+140, self.pb_start_y + self.pb_vd*22, 140, self.pb_start_h, 37),
+            ProgressBar(self.pb_start_x+3*self.pb_hd+100+140+140, self.pb_start_y + self.pb_vd*22, 114, self.pb_start_h, 36),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*23, 130, self.pb_start_h, 41),
+            ProgressBar(self.pb_start_x+self.pb_hd+130, self.pb_start_y + self.pb_vd*23, 200, self.pb_start_h, 40),
+            ProgressBar(self.pb_start_x+2*self.pb_hd+130+200, self.pb_start_y + self.pb_vd*23, 166, self.pb_start_h, 39),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*24, 90, self.pb_start_h, 45),
+            ProgressBar(self.pb_start_x+self.pb_hd+90, self.pb_start_y + self.pb_vd*24, 50, self.pb_start_h, 44),
+            ProgressBar(self.pb_start_x+2*self.pb_hd+90+50, self.pb_start_y + self.pb_vd*24, 130, self.pb_start_h, 43),
+            ProgressBar(self.pb_start_x+3*self.pb_hd+90+50+130, self.pb_start_y + self.pb_vd*24, 190, self.pb_start_h, 42),
+            ProgressBar(self.pb_start_x+4*self.pb_hd+90+50+130+190, self.pb_start_y + self.pb_vd*24, 32, self.pb_start_h, 41),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*25, 30, self.pb_start_h, 51),
+            ProgressBar(self.pb_start_x+self.pb_hd+30, self.pb_start_y + self.pb_vd*25, 60, self.pb_start_h, 50),
+            ProgressBar(self.pb_start_x+2*self.pb_hd+30+60, self.pb_start_y + self.pb_vd*25, 50, self.pb_start_h, 49),
+            ProgressBar(self.pb_start_x+3*self.pb_hd+30+60+50, self.pb_start_y + self.pb_vd*25, 110, self.pb_start_h, 48),
+            ProgressBar(self.pb_start_x+4*self.pb_hd+30+60+50+110, self.pb_start_y + self.pb_vd*25, 140, self.pb_start_h, 47),
+            ProgressBar(self.pb_start_x+5*self.pb_hd+30+60+50+110+140, self.pb_start_y + self.pb_vd*25, 100, self.pb_start_h, 46),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*26, 110, self.pb_start_h, 57),
+            ProgressBar(self.pb_start_x+1*self.pb_hd+110, self.pb_start_y + self.pb_vd*26, 70, self.pb_start_h, 56),
+            ProgressBar(self.pb_start_x+2*self.pb_hd+110+70, self.pb_start_y + self.pb_vd*26, 60, self.pb_start_h, 55),
+            ProgressBar(self.pb_start_x+3*self.pb_hd+110+70+60, self.pb_start_y + self.pb_vd*26, 90, self.pb_start_h, 54),
+            ProgressBar(self.pb_start_x+4*self.pb_hd+110+70+60+90, self.pb_start_y + self.pb_vd*26, 70, self.pb_start_h, 53),
+            ProgressBar(self.pb_start_x+5*self.pb_hd+110+70+60+90+70, self.pb_start_y + self.pb_vd*26, 40, self.pb_start_h, 52),
+            ProgressBar(self.pb_start_x+6*self.pb_hd+110+70+60+90+70+40, self.pb_start_y + self.pb_vd*26, 48, self.pb_start_h, 51),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*27, 40, self.pb_start_h, 66),
+            ProgressBar(self.pb_start_x+1*self.pb_hd+40, self.pb_start_y + self.pb_vd*27, 50, self.pb_start_h, 65),
+            ProgressBar(self.pb_start_x+2*self.pb_hd+40+50,self.pb_start_y + self.pb_vd*27, 40, self.pb_start_h, 64),
+            ProgressBar(self.pb_start_x+3*self.pb_hd+40+50+40, self.pb_start_y + self.pb_vd*27, 30, self.pb_start_h, 63),
+            ProgressBar(self.pb_start_x+4*self.pb_hd+40+50+40+30, self.pb_start_y + self.pb_vd*27, 30, self.pb_start_h, 62),
+            ProgressBar(self.pb_start_x+5*self.pb_hd+40+50+40+30+30, self.pb_start_y + self.pb_vd*27, 40, self.pb_start_h, 61),
+            ProgressBar(self.pb_start_x+6*self.pb_hd+40+50+40+30+30+40, self.pb_start_y + self.pb_vd*27, 70, self.pb_start_h, 60),
+            ProgressBar(self.pb_start_x+7*self.pb_hd+40+50+40+30+30+40+70, self.pb_start_y + self.pb_vd*27, 100, self.pb_start_h, 59),
+            ProgressBar(self.pb_start_x+8*self.pb_hd+40+50+40+30+30+40+70+100, self.pb_start_y + self.pb_vd*27, 84, self.pb_start_h, 58),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 77),
+            ProgressBar(self.pb_start_x +1*self.pb_hd+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 76),
+            ProgressBar(self.pb_start_x +2*self.pb_hd+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 75),
+            ProgressBar(self.pb_start_x +3*self.pb_hd+30+40+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 74),
+            ProgressBar(self.pb_start_x +4*self.pb_hd+30+40+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 73),
+            ProgressBar(self.pb_start_x +5*self.pb_hd+30+40+30+40+30, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 72),
+            ProgressBar(self.pb_start_x +6*self.pb_hd+30+40+30+40+30+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 71),
+            ProgressBar(self.pb_start_x +7*self.pb_hd+30+40+30+40+30+50+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 70),
+            ProgressBar(self.pb_start_x +8*self.pb_hd+30+40+30+40+30+50+50+50, self.pb_start_y + self.pb_vd*28, 60, self.pb_start_h, 69),
+            ProgressBar(self.pb_start_x +9*self.pb_hd+30+40+30+40+30+50+50+50+60, self.pb_start_y + self.pb_vd*28, 60, self.pb_start_h, 68),
+            ProgressBar(self.pb_start_x+10*self.pb_hd+30+40+30+40+30+50+50+50+60+60, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 67),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*29, 20, self.pb_start_h, 86),
+            ProgressBar(self.pb_start_x+1*self.pb_hd+20, self.pb_start_y + self.pb_vd*29, 45, self.pb_start_h, 85),
+            ProgressBar(self.pb_start_x+2*self.pb_hd+20+45, self.pb_start_y + self.pb_vd*29, 45, self.pb_start_h, 84),
+            ProgressBar(self.pb_start_x+3*self.pb_hd+20+45+45, self.pb_start_y + self.pb_vd*29, 80, self.pb_start_h, 83),
+            ProgressBar(self.pb_start_x+4*self.pb_hd+20+45+45+80, self.pb_start_y + self.pb_vd*29, 30, self.pb_start_h, 82),
+            ProgressBar(self.pb_start_x+5*self.pb_hd+20+45+45+80+30, self.pb_start_y + self.pb_vd*29, 40, self.pb_start_h, 81),
+            ProgressBar(self.pb_start_x+6*self.pb_hd+20+45+45+80+30+40, self.pb_start_y + self.pb_vd*29, 70, self.pb_start_h, 80),
+            ProgressBar(self.pb_start_x+7*self.pb_hd+20+45+45+80+30+40+70, self.pb_start_y + self.pb_vd*29, 80, self.pb_start_h, 79),
+            ProgressBar(self.pb_start_x+8*self.pb_hd+20+45+45+80+30+40+70+80, self.pb_start_y + self.pb_vd*29, 74, self.pb_start_h, 78),
+
+            # ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 77),
+            # ProgressBar(self.pb_start_x +1*self.pb_hd+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 76),
+            # ProgressBar(self.pb_start_x +2*self.pb_hd+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 75),
+            # ProgressBar(self.pb_start_x +3*self.pb_hd+30+40+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 74),
+            # ProgressBar(self.pb_start_x +4*self.pb_hd+30+40+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 73),
+            # ProgressBar(self.pb_start_x +5*self.pb_hd+30+40+30+40+30, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 72),
+            # ProgressBar(self.pb_start_x +6*self.pb_hd+30+40+30+40+30+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 71),
+            # ProgressBar(self.pb_start_x +7*self.pb_hd+30+40+30+40+30+50+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 70),
+            # ProgressBar(self.pb_start_x +8*self.pb_hd+30+40+30+40+30+50+50+50, self.pb_start_y + self.pb_vd*28, 60, self.pb_start_h, 69),
+            # ProgressBar(self.pb_start_x +9*self.pb_hd+30+40+30+40+30+50+50+50+60, self.pb_start_y + self.pb_vd*28, 60, self.pb_start_h, 68),
+            # ProgressBar(self.pb_start_x+10*self.pb_hd+30+40+30+40+30+50+50+50+60+60, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 67),
+            # ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 77),
+            # ProgressBar(self.pb_start_x +1*self.pb_hd+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 76),
+            # ProgressBar(self.pb_start_x +2*self.pb_hd+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 75),
+            # ProgressBar(self.pb_start_x +3*self.pb_hd+30+40+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 74),
+            # ProgressBar(self.pb_start_x +4*self.pb_hd+30+40+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 73),
+            # ProgressBar(self.pb_start_x +5*self.pb_hd+30+40+30+40+30, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 72),
+            # ProgressBar(self.pb_start_x +6*self.pb_hd+30+40+30+40+30+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 71),
+            # ProgressBar(self.pb_start_x +7*self.pb_hd+30+40+30+40+30+50+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 70),
+            # ProgressBar(self.pb_start_x +8*self.pb_hd+30+40+30+40+30+50+50+50, self.pb_start_y + self.pb_vd*28, 60, self.pb_start_h, 69),
+            # ProgressBar(self.pb_start_x +9*self.pb_hd+30+40+30+40+30+50+50+50+60, self.pb_start_y + self.pb_vd*28, 60, self.pb_start_h, 68),
+            # ProgressBar(self.pb_start_x+10*self.pb_hd+30+40+30+40+30+50+50+50+60+60, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 67),
+            # ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 77),
+            # ProgressBar(self.pb_start_x +1*self.pb_hd+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 76),
+            # ProgressBar(self.pb_start_x +2*self.pb_hd+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 75),
+            # ProgressBar(self.pb_start_x +3*self.pb_hd+30+40+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 74),
+            # ProgressBar(self.pb_start_x +4*self.pb_hd+30+40+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 73),
+            # ProgressBar(self.pb_start_x +5*self.pb_hd+30+40+30+40+30, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 72),
+            # ProgressBar(self.pb_start_x +6*self.pb_hd+30+40+30+40+30+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 71),
+            # ProgressBar(self.pb_start_x +7*self.pb_hd+30+40+30+40+30+50+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 70),
         ]
 
 
@@ -298,9 +403,9 @@ class GTKHafizWindow(Gtk.Window):
         drawingarea_matrix.connect("draw", self.on_draw_matrix)
         drawingarea_matrix.connect("button-press-event", self.on_click_matrix)  # Conectando o evento de clique
         drawingarea_matrix.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
-        self.refresh_rectangles_matrix()
         stack.add_titled(drawingarea_matrix, "matrix", "Matrix")
 
+        self.refresh_rectangles()
 
 
 
@@ -363,23 +468,23 @@ class GTKHafizWindow(Gtk.Window):
 
 
     def on_click_progress_bar(self, widget, event):
-        for rect in self.rectangles_progress_bar:
-            if (rect.x <= event.x <= rect.x + rect.width and
-                rect.y <= event.y <= rect.y + rect.height):
-                print(f"Chapter {rect.chapter}")
-                # self.toggle_progress_bar(rect)
-                break
+        if event.type == Gdk.EventType.BUTTON_PRESS:
+            if event.button == Gdk.BUTTON_PRIMARY:
+                for rect in self.rectangles_progress_bar:
+                    if (rect.x <= event.x <= rect.x + rect.width and
+                        rect.y <= event.y <= rect.y + rect.height):
+                        print(f"Chapter {rect.chapter}")
+                        # self.toggle_progress_bar(rect)
+                        break
 
 
 
     def on_click_matrix(self, widget, event):
-        if event.type == Gdk.EventType.DOUBLE_BUTTON_PRESS: # Gdk.EventType._2BUTTON_PRESS
-            print("double")
-        elif event.type == Gdk.EventType.BUTTON_PRESS:  # Clique simples
+        # if event.type == Gdk.EventType.DOUBLE_BUTTON_PRESS: # Gdk.EventType._2BUTTON_PRESS
+        #     pass
+        if event.type == Gdk.EventType.BUTTON_PRESS:
             if event.button == Gdk.BUTTON_PRIMARY:
-                # Verifica se o clique está dentro de algum retângulo
                 x, y = event.x, event.y
-                # print(x, y)
                 for idx, (rx, ry, width, height, r, g, b) in enumerate(self.rectangles_matrix):
                     if rx <= x <= rx + width and ry <= y <= ry + height:
                         #self.toggle_rectangle(idx)
@@ -388,10 +493,10 @@ class GTKHafizWindow(Gtk.Window):
     def toggle_rectangle(self, idx):
         x, y, width, height, r, g, b = self.rectangles_matrix[idx]
         # Toggle colors
-        if (r, g, b) == (self.on_color_r, self.on_color_g, self.on_color_b):
-            self.rectangles_matrix[idx] = (x, y, width, height, self.off_color_r, self.off_color_g, self.off_color_b)
+        if (r, g, b) == self.on_color:
+            self.rectangles_matrix[idx] = (x, y, width, height, self.off_color)
         else:
-            self.rectangles_matrix[idx] = (x, y, width, height, self.on_color_r, self.on_color_g, self.on_color_b)
+            self.rectangles_matrix[idx] = (x, y, width, height, self.on_color)
         self.queue_draw()  # Redraw
 
     def on_draw_matrix(self, widget, cr):
@@ -411,9 +516,11 @@ class GTKHafizWindow(Gtk.Window):
         about.set_license_type(Gtk.License.GPL_3_0)
         about.set_copyright("Copyright © 2025 Omar El Laden")
         about.set_logo_icon_name("application-x-executable")
+
+        about.connect("response", lambda dialog, response: dialog.destroy())
         about.present()
 
-    def refresh_rectangles_matrix(self):
+    def refresh_rectangles(self):
         # Update rectangle colors based on mem_chapters
         self.rectangles_matrix = []
         for i in range(self.rects_per_col):
@@ -421,11 +528,11 @@ class GTKHafizWindow(Gtk.Window):
                 x = 188 + j * 40
                 y = 15 + i * 20
                 chapter_num = i * (self.rects_per_line) + j + 1
-                r, g, b = (self.off_color_r, self.off_color_g, self.off_color_b) if chapter_num in user.mem_chapters else (self.on_color_r, self.on_color_g, self.on_color_b)
+                r, g, b = self.off_color if chapter_num in user.mem_chapters else self.on_color
                 self.rectangles_matrix.append((x, y, 30, 10, r, g, b))##################append?
         
         for rect in self.rectangles_progress_bar:
-            rect.color = (self.off_color_r, self.off_color_g, self.off_color_b) if rect.chapter in user.mem_chapters else rect.color
+            rect.color = self.off_color if rect.chapter in user.mem_chapters else self.on_color
 
         
         self.queue_draw() # Redraw the matrix tab
@@ -446,7 +553,7 @@ class GTKHafizWindow(Gtk.Window):
             user.n_mem_letters  -= c.n_letters
             self.save_mem_chapters(c, 'rm')
         self.refresh_stats_label()
-        self.refresh_rectangles_matrix()
+        self.refresh_rectangles()
 
     def refresh_stats_label(self):
         self.label_stats.set_markup(
