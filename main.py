@@ -90,6 +90,7 @@ class User:
 
 
 
+
 class GTKHafizWindow(Gtk.Window):
     def __init__(self):
         super().__init__()
@@ -102,10 +103,42 @@ class GTKHafizWindow(Gtk.Window):
 
         # print(self.get_size())
 
+        self.color_c1 = (183/255, 157/255, 76/255)
+        self.color_c2 = (155/255, 197/255, 126/255)
+        self.color_c3 = (140/255, 185/255, 225/255)
+        self.color_c4 = (255/255, 211/255, 76/255)
+        self.color_c5 = (192/255, 192/255, 192/255)
+        self.color_c6 = (242/255, 164/255, 110/255)
+        # self.color_c = (124/255, 156/255, 214/255)
+        # self.color_c = (155/255, 197/255, 126/255)
+        # self.color_c = (155/255, 197/255, 126/255)
+        # self.color_c = (155/255, 197/255, 126/255)
+        # self.color_c = (155/255, 197/255, 126/255)
+        # self.color_c = (155/255, 197/255, 126/255)
+        # self.color_c = (155/255, 197/255, 126/255)
+        # self.color_c = (155/255, 197/255, 126/255)
+        # self.color_c = (155/255, 197/255, 126/255)
+        # self.color_c = (155/255, 197/255, 126/255)
+        # self.color_c = (155/255, 197/255, 126/255)
+        # self.color_c = (155/255, 197/255, 126/255)
+        # self.color_c = (155/255, 197/255, 126/255)
+        # self.color_c = (155/255, 197/255, 126/255)
+        # self.color_c = (155/255, 197/255, 126/255)
+        # self.color_c = (155/255, 197/255, 126/255)
+        # self.color_c = (155/255, 197/255, 126/255)
+        # self.color_c = (155/255, 197/255, 126/255)
+        
 
-        # self.drawing_area = Gtk.DrawingArea()
-        # self.drawing_area.connect("draw", self.on_draw)
-        # self.add(self.drawing_area)
+        self.on_color_r = 0.5
+        self.on_color_g = 0.5
+        self.on_color_b = 0.5
+        self.off_color_r = 0.0
+        self.off_color_g = 0.8
+        self.off_color_b = 0.0
+
+        # self.drawingarea = Gtk.DrawingArea()
+        # self.drawingarea.connect("draw", self.on_draw)
+        # self.add(self.drawingarea)
 
         # # Example data for rectangles: (x, y, width, height, r, g, b)
         # self.rectangles = [
@@ -169,20 +202,31 @@ class GTKHafizWindow(Gtk.Window):
         ## Matrix Tab with DrawingArea
         # self.rects_per_col  = 19
         # self.rects_per_line = 6
-        # drawing_area = Gtk.DrawingArea()
-        # drawing_area.connect("draw", self.on_draw_matrix)
-        # self.refresh_rectangles()
-        # stack.add_titled(drawing_area, "matrix", "Matrix")
+        # drawingarea = Gtk.DrawingArea()
+        # drawingarea.connect("draw", self.on_draw_matrix)
+        # self.refresh_rectangles_matrix()
+        # stack.add_titled(drawingarea, "matrix", "Matrix")
 
+        ## Progress Bar Tab with DrawingArea
+        self.rectangles_progess_bar = []
+        self.create_rectangles_progress_bar()
+        drawingarea_progress_bar = Gtk.DrawingArea()
+        drawingarea_progress_bar.connect("draw", self.on_draw_progress_bar)
+        drawingarea_progress_bar.connect("button-press-event", self.on_click_progress_bar)  # Conectando o evento de clique
+        drawingarea_progress_bar.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
+        stack.add_titled(drawingarea_progress_bar, "progress_bar", "Progress Bar")
+
+        ## Matrix Tab with DrawingArea
         self.rects_per_col  = 19
         self.rects_per_line = 6
-        self.rectangles = []
-        drawing_area = Gtk.DrawingArea()
-        drawing_area.connect("draw", self.on_draw_matrix)
-        drawing_area.connect("button-press-event", self.on_click_matrix)  # Conectando o evento de clique
-        drawing_area.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
-        self.refresh_rectangles()
-        stack.add_titled(drawing_area, "matrix", "Matrix")
+        self.rectangles_matrix = []
+        drawingarea_matrix = Gtk.DrawingArea()
+        drawingarea_matrix.connect("draw", self.on_draw_matrix)
+        drawingarea_matrix.connect("button-press-event", self.on_click_matrix)  # Conectando o evento de clique
+        drawingarea_matrix.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
+        self.refresh_rectangles_matrix()
+        stack.add_titled(drawingarea_matrix, "matrix", "Matrix")
+
 
 
 
@@ -231,7 +275,37 @@ class GTKHafizWindow(Gtk.Window):
 
         outerbox.pack_start(stack_switcher, False, True, 0)
         outerbox.pack_start(stack, True, True, 0)
+
+
    
+
+    def create_rectangles_progress_bar(self):
+        start_x = 10
+        start_y = 20
+        progress_data = [
+            {"x": start_x,     "y": start_y + 15*0, "width": 490, "height": 10, "color": self.color_c2, 'chapter': 2},
+            {"x": start_x+490, "y": start_y + 15*0, "width": 10, "height": 10, "color": self.color_c1, 'chapter': 1},
+
+            {"x": start_x,     "y": start_y + 15*1, "width": 500, "height": 10, "color": self.color_c2, 'chapter': 2},
+
+            {"x": start_x,     "y": start_y + 15*2, "width": 300, "height": 10, "color": self.color_c3, 'chapter': 3},
+            {"x": start_x+300,     "y": start_y + 15*2, "width": 200, "height": 10, "color": self.color_c2, 'chapter': 2},
+            
+        ]
+        self.rectangles_progress_bar = progress_data
+
+    def on_draw_progress_bar(self, widget, cr):
+        for rect in self.rectangles_progress_bar:
+            cr.set_source_rgb(*rect["color"])
+            cr.rectangle(rect["x"], rect["y"], rect["width"], rect["height"])
+            cr.fill()
+
+    def on_click_progress_bar(self, widget, event):
+        for rect in self.rectangles_progress_bar:
+            if (rect["x"] <= event.x <= rect["x"] + rect["width"] and
+                rect["y"] <= event.y <= rect["y"] + rect["height"]):
+                print(f"Chapter {rect['chapter']}")
+                break
 
 
 
@@ -243,23 +317,22 @@ class GTKHafizWindow(Gtk.Window):
                 # Verifica se o clique está dentro de algum retângulo
                 x, y = event.x, event.y
                 # print(x, y)
-                for idx, (rx, ry, width, height, r, g, b) in enumerate(self.rectangles):
+                for idx, (rx, ry, width, height, r, g, b) in enumerate(self.rectangles_matrix):
                     if rx <= x <= rx + width and ry <= y <= ry + height:
                         # Alterar cor do retângulo clicado
                         self.toggle_rectangle(idx)
                         break
     def toggle_rectangle(self, idx):
-        x, y, width, height, r, g, b = self.rectangles[idx]
-        
+        x, y, width, height, r, g, b = self.rectangles_matrix[idx]
         # Toggle colors
-        if (r, g, b) == (0.5, 0.5, 0.5):
-            self.rectangles[idx] = (x, y, width, height, 0.0, 0.8, 0.0)
+        if (r, g, b) == (self.on_color_r, self.on_color_g, self.on_color_b):
+            self.rectangles_matrix[idx] = (x, y, width, height, self.off_color_r, self.off_color_g, self.off_color_b)
         else:
-            self.rectangles[idx] = (x, y, width, height, 0.5, 0.5, 0.5)
+            self.rectangles_matrix[idx] = (x, y, width, height, self.on_color_r, self.on_color_g, self.on_color_b)
         self.queue_draw()  # Redraw
 
     def on_draw_matrix(self, widget, cr):
-        for x, y, width, height, r, g, b in self.rectangles:
+        for x, y, width, height, r, g, b in self.rectangles_matrix:
             cr.set_source_rgb(r, g, b)
             cr.rectangle(x, y, width, height)
             cr.fill()
@@ -267,16 +340,16 @@ class GTKHafizWindow(Gtk.Window):
     def on_about_clicked(self, widget):
         print("About")
 
-    def refresh_rectangles(self):
+    def refresh_rectangles_matrix(self):
         # Update rectangle colors based on mem_chapters
-        self.rectangles = []
+        self.rectangles_matrix = []
         for i in range(self.rects_per_col):
             for j in range(self.rects_per_line):
                 x = 127 + j * 40
                 y = 15 + i * 20
                 chapter_num = i * (self.rects_per_line) + j + 1
-                r, g, b = (0.0, 0.8, 0.0) if chapter_num in user.mem_chapters else (0.5, 0.5, 0.5)
-                self.rectangles.append((x, y, 30, 10, r, g, b))
+                r, g, b = (self.off_color_r, self.off_color_g, self.off_color_b) if chapter_num in user.mem_chapters else (self.on_color_r, self.on_color_g, self.on_color_b)
+                self.rectangles_matrix.append((x, y, 30, 10, r, g, b))
         
         self.queue_draw() # Redraw the matrix tab
 
@@ -296,7 +369,7 @@ class GTKHafizWindow(Gtk.Window):
             user.n_mem_letters  -= c.n_letters
             self.save_mem_chapters(c, 'rm')
         self.refresh_stats_label()
-        self.refresh_rectangles()
+        self.refresh_rectangles_matrix()
 
     def refresh_stats_label(self):
         self.label_stats.set_markup(
@@ -379,3 +452,4 @@ if __name__ == '__main__':
     win.connect("destroy", Gtk.main_quit)
     win.show_all()
     Gtk.main()
+
