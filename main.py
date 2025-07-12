@@ -368,7 +368,6 @@ class GTKHafizWindow(Gtk.Window):
         self.refresh_rectangles()
 
 
-
         # List Tab
         checkbutton_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         # label = Gtk.Label(label="Memorized Chapters:")
@@ -393,17 +392,10 @@ class GTKHafizWindow(Gtk.Window):
         stack.add_titled(self.label_stats, "stats", "Stats")
 
 
-        # Profile Tab
-        # label_profile = Gtk.Label()
-        # label_profile.set_markup(
-        #     f"<b>Username:</b> {user.username}\n"
-
-        #     # '<a href="https://github.com/omarelladen" '
-        #     # 'title="Visit website">GitHub</a>'
-        # )
-        # stack.add_titled(label_profile, "profile", "Profile")
-
-
+        # Chapter Popover
+        self.chapter_popover = Gtk.Popover()
+        self.chapter_label = Gtk.Label()
+        self.chapter_popover.add(self.chapter_label)
 
 
         ## Stack Switcher
@@ -416,14 +408,31 @@ class GTKHafizWindow(Gtk.Window):
         outerbox.pack_start(stack, True, True, 0)
 
 
-
-
     def on_draw_progress_bar(self, widget, cr):
         for rect in self.rectangles_progress_bar:
             cr.set_source_rgb(*rect.color)
             cr.rectangle(rect.x, rect.y, rect.width, rect.height)
             cr.fill()
 
+    def show_chapter_popover(self, rect, widget, event):
+        self.chapter_label.set_text(f"{rect.chapter}")
+        # window = widget.get_window()
+        # _, win_x, win_y = window.get_origin()
+        x = event.x
+        y = event.y
+
+        # Creates a Rectangle to place the popover
+        rect = Gdk.Rectangle()
+        rect.x = int(x)
+        rect.y = int(y)
+        rect.width = 1
+        rect.height = 1
+
+        # Set popover position
+        self.chapter_popover.set_relative_to(widget)
+        self.chapter_popover.set_pointing_to(rect)
+        self.chapter_popover.set_position(Gtk.PositionType.TOP)  # Pode ser TOP, LEFT, RIGHT ou BOTTOM
+        self.chapter_popover.show_all()
 
     def on_click_progress_bar(self, widget, event):
         if event.type == Gdk.EventType.BUTTON_PRESS:
@@ -431,31 +440,26 @@ class GTKHafizWindow(Gtk.Window):
                 for rect in self.rectangles_progress_bar:
                     if (rect.x <= event.x <= rect.x + rect.width and
                         rect.y <= event.y <= rect.y + rect.height):
-                        print(f"Chapter {rect.chapter}")
-                        # self.toggle_progress_bar(rect)
+                        self.show_chapter_popover(rect, widget, event)
                         break
 
-
-
     def on_click_matrix(self, widget, event):
-        # if event.type == Gdk.EventType.DOUBLE_BUTTON_PRESS: # Gdk.EventType._2BUTTON_PRESS
-        #     pass
         if event.type == Gdk.EventType.BUTTON_PRESS:
             if event.button == Gdk.BUTTON_PRIMARY:
                 x, y = event.x, event.y
                 for idx, (rx, ry, width, height, r, g, b) in enumerate(self.rectangles_matrix):
                     if rx <= x <= rx + width and ry <= y <= ry + height:
-                        #self.toggle_rectangle(idx)
                         print(f"Chapter {idx+1}")
                         break
-    def toggle_rectangle(self, idx):
-        x, y, width, height, r, g, b = self.rectangles_matrix[idx]
-        # Toggle colors
-        if (r, g, b) == self.on_color:
-            self.rectangles_matrix[idx] = (x, y, width, height, self.off_color)
-        else:
-            self.rectangles_matrix[idx] = (x, y, width, height, self.on_color)
-        self.queue_draw()  # Redraw
+
+    # def toggle_rectangle(self, idx):
+    #     x, y, width, height, r, g, b = self.rectangles_matrix[idx]
+    #     # Toggle colors
+    #     if (r, g, b) == self.on_color:
+    #         self.rectangles_matrix[idx] = (x, y, width, height, self.off_color)
+    #     else:
+    #         self.rectangles_matrix[idx] = (x, y, width, height, self.on_color)
+    #     self.queue_draw()  # Redraw
 
     def on_draw_matrix(self, widget, cr):
         for x, y, width, height, r, g, b in self.rectangles_matrix:
