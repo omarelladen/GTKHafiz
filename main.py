@@ -89,6 +89,23 @@ class User:
         return round(self.n_mem_letters / book.n_letters * 100, 1)
 
 
+class ProgressBar:
+    def __init__(self,
+        x       :int = 0,
+        y       :int = 0,
+        width   :int = 0,
+        height  :int = 0,
+        color  :int = 0,
+        chapter :int = 0,
+    ):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.color = color
+        self.chapter = chapter
+
+
 
 
 class GTKHafizWindow(Gtk.Window):
@@ -103,31 +120,37 @@ class GTKHafizWindow(Gtk.Window):
 
         # print(self.get_size())
 
-        self.color_c1 = (183/255, 157/255, 76/255)
-        self.color_c2 = (155/255, 197/255, 126/255)
-        self.color_c3 = (140/255, 185/255, 225/255)
-        self.color_c4 = (255/255, 211/255, 76/255)
-        self.color_c5 = (192/255, 192/255, 192/255)
-        self.color_c6 = (242/255, 164/255, 110/255)
-        # self.color_c = (124/255, 156/255, 214/255)
-        # self.color_c = (155/255, 197/255, 126/255)
-        # self.color_c = (155/255, 197/255, 126/255)
-        # self.color_c = (155/255, 197/255, 126/255)
-        # self.color_c = (155/255, 197/255, 126/255)
-        # self.color_c = (155/255, 197/255, 126/255)
-        # self.color_c = (155/255, 197/255, 126/255)
-        # self.color_c = (155/255, 197/255, 126/255)
-        # self.color_c = (155/255, 197/255, 126/255)
-        # self.color_c = (155/255, 197/255, 126/255)
-        # self.color_c = (155/255, 197/255, 126/255)
-        # self.color_c = (155/255, 197/255, 126/255)
-        # self.color_c = (155/255, 197/255, 126/255)
-        # self.color_c = (155/255, 197/255, 126/255)
-        # self.color_c = (155/255, 197/255, 126/255)
-        # self.color_c = (155/255, 197/255, 126/255)
-        # self.color_c = (155/255, 197/255, 126/255)
-        # self.color_c = (155/255, 197/255, 126/255)
-        
+        self.color_c1  = (183/255, 157/255, 76/255)
+        self.color_c2  = (155/255, 197/255, 126/255)
+        self.color_c3  = (140/255, 185/255, 225/255)
+        self.color_c4  = (255/255, 211/255, 76/255)
+        self.color_c5  = (192/255, 192/255, 192/255)
+        self.color_c6  = (242/255, 164/255, 110/255)
+        self.color_c7  = (124/255, 156/255, 214/255)
+        self.color_c8  = (204/255, 228/255, 189/255)
+        self.color_c9  = (197/255, 220/255, 240/255)
+        self.color_c10 = (255/255, 232/255, 165/255)
+        self.color_c11 = (223/255, 223/255, 223/255)
+        self.color_c12 = (249/255, 209/255, 183/255)
+        self.color_c13 = (190/255, 206/255, 235/255)
+        self.color_c14 = (131/255, 161/255, 111/255)
+        self.color_c15 = (255/255, 255/255, 255/255)
+        self.color_c16 = (255/255, 255/255, 255/255)
+        self.color_c17 = (255/255, 255/255, 255/255)
+        self.color_c18 = (255/255, 255/255, 255/255)
+        self.color_c19 = (255/255, 255/255, 255/255)
+        self.color_c20 = (255/255, 255/255, 255/255) 
+        self.color_c21 = (255/255, 255/255, 255/255)
+        self.color_c22 = (255/255, 255/255, 255/255)
+        self.color_c23 = (255/255, 255/255, 255/255)
+        self.color_c24 = (255/255, 255/255, 255/255)
+        self.color_c25 = (255/255, 255/255, 255/255)
+        self.color_c26 = (255/255, 255/255, 255/255)
+        self.color_c27 = (255/255, 255/255, 255/255)
+        self.color_c28 = (255/255, 255/255, 255/255)
+        self.color_c29 = (255/255, 255/255, 255/255)
+        self.color_c30 = (255/255, 255/255, 255/255)
+        self.color_c31 = (255/255, 255/255, 255/255)
 
         self.on_color_r = 0.5
         self.on_color_g = 0.5
@@ -156,8 +179,8 @@ class GTKHafizWindow(Gtk.Window):
         # Menu Popover
         self.popover = Gtk.Popover()
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        bt_preferences = Gtk.ModelButton(label="Preferences")
-        vbox.pack_start(bt_preferences, False, True, 10)
+        # bt_preferences = Gtk.ModelButton(label="Preferences")
+        # vbox.pack_start(bt_preferences, False, True, 10)
         bt_about = Gtk.ModelButton(label="About GTK Hafiz")
         bt_about.connect("clicked", self.on_about_clicked)
         vbox.pack_start(bt_about, False, True, 10)
@@ -209,12 +232,59 @@ class GTKHafizWindow(Gtk.Window):
 
         ## Progress Bar Tab with DrawingArea
         self.rectangles_progess_bar = []
-        self.create_rectangles_progress_bar()
+
+        self.pb_start_x = 50
+        self.pb_start_y = 20
+        self.pb_start_h = 13
+        self.pb_vd = self.pb_start_h + 2
+        self.pb_hd = 2
+        self.rectangles_progress_bar = [
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*0, 490, self.pb_start_h, self.color_c2, 2),
+            ProgressBar(self.pb_start_x+490+self.pb_hd, self.pb_start_y + self.pb_vd*0, 10, self.pb_start_h, self.color_c1, 1),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*1, 500, self.pb_start_h, self.color_c2, 2),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*2, 300, self.pb_start_h, self.color_c3, 3),
+            ProgressBar(self.pb_start_x+300+self.pb_hd, self.pb_start_y + self.pb_vd*2, 200, self.pb_start_h, self.color_c2, 2),
+            
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*3, 120, self.pb_start_h, self.color_c4, 4),
+            ProgressBar(self.pb_start_x+120+self.pb_hd, self.pb_start_y + self.pb_vd*3, 380, self.pb_start_h, self.color_c3, 3),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*4, 500, self.pb_start_h, self.color_c4, 4),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*5, 380, self.pb_start_h, self.color_c5, 5),
+            ProgressBar(self.pb_start_x+380+self.pb_hd, self.pb_start_y + self.pb_vd*5, 120, self.pb_start_h, self.color_c4, 4),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*6, 320, self.pb_start_h, self.color_c6, 6),
+            ProgressBar(self.pb_start_x+320+self.pb_hd, self.pb_start_y + self.pb_vd*6, 180, self.pb_start_h, self.color_c5, 5),
+    
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*7, 260, self.pb_start_h, self.color_c7, 7),
+            ProgressBar(self.pb_start_x+260+self.pb_hd, self.pb_start_y + self.pb_vd*7, 240, self.pb_start_h, self.color_c6, 6),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*8, 120, self.pb_start_h, self.color_c8, 8),
+            ProgressBar(self.pb_start_x+120+self.pb_hd, self.pb_start_y + self.pb_vd*8, 380, self.pb_start_h, self.color_c7, 7),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*9, 350, self.pb_start_h, self.color_c9, 9),
+            ProgressBar(self.pb_start_x+350+self.pb_hd, self.pb_start_y + self.pb_vd*9, 150, self.pb_start_h, self.color_c8, 8),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*10, 20, self.pb_start_h, self.color_c11, 11),
+            ProgressBar(self.pb_start_x+20+self.pb_hd, self.pb_start_y + self.pb_vd*10, 315, self.pb_start_h, self.color_c10, 10),
+            ProgressBar(self.pb_start_x+20+315+2*self.pb_hd, self.pb_start_y + self.pb_vd*10, 165, self.pb_start_h, self.color_c9, 9),
+            
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*11, 160, self.pb_start_h, self.color_c12, 12),
+            ProgressBar(self.pb_start_x+160, self.pb_start_y + self.pb_vd*11, 340, self.pb_start_h, self.color_c11, 11),
+
+            ProgressBar(self.pb_start_x, self.pb_start_y + self.pb_vd*12, 170, self.pb_start_h, self.color_c14, 14),
+            ProgressBar(self.pb_start_x+170+self.pb_hd, self.pb_start_y + self.pb_vd*12, 180, self.pb_start_h, self.color_c13, 13),
+            ProgressBar(self.pb_start_x+170+180+2*self.pb_hd, self.pb_start_y + self.pb_vd*12, 150, self.pb_start_h, self.color_c12, 12),
+        ]
+
+
         drawingarea_progress_bar = Gtk.DrawingArea()
         drawingarea_progress_bar.connect("draw", self.on_draw_progress_bar)
         drawingarea_progress_bar.connect("button-press-event", self.on_click_progress_bar)  # Conectando o evento de clique
         drawingarea_progress_bar.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
-        stack.add_titled(drawingarea_progress_bar, "progress_bar", "Progress Bar")
+        stack.add_titled(drawingarea_progress_bar, "bar", "Bar")
 
         ## Matrix Tab with DrawingArea
         self.rects_per_col  = 19
@@ -267,6 +337,8 @@ class GTKHafizWindow(Gtk.Window):
         stack.add_titled(label_profile, "profile", "Profile")
 
 
+
+
         ## Stack Switcher
         stack_switcher = Gtk.StackSwitcher()
         stack_switcher.set_stack(stack)
@@ -277,34 +349,21 @@ class GTKHafizWindow(Gtk.Window):
         outerbox.pack_start(stack, True, True, 0)
 
 
-   
 
-    def create_rectangles_progress_bar(self):
-        start_x = 10
-        start_y = 20
-        progress_data = [
-            {"x": start_x,     "y": start_y + 15*0, "width": 490, "height": 10, "color": self.color_c2, 'chapter': 2},
-            {"x": start_x+490, "y": start_y + 15*0, "width": 10, "height": 10, "color": self.color_c1, 'chapter': 1},
-
-            {"x": start_x,     "y": start_y + 15*1, "width": 500, "height": 10, "color": self.color_c2, 'chapter': 2},
-
-            {"x": start_x,     "y": start_y + 15*2, "width": 300, "height": 10, "color": self.color_c3, 'chapter': 3},
-            {"x": start_x+300,     "y": start_y + 15*2, "width": 200, "height": 10, "color": self.color_c2, 'chapter': 2},
-            
-        ]
-        self.rectangles_progress_bar = progress_data
 
     def on_draw_progress_bar(self, widget, cr):
         for rect in self.rectangles_progress_bar:
-            cr.set_source_rgb(*rect["color"])
-            cr.rectangle(rect["x"], rect["y"], rect["width"], rect["height"])
+            cr.set_source_rgb(*rect.color)
+            cr.rectangle(rect.x, rect.y, rect.width, rect.height)
             cr.fill()
+
 
     def on_click_progress_bar(self, widget, event):
         for rect in self.rectangles_progress_bar:
-            if (rect["x"] <= event.x <= rect["x"] + rect["width"] and
-                rect["y"] <= event.y <= rect["y"] + rect["height"]):
-                print(f"Chapter {rect['chapter']}")
+            if (rect.x <= event.x <= rect.x + rect.width and
+                rect.y <= event.y <= rect.y + rect.height):
+                print(f"Chapter {rect.chapter}")
+                # self.toggle_progress_bar(rect)
                 break
 
 
@@ -319,8 +378,8 @@ class GTKHafizWindow(Gtk.Window):
                 # print(x, y)
                 for idx, (rx, ry, width, height, r, g, b) in enumerate(self.rectangles_matrix):
                     if rx <= x <= rx + width and ry <= y <= ry + height:
-                        # Alterar cor do retângulo clicado
-                        self.toggle_rectangle(idx)
+                        #self.toggle_rectangle(idx)
+                        print(f"Chapter {idx+1}")
                         break
     def toggle_rectangle(self, idx):
         x, y, width, height, r, g, b = self.rectangles_matrix[idx]
@@ -338,18 +397,22 @@ class GTKHafizWindow(Gtk.Window):
             cr.fill()
 
     def on_about_clicked(self, widget):
-        print("About")
+        print("https://github.com/omarelladen")
 
     def refresh_rectangles_matrix(self):
         # Update rectangle colors based on mem_chapters
         self.rectangles_matrix = []
         for i in range(self.rects_per_col):
             for j in range(self.rects_per_line):
-                x = 127 + j * 40
+                x = 188 + j * 40
                 y = 15 + i * 20
                 chapter_num = i * (self.rects_per_line) + j + 1
                 r, g, b = (self.off_color_r, self.off_color_g, self.off_color_b) if chapter_num in user.mem_chapters else (self.on_color_r, self.on_color_g, self.on_color_b)
-                self.rectangles_matrix.append((x, y, 30, 10, r, g, b))
+                self.rectangles_matrix.append((x, y, 30, 10, r, g, b))##################append?
+        
+        for rect in self.rectangles_progress_bar:
+            rect.color = (self.off_color_r, self.off_color_g, self.off_color_b) if rect.chapter in user.mem_chapters else rect.color
+
         
         self.queue_draw() # Redraw the matrix tab
 
@@ -406,7 +469,9 @@ class GTKHafizWindow(Gtk.Window):
 
 
 
-if __name__ == '__main__':
+
+
+def load_db_data():
     con = sqlite3.connect(dbfile)
     cur = con.cursor()
 
@@ -415,7 +480,6 @@ if __name__ == '__main__':
     list_obj_book=[]
     for b in table_book:
         list_obj_book.append(Book(b[1], b[2], b[3], b[4], b[5], b[6]))
-    book = list_obj_book[0]
 
     table_chapter = [a for a in cur.execute("SELECT * FROM chapters")]
     list_obj_chapter=[]
@@ -446,6 +510,11 @@ if __name__ == '__main__':
     con.commit()
     con.close()
 
+    return user, list_obj_book, list_obj_chapter
+
+if __name__ == '__main__':
+    user, list_obj_book, list_obj_chapter = load_db_data()
+    book = list_obj_book[0]
 
     # Load GTK Window
     win = GTKHafizWindow()
