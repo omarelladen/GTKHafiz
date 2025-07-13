@@ -10,7 +10,6 @@ class Book:
     def __init__(self,
         name_arabic :str = '',
         name_latin  :str = '',
-        # author      :str = '',
         n_chapters  :int = 0,
         n_verses    :int = 0,
         n_words     :int = 0,
@@ -18,7 +17,6 @@ class Book:
     ):
         self.name_arabic = name_arabic
         self.name_latin = name_latin
-        # self.author = author
         self.n_chapters = n_chapters
         self.n_verses = n_verses
         self.n_words = n_words
@@ -49,14 +47,9 @@ class User:
         n_mem_words      :int = 0,
         n_mem_verses     :int = 0,
         n_mem_letters    :int = 0,
-        # pct_mem_chapters :int = 0,
-        # pct_mem_words    :int = 0,
-        # pct_mem_verses   :int = 0,
-        # pct_mem_letters  :int = 0,
         mem_chapters     :list = [],
         mem_words        :list = [],
         mem_verses       :list = [],
-        # mem_letters      :list = []
     ):
         self.username = username
         self.mem_chapters = mem_chapters
@@ -64,14 +57,6 @@ class User:
         self.n_mem_words = n_mem_words
         self.n_mem_verses = n_mem_verses
         self.n_mem_letters = n_mem_letters
-        # self.pct_mem_chapters = pct_mem_chapters
-        # self.pct_mem_words = pct_mem_words
-        # self.pct_mem_verses = n_mem_verses
-        # self.pct_mem_letters= n_mem_letters
-        # self.mem_words = mem_words
-        # self.mem_verses = mem_verses
-        # self.mem_letters = mem_letters
-        # self.mem_letters = mem_letters
 
 
 class ChapterBar:
@@ -323,7 +308,7 @@ class GTKHafizWindow(Gtk.Window):
         # Progress Bar Tab
         drawingarea_progress_bar = Gtk.DrawingArea()
         drawingarea_progress_bar.connect("draw", self.on_draw_progress_bar)
-        drawingarea_progress_bar.connect("button-press-event", self.on_click_progress_bar)  # Conectando o evento de clique
+        drawingarea_progress_bar.connect("button-press-event", self.on_click_progress_bar)
         drawingarea_progress_bar.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         stack.add_titled(drawingarea_progress_bar, "bar", "Bar")
 
@@ -333,7 +318,7 @@ class GTKHafizWindow(Gtk.Window):
         self.rectangles_matrix = []
         drawingarea_matrix = Gtk.DrawingArea()
         drawingarea_matrix.connect("draw", self.on_draw_matrix)
-        drawingarea_matrix.connect("button-press-event", self.on_click_matrix)  # Conectando o evento de clique
+        drawingarea_matrix.connect("button-press-event", self.on_click_matrix)
         drawingarea_matrix.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         stack.add_titled(drawingarea_matrix, "matrix", "Matrix")
 
@@ -469,7 +454,7 @@ class GTKHafizWindow(Gtk.Window):
         about.present()
 
     def refresh_rectangles(self):
-        self.rectangles_matrix = [] # Updates rectangle colors by creating a new list
+        self.rectangles_matrix = [] # updates rectangle colors by creating a new list
         for i in range(self.rects_per_col):
             for j in range(self.rects_per_line):
                 x = 155+ (self.rects_per_line-1-j) * 35 # from left to right
@@ -481,7 +466,7 @@ class GTKHafizWindow(Gtk.Window):
         for rect in self.rectangles_progress_bar:
             rect.color = self.rect_off_color if rect.chapter in self.user.mem_chapters else self.rect_on_color
 
-        self.queue_draw() # Redraw the matrix tab
+        self.queue_draw() # redraw the matrix tab
 
     def on_checkbox_toggled(self, button, chapter=''):
         if button.get_active():
