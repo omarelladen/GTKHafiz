@@ -1,5 +1,7 @@
-import sqlite3
 import os
+
+import sqlite3
+DB_FILENAME = 'db.sqlite3'
 
 import gi
 gi.require_version("Gtk", "3.0")
@@ -101,14 +103,14 @@ class GTKHafizWindow(Gtk.Window):
         self.add(outerbox)
 
         # Menu Popover
-        self.popover = Gtk.Popover()
+        self.popover_menu = Gtk.Popover()
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         bt_about = Gtk.ModelButton(label="About GTK Hafiz")
-        bt_about.connect("clicked", self.on_about_clicked)
+        bt_about.connect("clicked", self.on_click_about)
         vbox.pack_start(bt_about, False, True, 10)
         vbox.show_all()
-        self.popover.add(vbox)
-        self.popover.set_position(Gtk.PositionType.BOTTOM)
+        self.popover_menu.add(vbox)
+        self.popover_menu.set_position(Gtk.PositionType.BOTTOM)
         
         # Header Bar
         headerbar = Gtk.HeaderBar()
@@ -117,7 +119,7 @@ class GTKHafizWindow(Gtk.Window):
         self.set_titlebar(headerbar)
 
         # Menu Button
-        bt_menu = Gtk.MenuButton(popover=self.popover)
+        bt_menu = Gtk.MenuButton(popover=self.popover_menu)
         icon = Gio.ThemedIcon(name="open-menu-symbolic")
         image = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.BUTTON)
         bt_menu.add(image)
@@ -126,7 +128,6 @@ class GTKHafizWindow(Gtk.Window):
         # Stack
         stack = Gtk.Stack()
         stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
-        stack.set_transition_duration(1000)
 
         # Progress Bars
         self.pb_start_x = 10
@@ -332,7 +333,7 @@ class GTKHafizWindow(Gtk.Window):
             if chapter.number in self.user.mem_chapters:
                 checkbutton.set_active(True)
             self.list_checkboxes.append((checkbutton, chapter))
-            checkbutton.connect("toggled", lambda btn, obj=chapter: self.on_checkbox_toggled(btn, obj))
+            checkbutton.connect("toggled", lambda btn, obj=chapter: self.on_toggle_checkbox(btn, obj))
             checkbutton_container.pack_start(checkbutton, False, False, 0)
         scrolled_window = Gtk.ScrolledWindow()
         scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
@@ -342,56 +343,34 @@ class GTKHafizWindow(Gtk.Window):
         # Stats Tab
         self.label_stats = Gtk.Label()
         self.refresh_stats_label()
-        stack.add_titled(self.label_stats, "stats", "Stats")
+        stack.add_titled(self.label_stats, "stats", "Statistics")
 
         # Chapter Popover
-        self.chapter_popover = Gtk.Popover()
-        self.chapter_label = Gtk.Label()
-        self.chapter_popover.add(self.chapter_label)
+        self.popover_chapter = Gtk.Popover()
+        self.label_chapter = Gtk.Label()
+        self.popover_chapter.add(self.label_chapter)
 
-        self.is_popover_active = False
-        self.current_mouse_x = None
-        self.current_mouse_y = None
+        self.is_popover_chapter_active = False
+        self.cursor_when_popover_chapter_x = None
+        self.cursor_when_popover_chapter_y = None
 
         # All clicks will be checked to be able to hide the chapter popovers
         self.connect("button-press-event", self.on_click_outside_popover)
 
         # Stack Switcher
-        stack_switcher = Gtk.StackSwitcher()
-        stack_switcher.set_stack(stack)
-        stack_switcher.set_halign(Gtk.Align.CENTER)  # horizontal
+        stackswitcher = Gtk.StackSwitcher()
+        stackswitcher.set_stack(stack)
+        stackswitcher.set_halign(Gtk.Align.CENTER)  # horizontal
 
-        outerbox.pack_start(stack_switcher, False, True, 0)
+        outerbox.pack_start(stackswitcher, False, True, 0)
         outerbox.pack_start(stack, True, True, 0)
 
     def on_click_outside_popover(self, widget, event):
-        if (self.is_popover_active == True and
-            event.x != self.current_mouse_x and
-            event.y != self.current_mouse_y):
-            self.is_popover_active = False
-            self.chapter_popover.hide()
-
-    def on_draw_progress_bar(self, widget, cr):
-        for rect in self.list_rect_progress_bar:
-            cr.set_source_rgb(*rect.color)
-            cr.rectangle(rect.x, rect.y, rect.width, rect.height)
-            cr.fill()
-
-    def show_chapter_popover(self, rect, widget, event):
-        self.chapter_label.set_text(f"{rect.chapter}")
-        e_x = event.x
-        e_y = event.y
-
-        # Set popover position
-        self.chapter_popover.set_relative_to(widget)
-        self.chapter_popover.set_pointing_to(rect)
-        self.chapter_popover.set_position(Gtk.PositionType.TOP)
-        self.chapter_popover.show_all()
-
-        # Set current popover location and state so that it is gets hiden only by clicking outside this point
-        self.current_mouse_x = e_x
-        self.current_mouse_y = e_y
-        self.is_popover_active = True
+        if (self.is_popover_chapter_active == True and
+            event.x != self.cursor_when_popover_chapter_x and
+            event.y != self.cursor_when_popover_chapter_y):
+            self.is_popover_chapter_active = False
+            self.popover_chapter.hide()
 
     def on_click_progress_bar(self, widget, event):
         if event.type == Gdk.EventType.BUTTON_PRESS:
@@ -415,19 +394,7 @@ class GTKHafizWindow(Gtk.Window):
                         self.show_chapter_popover(rect, widget, event)
                         break
 
-    def on_draw_matrix(self, widget, cr):
-        for rect in self.list_rect_matrix:
-            x = rect.x
-            y = rect.y
-            width = rect.width
-            height = rect.height
-            chapter = rect.chapter
-            color = rect.color
-            cr.set_source_rgb(color[0], color[1], color[2])
-            cr.rectangle(x, y, width, height)
-            cr.fill()
-
-    def on_about_clicked(self, widget):
+    def on_click_about(self, widget):
         about = Gtk.AboutDialog(transient_for=self, modal=True)
 
         about.set_program_name("GTK Hafiz")
@@ -443,25 +410,7 @@ class GTKHafizWindow(Gtk.Window):
         about.connect("response", lambda dialog, response: dialog.destroy())
         about.present()
 
-    def refresh_rectangles(self):
-        # Refresh Matrix Rectangles
-        self.list_rect_matrix = [] # updates rectangle colors by creating a new list
-        for i in range(self.rects_per_col):
-            for j in range(self.rects_per_line):
-                x = 155+ (self.rects_per_line-1-j) * 35 # from left to right
-                y = 15 + i * 20
-                chapter_num = i * (self.rects_per_line) + j + 1
-                r, g, b = self.rect_off_color if chapter_num in self.user.mem_chapters else self.rect_on_color
-                self.list_rect_matrix.append(ChapterRectangle(x, y, 30, 10, chapter_num, (r, g, b)))
-
-        # Refresh Progress Bar Rectangles
-        for rect in self.list_rect_progress_bar:
-            rect.color = self.rect_off_color if rect.chapter in self.user.mem_chapters else self.rect_on_color
-        
-        # Ensure Redraw
-        self.queue_draw() 
-
-    def on_checkbox_toggled(self, button, chapter=''):
+    def on_toggle_checkbox(self, button, chapter=''):
         # Checkbox activation
         if button.get_active():
             self.user.mem_chapters.append(chapter.number)
@@ -482,6 +431,57 @@ class GTKHafizWindow(Gtk.Window):
         # Refresh
         self.refresh_stats_label()
         self.refresh_rectangles()
+
+    def on_draw_matrix(self, widget, cr):
+        for rect in self.list_rect_matrix:
+            r_x = rect.x
+            r_y = rect.y
+            r_w = rect.width
+            r_h = rect.height
+            r_color = rect.color
+            cr.set_source_rgb(r_color[0], r_color[1], r_color[2])
+            cr.rectangle(r_x, r_y, r_w, r_h)
+            cr.fill()
+
+    def on_draw_progress_bar(self, widget, cr):
+        for rect in self.list_rect_progress_bar:
+            cr.set_source_rgb(*rect.color)
+            cr.rectangle(rect.x, rect.y, rect.width, rect.height)
+            cr.fill()
+
+    def show_chapter_popover(self, rect, widget, event):
+        self.label_chapter.set_text(f"{rect.chapter}")
+        e_x = event.x
+        e_y = event.y
+
+        # Set popover position
+        self.popover_chapter.set_relative_to(widget)
+        self.popover_chapter.set_pointing_to(rect)
+        self.popover_chapter.set_position(Gtk.PositionType.TOP)
+        self.popover_chapter.show_all()
+
+        # Set current popover location and state so that it is gets hiden only by clicking outside this point
+        self.cursor_when_popover_chapter_x = e_x
+        self.cursor_when_popover_chapter_y = e_y
+        self.is_popover_chapter_active = True
+
+    def refresh_rectangles(self):
+        # Refresh Matrix Rectangles
+        self.list_rect_matrix = [] # updates rectangle colors by creating a new list
+        for i in range(self.rects_per_col):
+            for j in range(self.rects_per_line):
+                x = 155+ (self.rects_per_line-1-j) * 35 # from left to right
+                y = 15 + i * 20
+                chapter_num = i * (self.rects_per_line) + j + 1
+                r, g, b = self.rect_off_color if chapter_num in self.user.mem_chapters else self.rect_on_color
+                self.list_rect_matrix.append(ChapterRectangle(x, y, 30, 10, chapter_num, (r, g, b)))
+
+        # Refresh Progress Bar Rectangles
+        for rect in self.list_rect_progress_bar:
+            rect.color = self.rect_off_color if rect.chapter in self.user.mem_chapters else self.rect_on_color
+        
+        # Ensure Redraw
+        self.queue_draw() 
 
     def refresh_stats_label(self):
         self.label_stats.set_markup(
@@ -573,8 +573,7 @@ class DBManager():
 
 def main():
     # Load persistant data from db
-    db_filename = 'db.sqlite3'
-    db_manager = DBManager(db_filename)
+    db_manager = DBManager(DB_FILENAME)
     user, list_books, list_chapters = db_manager.load_db_data()
     book = list_books[0]
 
