@@ -1,7 +1,7 @@
 import os
 
 import sqlite3
-DB_FILENAME = 'db.sqlite3'
+from config import DB_FILENAME
 
 import gi
 gi.require_version("Gtk", "3.0")
