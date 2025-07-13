@@ -1,7 +1,7 @@
 import gi
 from gi.repository import Gtk, Gio, Gdk
 
-from chapterrectangle import ChapterRectangle
+from chapter_rectangle import ChapterRectangle
 
 class Window(Gtk.Window):
     def __init__(self, db_manager, user, book, list_chapters):
