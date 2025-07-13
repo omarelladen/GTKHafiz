@@ -1,10 +1,17 @@
 import os
 
 import sqlite3
+
 import configparser
-config = configparser.ConfigParser()
-config.read('config.conf')
-DB_FILENAME = config['database']['DB_FILENAME']
+
+def get_config_value(section, var, file):
+    config = configparser.ConfigParser()
+    config.read(file)
+    DB_FILENAME = config[section][var]
+    return DB_FILENAME
+
+DB_FILENAME = get_config_value('db', 'DB_FILENAME', 'config')
+
 
 import gi
 gi.require_version("Gtk", "3.0")
