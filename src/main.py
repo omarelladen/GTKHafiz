@@ -1,7 +1,10 @@
 import os
 
 import sqlite3
-from config import DB_FILENAME
+import configparser
+config = configparser.ConfigParser()
+config.read('config.conf')
+DB_FILENAME = config['database']['DB_FILENAME']
 
 import gi
 gi.require_version("Gtk", "3.0")

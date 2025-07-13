@@ -1,6 +1,15 @@
+# GTK Hafiz
+## Track Qur'an memorization visualy
 
-Track Qur'an memorization visualy
-
-Requirements (already installed by deafault in Debian):
+## Requirements:
+### Debian (if not already pre-installed):
+```bash
 sudo apt update
 sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0
+```
+
+## Run
+```bash
+bash setup_db.sh
+python3 src/main.py
+```
