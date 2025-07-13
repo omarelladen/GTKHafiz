@@ -47,9 +47,7 @@ class User:
         n_mem_words      :int = 0,
         n_mem_verses     :int = 0,
         n_mem_letters    :int = 0,
-        mem_chapters     :list = [],
-        mem_words        :list = [],
-        mem_verses       :list = [],
+        mem_chapters     :list[Chapter] = [],
     ):
         self.username = username
         self.mem_chapters = mem_chapters
@@ -59,19 +57,20 @@ class User:
         self.n_mem_letters = n_mem_letters
 
 
-class ChapterBar:
+class ChapterRectangle(Gdk.Rectangle):
     def __init__(self,
         x       :int = 0,
         y       :int = 0,
         width   :int = 0,
         height  :int = 0,
         chapter :int = 0,
-        color   :int = (0.0, 0.8, 0.0),
+        color   :tuple[float, float, float] = (0.0, 0.8, 0.0),
     ):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
+        
         self.chapter = chapter
         self.color = color
 
@@ -135,174 +134,174 @@ class GTKHafizWindow(Gtk.Window):
         self.pb_start_h = 10
         self.pb_vd = self.pb_start_h + 2
         self.pb_hd = 2
-        self.rectangles_progress_bar = [
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*0, 490, self.pb_start_h, 2),
-            ChapterBar(self.pb_start_x+self.pb_hd+490, self.pb_start_y + self.pb_vd*0, 8, self.pb_start_h, 1),
+        self.list_rect_progress_bar = [
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*0, 490, self.pb_start_h, 2),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+490, self.pb_start_y + self.pb_vd*0, 8, self.pb_start_h, 1),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*1, 500, self.pb_start_h, 2),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*1, 500, self.pb_start_h, 2),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*2, 300, self.pb_start_h, 3),
-            ChapterBar(self.pb_start_x+self.pb_hd+300, self.pb_start_y + self.pb_vd*2, 198, self.pb_start_h, 2),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*2, 300, self.pb_start_h, 3),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+300, self.pb_start_y + self.pb_vd*2, 198, self.pb_start_h, 2),
             
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*3, 120, self.pb_start_h, 4),
-            ChapterBar(self.pb_start_x+self.pb_hd+120, self.pb_start_y + self.pb_vd*3, 378, self.pb_start_h, 3),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*3, 120, self.pb_start_h, 4),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+120, self.pb_start_y + self.pb_vd*3, 378, self.pb_start_h, 3),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*4, 500, self.pb_start_h, 4),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*4, 500, self.pb_start_h, 4),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*5, 380, self.pb_start_h, 5),
-            ChapterBar(self.pb_start_x+self.pb_hd+380, self.pb_start_y + self.pb_vd*5, 118, self.pb_start_h, 4),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*5, 380, self.pb_start_h, 5),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+380, self.pb_start_y + self.pb_vd*5, 118, self.pb_start_h, 4),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*6, 320, self.pb_start_h, 6),
-            ChapterBar(self.pb_start_x+self.pb_hd+320, self.pb_start_y + self.pb_vd*6, 178, self.pb_start_h, 5),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*6, 320, self.pb_start_h, 6),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+320, self.pb_start_y + self.pb_vd*6, 178, self.pb_start_h, 5),
     
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*7, 260, self.pb_start_h, 7),
-            ChapterBar(self.pb_start_x+self.pb_hd+260, self.pb_start_y + self.pb_vd*7, 238, self.pb_start_h, 6),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*7, 260, self.pb_start_h, 7),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+260, self.pb_start_y + self.pb_vd*7, 238, self.pb_start_h, 6),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*8, 120, self.pb_start_h, 8),
-            ChapterBar(self.pb_start_x+self.pb_hd+120, self.pb_start_y + self.pb_vd*8, 378, self.pb_start_h, 7),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*8, 120, self.pb_start_h, 8),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+120, self.pb_start_y + self.pb_vd*8, 378, self.pb_start_h, 7),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*9, 350, self.pb_start_h, 9),
-            ChapterBar(self.pb_start_x+self.pb_hd+350, self.pb_start_y + self.pb_vd*9, 148, self.pb_start_h, 8),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*9, 350, self.pb_start_h, 9),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+350, self.pb_start_y + self.pb_vd*9, 148, self.pb_start_h, 8),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*10, 20, self.pb_start_h, 11),
-            ChapterBar(self.pb_start_x+self.pb_hd+20, self.pb_start_y + self.pb_vd*10, 315, self.pb_start_h, 10),
-            ChapterBar(self.pb_start_x+2*self.pb_hd+20+315, self.pb_start_y + self.pb_vd*10, 161, self.pb_start_h, 9),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*10, 20, self.pb_start_h, 11),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+20, self.pb_start_y + self.pb_vd*10, 315, self.pb_start_h, 10),
+            ChapterRectangle(self.pb_start_x+2*self.pb_hd+20+315, self.pb_start_y + self.pb_vd*10, 161, self.pb_start_h, 9),
             
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*11, 160, self.pb_start_h, 12),
-            ChapterBar(self.pb_start_x+self.pb_hd+160, self.pb_start_y + self.pb_vd*11, 338, self.pb_start_h, 11),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*11, 160, self.pb_start_h, 12),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+160, self.pb_start_y + self.pb_vd*11, 338, self.pb_start_h, 11),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*12, 170, self.pb_start_h, 14),
-            ChapterBar(self.pb_start_x+self.pb_hd+170, self.pb_start_y + self.pb_vd*12, 140, self.pb_start_h, 13),
-            ChapterBar(self.pb_start_x+2*self.pb_hd+170+140, self.pb_start_y + self.pb_vd*12, 186, self.pb_start_h, 12),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*12, 170, self.pb_start_h, 14),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+170, self.pb_start_y + self.pb_vd*12, 140, self.pb_start_h, 13),
+            ChapterRectangle(self.pb_start_x+2*self.pb_hd+170+140, self.pb_start_y + self.pb_vd*12, 186, self.pb_start_h, 12),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*13, 350, self.pb_start_h, 16),
-            ChapterBar(self.pb_start_x+self.pb_hd+350, self.pb_start_y + self.pb_vd*13, 148, self.pb_start_h, 15),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*13, 350, self.pb_start_h, 16),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+350, self.pb_start_y + self.pb_vd*13, 148, self.pb_start_h, 15),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*14, 200, self.pb_start_h, 18),
-            ChapterBar(self.pb_start_x+self.pb_hd+200, self.pb_start_y + self.pb_vd*14, 298, self.pb_start_h, 17),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*14, 200, self.pb_start_h, 18),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+200, self.pb_start_y + self.pb_vd*14, 298, self.pb_start_h, 17),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*15, 220, self.pb_start_h, 20),
-            ChapterBar(self.pb_start_x+self.pb_hd+220, self.pb_start_y + self.pb_vd*15, 170, self.pb_start_h, 19),
-            ChapterBar(self.pb_start_x+2*self.pb_hd+220+170, self.pb_start_y + self.pb_vd*15, 106, self.pb_start_h, 18),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*15, 220, self.pb_start_h, 20),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+220, self.pb_start_y + self.pb_vd*15, 170, self.pb_start_h, 19),
+            ChapterRectangle(self.pb_start_x+2*self.pb_hd+220+170, self.pb_start_y + self.pb_vd*15, 106, self.pb_start_h, 18),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*16, 240, self.pb_start_h, 22),
-            ChapterBar(self.pb_start_x+self.pb_hd+240, self.pb_start_y + self.pb_vd*16, 258, self.pb_start_h, 21),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*16, 240, self.pb_start_h, 22),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+240, self.pb_start_y + self.pb_vd*16, 258, self.pb_start_h, 21),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*17, 60, self.pb_start_h, 23),
-            ChapterBar(self.pb_start_x+self.pb_hd+60, self.pb_start_y + self.pb_vd*17, 240, self.pb_start_h, 24),
-            ChapterBar(self.pb_start_x+2*self.pb_hd+60+240, self.pb_start_y + self.pb_vd*17, 196, self.pb_start_h, 25),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*17, 60, self.pb_start_h, 23),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+60, self.pb_start_y + self.pb_vd*17, 240, self.pb_start_h, 24),
+            ChapterRectangle(self.pb_start_x+2*self.pb_hd+60+240, self.pb_start_y + self.pb_vd*17, 196, self.pb_start_h, 25),
     
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*18, 120, self.pb_start_h, 27),
-            ChapterBar(self.pb_start_x+self.pb_hd+120, self.pb_start_y + self.pb_vd*18, 250, self.pb_start_h, 26),
-            ChapterBar(self.pb_start_x+2*self.pb_hd+120+250, self.pb_start_y + self.pb_vd*18, 126, self.pb_start_h, 25),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*18, 120, self.pb_start_h, 27),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+120, self.pb_start_y + self.pb_vd*18, 250, self.pb_start_h, 26),
+            ChapterRectangle(self.pb_start_x+2*self.pb_hd+120+250, self.pb_start_y + self.pb_vd*18, 126, self.pb_start_h, 25),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*19, 130, self.pb_start_h, 29),
-            ChapterBar(self.pb_start_x+self.pb_hd+130, self.pb_start_y + self.pb_vd*19, 270, self.pb_start_h, 28),
-            ChapterBar(self.pb_start_x+2*self.pb_hd+130+270, self.pb_start_y + self.pb_vd*19, 96, self.pb_start_h, 27),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*19, 130, self.pb_start_h, 29),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+130, self.pb_start_y + self.pb_vd*19, 270, self.pb_start_h, 28),
+            ChapterRectangle(self.pb_start_x+2*self.pb_hd+130+270, self.pb_start_y + self.pb_vd*19, 96, self.pb_start_h, 27),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*20, 100, self.pb_start_h, 33),
-            ChapterBar(self.pb_start_x+self.pb_hd+100, self.pb_start_y + self.pb_vd*20, 60, self.pb_start_h, 32),
-            ChapterBar(self.pb_start_x+2*self.pb_hd+100+60, self.pb_start_y + self.pb_vd*20, 70, self.pb_start_h, 31),
-            ChapterBar(self.pb_start_x+3*self.pb_hd+100+60+70, self.pb_start_y + self.pb_vd*20, 200, self.pb_start_h, 30),
-            ChapterBar(self.pb_start_x+4*self.pb_hd+100+60+70+200, self.pb_start_y + self.pb_vd*20, 62, self.pb_start_h, 29),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*20, 100, self.pb_start_h, 33),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+100, self.pb_start_y + self.pb_vd*20, 60, self.pb_start_h, 32),
+            ChapterRectangle(self.pb_start_x+2*self.pb_hd+100+60, self.pb_start_y + self.pb_vd*20, 70, self.pb_start_h, 31),
+            ChapterRectangle(self.pb_start_x+3*self.pb_hd+100+60+70, self.pb_start_y + self.pb_vd*20, 200, self.pb_start_h, 30),
+            ChapterRectangle(self.pb_start_x+4*self.pb_hd+100+60+70+200, self.pb_start_y + self.pb_vd*20, 62, self.pb_start_h, 29),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*21, 40, self.pb_start_h, 36),
-            ChapterBar(self.pb_start_x+self.pb_hd+40, self.pb_start_y + self.pb_vd*21, 140, self.pb_start_h, 35),
-            ChapterBar(self.pb_start_x+2*self.pb_hd+40+140, self.pb_start_y + self.pb_vd*21, 120, self.pb_start_h, 34),
-            ChapterBar(self.pb_start_x+3*self.pb_hd+40+140+120, self.pb_start_y + self.pb_vd*21, 194, self.pb_start_h, 33),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*21, 40, self.pb_start_h, 36),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+40, self.pb_start_y + self.pb_vd*21, 140, self.pb_start_h, 35),
+            ChapterRectangle(self.pb_start_x+2*self.pb_hd+40+140, self.pb_start_y + self.pb_vd*21, 120, self.pb_start_h, 34),
+            ChapterRectangle(self.pb_start_x+3*self.pb_hd+40+140+120, self.pb_start_y + self.pb_vd*21, 194, self.pb_start_h, 33),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*22, 100, self.pb_start_h, 39),
-            ChapterBar(self.pb_start_x+self.pb_hd+100, self.pb_start_y + self.pb_vd*22, 140, self.pb_start_h, 38),
-            ChapterBar(self.pb_start_x+2*self.pb_hd+100+140, self.pb_start_y + self.pb_vd*22, 140, self.pb_start_h, 37),
-            ChapterBar(self.pb_start_x+3*self.pb_hd+100+140+140, self.pb_start_y + self.pb_vd*22, 114, self.pb_start_h, 36),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*22, 100, self.pb_start_h, 39),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+100, self.pb_start_y + self.pb_vd*22, 140, self.pb_start_h, 38),
+            ChapterRectangle(self.pb_start_x+2*self.pb_hd+100+140, self.pb_start_y + self.pb_vd*22, 140, self.pb_start_h, 37),
+            ChapterRectangle(self.pb_start_x+3*self.pb_hd+100+140+140, self.pb_start_y + self.pb_vd*22, 114, self.pb_start_h, 36),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*23, 130, self.pb_start_h, 41),
-            ChapterBar(self.pb_start_x+self.pb_hd+130, self.pb_start_y + self.pb_vd*23, 200, self.pb_start_h, 40),
-            ChapterBar(self.pb_start_x+2*self.pb_hd+130+200, self.pb_start_y + self.pb_vd*23, 166, self.pb_start_h, 39),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*23, 130, self.pb_start_h, 41),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+130, self.pb_start_y + self.pb_vd*23, 200, self.pb_start_h, 40),
+            ChapterRectangle(self.pb_start_x+2*self.pb_hd+130+200, self.pb_start_y + self.pb_vd*23, 166, self.pb_start_h, 39),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*24, 90, self.pb_start_h, 45),
-            ChapterBar(self.pb_start_x+self.pb_hd+90, self.pb_start_y + self.pb_vd*24, 50, self.pb_start_h, 44),
-            ChapterBar(self.pb_start_x+2*self.pb_hd+90+50, self.pb_start_y + self.pb_vd*24, 130, self.pb_start_h, 43),
-            ChapterBar(self.pb_start_x+3*self.pb_hd+90+50+130, self.pb_start_y + self.pb_vd*24, 190, self.pb_start_h, 42),
-            ChapterBar(self.pb_start_x+4*self.pb_hd+90+50+130+190, self.pb_start_y + self.pb_vd*24, 32, self.pb_start_h, 41),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*24, 90, self.pb_start_h, 45),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+90, self.pb_start_y + self.pb_vd*24, 50, self.pb_start_h, 44),
+            ChapterRectangle(self.pb_start_x+2*self.pb_hd+90+50, self.pb_start_y + self.pb_vd*24, 130, self.pb_start_h, 43),
+            ChapterRectangle(self.pb_start_x+3*self.pb_hd+90+50+130, self.pb_start_y + self.pb_vd*24, 190, self.pb_start_h, 42),
+            ChapterRectangle(self.pb_start_x+4*self.pb_hd+90+50+130+190, self.pb_start_y + self.pb_vd*24, 32, self.pb_start_h, 41),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*25, 30, self.pb_start_h, 51),
-            ChapterBar(self.pb_start_x+self.pb_hd+30, self.pb_start_y + self.pb_vd*25, 60, self.pb_start_h, 50),
-            ChapterBar(self.pb_start_x+2*self.pb_hd+30+60, self.pb_start_y + self.pb_vd*25, 50, self.pb_start_h, 49),
-            ChapterBar(self.pb_start_x+3*self.pb_hd+30+60+50, self.pb_start_y + self.pb_vd*25, 110, self.pb_start_h, 48),
-            ChapterBar(self.pb_start_x+4*self.pb_hd+30+60+50+110, self.pb_start_y + self.pb_vd*25, 140, self.pb_start_h, 47),
-            ChapterBar(self.pb_start_x+5*self.pb_hd+30+60+50+110+140, self.pb_start_y + self.pb_vd*25, 100, self.pb_start_h, 46),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*25, 30, self.pb_start_h, 51),
+            ChapterRectangle(self.pb_start_x+self.pb_hd+30, self.pb_start_y + self.pb_vd*25, 60, self.pb_start_h, 50),
+            ChapterRectangle(self.pb_start_x+2*self.pb_hd+30+60, self.pb_start_y + self.pb_vd*25, 50, self.pb_start_h, 49),
+            ChapterRectangle(self.pb_start_x+3*self.pb_hd+30+60+50, self.pb_start_y + self.pb_vd*25, 110, self.pb_start_h, 48),
+            ChapterRectangle(self.pb_start_x+4*self.pb_hd+30+60+50+110, self.pb_start_y + self.pb_vd*25, 140, self.pb_start_h, 47),
+            ChapterRectangle(self.pb_start_x+5*self.pb_hd+30+60+50+110+140, self.pb_start_y + self.pb_vd*25, 100, self.pb_start_h, 46),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*26, 110, self.pb_start_h, 57),
-            ChapterBar(self.pb_start_x+1*self.pb_hd+110, self.pb_start_y + self.pb_vd*26, 70, self.pb_start_h, 56),
-            ChapterBar(self.pb_start_x+2*self.pb_hd+110+70, self.pb_start_y + self.pb_vd*26, 60, self.pb_start_h, 55),
-            ChapterBar(self.pb_start_x+3*self.pb_hd+110+70+60, self.pb_start_y + self.pb_vd*26, 90, self.pb_start_h, 54),
-            ChapterBar(self.pb_start_x+4*self.pb_hd+110+70+60+90, self.pb_start_y + self.pb_vd*26, 70, self.pb_start_h, 53),
-            ChapterBar(self.pb_start_x+5*self.pb_hd+110+70+60+90+70, self.pb_start_y + self.pb_vd*26, 40, self.pb_start_h, 52),
-            ChapterBar(self.pb_start_x+6*self.pb_hd+110+70+60+90+70+40, self.pb_start_y + self.pb_vd*26, 48, self.pb_start_h, 51),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*26, 110, self.pb_start_h, 57),
+            ChapterRectangle(self.pb_start_x+1*self.pb_hd+110, self.pb_start_y + self.pb_vd*26, 70, self.pb_start_h, 56),
+            ChapterRectangle(self.pb_start_x+2*self.pb_hd+110+70, self.pb_start_y + self.pb_vd*26, 60, self.pb_start_h, 55),
+            ChapterRectangle(self.pb_start_x+3*self.pb_hd+110+70+60, self.pb_start_y + self.pb_vd*26, 90, self.pb_start_h, 54),
+            ChapterRectangle(self.pb_start_x+4*self.pb_hd+110+70+60+90, self.pb_start_y + self.pb_vd*26, 70, self.pb_start_h, 53),
+            ChapterRectangle(self.pb_start_x+5*self.pb_hd+110+70+60+90+70, self.pb_start_y + self.pb_vd*26, 40, self.pb_start_h, 52),
+            ChapterRectangle(self.pb_start_x+6*self.pb_hd+110+70+60+90+70+40, self.pb_start_y + self.pb_vd*26, 48, self.pb_start_h, 51),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*27, 40, self.pb_start_h, 66),
-            ChapterBar(self.pb_start_x+1*self.pb_hd+40, self.pb_start_y + self.pb_vd*27, 50, self.pb_start_h, 65),
-            ChapterBar(self.pb_start_x+2*self.pb_hd+40+50,self.pb_start_y + self.pb_vd*27, 40, self.pb_start_h, 64),
-            ChapterBar(self.pb_start_x+3*self.pb_hd+40+50+40, self.pb_start_y + self.pb_vd*27, 30, self.pb_start_h, 63),
-            ChapterBar(self.pb_start_x+4*self.pb_hd+40+50+40+30, self.pb_start_y + self.pb_vd*27, 30, self.pb_start_h, 62),
-            ChapterBar(self.pb_start_x+5*self.pb_hd+40+50+40+30+30, self.pb_start_y + self.pb_vd*27, 40, self.pb_start_h, 61),
-            ChapterBar(self.pb_start_x+6*self.pb_hd+40+50+40+30+30+40, self.pb_start_y + self.pb_vd*27, 70, self.pb_start_h, 60),
-            ChapterBar(self.pb_start_x+7*self.pb_hd+40+50+40+30+30+40+70, self.pb_start_y + self.pb_vd*27, 100, self.pb_start_h, 59),
-            ChapterBar(self.pb_start_x+8*self.pb_hd+40+50+40+30+30+40+70+100, self.pb_start_y + self.pb_vd*27, 84, self.pb_start_h, 58),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*27, 40, self.pb_start_h, 66),
+            ChapterRectangle(self.pb_start_x+1*self.pb_hd+40, self.pb_start_y + self.pb_vd*27, 50, self.pb_start_h, 65),
+            ChapterRectangle(self.pb_start_x+2*self.pb_hd+40+50,self.pb_start_y + self.pb_vd*27, 40, self.pb_start_h, 64),
+            ChapterRectangle(self.pb_start_x+3*self.pb_hd+40+50+40, self.pb_start_y + self.pb_vd*27, 30, self.pb_start_h, 63),
+            ChapterRectangle(self.pb_start_x+4*self.pb_hd+40+50+40+30, self.pb_start_y + self.pb_vd*27, 30, self.pb_start_h, 62),
+            ChapterRectangle(self.pb_start_x+5*self.pb_hd+40+50+40+30+30, self.pb_start_y + self.pb_vd*27, 40, self.pb_start_h, 61),
+            ChapterRectangle(self.pb_start_x+6*self.pb_hd+40+50+40+30+30+40, self.pb_start_y + self.pb_vd*27, 70, self.pb_start_h, 60),
+            ChapterRectangle(self.pb_start_x+7*self.pb_hd+40+50+40+30+30+40+70, self.pb_start_y + self.pb_vd*27, 100, self.pb_start_h, 59),
+            ChapterRectangle(self.pb_start_x+8*self.pb_hd+40+50+40+30+30+40+70+100, self.pb_start_y + self.pb_vd*27, 84, self.pb_start_h, 58),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 77),
-            ChapterBar(self.pb_start_x +1*self.pb_hd+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 76),
-            ChapterBar(self.pb_start_x +2*self.pb_hd+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 75),
-            ChapterBar(self.pb_start_x +3*self.pb_hd+30+40+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 74),
-            ChapterBar(self.pb_start_x +4*self.pb_hd+30+40+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 73),
-            ChapterBar(self.pb_start_x +5*self.pb_hd+30+40+30+40+30, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 72),
-            ChapterBar(self.pb_start_x +6*self.pb_hd+30+40+30+40+30+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 71),
-            ChapterBar(self.pb_start_x +7*self.pb_hd+30+40+30+40+30+50+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 70),
-            ChapterBar(self.pb_start_x +8*self.pb_hd+30+40+30+40+30+50+50+50, self.pb_start_y + self.pb_vd*28, 60, self.pb_start_h, 69),
-            ChapterBar(self.pb_start_x +9*self.pb_hd+30+40+30+40+30+50+50+50+60, self.pb_start_y + self.pb_vd*28, 60, self.pb_start_h, 68),
-            ChapterBar(self.pb_start_x+10*self.pb_hd+30+40+30+40+30+50+50+50+60+60, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 67),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 77),
+            ChapterRectangle(self.pb_start_x +1*self.pb_hd+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 76),
+            ChapterRectangle(self.pb_start_x +2*self.pb_hd+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 75),
+            ChapterRectangle(self.pb_start_x +3*self.pb_hd+30+40+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 74),
+            ChapterRectangle(self.pb_start_x +4*self.pb_hd+30+40+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 73),
+            ChapterRectangle(self.pb_start_x +5*self.pb_hd+30+40+30+40+30, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 72),
+            ChapterRectangle(self.pb_start_x +6*self.pb_hd+30+40+30+40+30+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 71),
+            ChapterRectangle(self.pb_start_x +7*self.pb_hd+30+40+30+40+30+50+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 70),
+            ChapterRectangle(self.pb_start_x +8*self.pb_hd+30+40+30+40+30+50+50+50, self.pb_start_y + self.pb_vd*28, 60, self.pb_start_h, 69),
+            ChapterRectangle(self.pb_start_x +9*self.pb_hd+30+40+30+40+30+50+50+50+60, self.pb_start_y + self.pb_vd*28, 60, self.pb_start_h, 68),
+            ChapterRectangle(self.pb_start_x+10*self.pb_hd+30+40+30+40+30+50+50+50+60+60, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 67),
 
-            ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*29, 20, self.pb_start_h, 86),
-            ChapterBar(self.pb_start_x+1*self.pb_hd+20, self.pb_start_y + self.pb_vd*29, 45, self.pb_start_h, 85),
-            ChapterBar(self.pb_start_x+2*self.pb_hd+20+45, self.pb_start_y + self.pb_vd*29, 45, self.pb_start_h, 84),
-            ChapterBar(self.pb_start_x+3*self.pb_hd+20+45+45, self.pb_start_y + self.pb_vd*29, 80, self.pb_start_h, 83),
-            ChapterBar(self.pb_start_x+4*self.pb_hd+20+45+45+80, self.pb_start_y + self.pb_vd*29, 30, self.pb_start_h, 82),
-            ChapterBar(self.pb_start_x+5*self.pb_hd+20+45+45+80+30, self.pb_start_y + self.pb_vd*29, 40, self.pb_start_h, 81),
-            ChapterBar(self.pb_start_x+6*self.pb_hd+20+45+45+80+30+40, self.pb_start_y + self.pb_vd*29, 70, self.pb_start_h, 80),
-            ChapterBar(self.pb_start_x+7*self.pb_hd+20+45+45+80+30+40+70, self.pb_start_y + self.pb_vd*29, 80, self.pb_start_h, 79),
-            ChapterBar(self.pb_start_x+8*self.pb_hd+20+45+45+80+30+40+70+80, self.pb_start_y + self.pb_vd*29, 74, self.pb_start_h, 78),
+            ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*29, 20, self.pb_start_h, 86),
+            ChapterRectangle(self.pb_start_x+1*self.pb_hd+20, self.pb_start_y + self.pb_vd*29, 45, self.pb_start_h, 85),
+            ChapterRectangle(self.pb_start_x+2*self.pb_hd+20+45, self.pb_start_y + self.pb_vd*29, 45, self.pb_start_h, 84),
+            ChapterRectangle(self.pb_start_x+3*self.pb_hd+20+45+45, self.pb_start_y + self.pb_vd*29, 80, self.pb_start_h, 83),
+            ChapterRectangle(self.pb_start_x+4*self.pb_hd+20+45+45+80, self.pb_start_y + self.pb_vd*29, 30, self.pb_start_h, 82),
+            ChapterRectangle(self.pb_start_x+5*self.pb_hd+20+45+45+80+30, self.pb_start_y + self.pb_vd*29, 40, self.pb_start_h, 81),
+            ChapterRectangle(self.pb_start_x+6*self.pb_hd+20+45+45+80+30+40, self.pb_start_y + self.pb_vd*29, 70, self.pb_start_h, 80),
+            ChapterRectangle(self.pb_start_x+7*self.pb_hd+20+45+45+80+30+40+70, self.pb_start_y + self.pb_vd*29, 80, self.pb_start_h, 79),
+            ChapterRectangle(self.pb_start_x+8*self.pb_hd+20+45+45+80+30+40+70+80, self.pb_start_y + self.pb_vd*29, 74, self.pb_start_h, 78),
 
-            # ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 77),
-            # ChapterBar(self.pb_start_x +1*self.pb_hd+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 76),
-            # ChapterBar(self.pb_start_x +2*self.pb_hd+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 75),
-            # ChapterBar(self.pb_start_x +3*self.pb_hd+30+40+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 74),
-            # ChapterBar(self.pb_start_x +4*self.pb_hd+30+40+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 73),
-            # ChapterBar(self.pb_start_x +5*self.pb_hd+30+40+30+40+30, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 72),
-            # ChapterBar(self.pb_start_x +6*self.pb_hd+30+40+30+40+30+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 71),
-            # ChapterBar(self.pb_start_x +7*self.pb_hd+30+40+30+40+30+50+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 70),
-            # ChapterBar(self.pb_start_x +8*self.pb_hd+30+40+30+40+30+50+50+50, self.pb_start_y + self.pb_vd*28, 60, self.pb_start_h, 69),
-            # ChapterBar(self.pb_start_x +9*self.pb_hd+30+40+30+40+30+50+50+50+60, self.pb_start_y + self.pb_vd*28, 60, self.pb_start_h, 68),
-            # ChapterBar(self.pb_start_x+10*self.pb_hd+30+40+30+40+30+50+50+50+60+60, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 67),
-            # ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 77),
-            # ChapterBar(self.pb_start_x +1*self.pb_hd+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 76),
-            # ChapterBar(self.pb_start_x +2*self.pb_hd+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 75),
-            # ChapterBar(self.pb_start_x +3*self.pb_hd+30+40+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 74),
-            # ChapterBar(self.pb_start_x +4*self.pb_hd+30+40+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 73),
-            # ChapterBar(self.pb_start_x +5*self.pb_hd+30+40+30+40+30, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 72),
-            # ChapterBar(self.pb_start_x +6*self.pb_hd+30+40+30+40+30+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 71),
-            # ChapterBar(self.pb_start_x +7*self.pb_hd+30+40+30+40+30+50+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 70),
-            # ChapterBar(self.pb_start_x +8*self.pb_hd+30+40+30+40+30+50+50+50, self.pb_start_y + self.pb_vd*28, 60, self.pb_start_h, 69),
-            # ChapterBar(self.pb_start_x +9*self.pb_hd+30+40+30+40+30+50+50+50+60, self.pb_start_y + self.pb_vd*28, 60, self.pb_start_h, 68),
-            # ChapterBar(self.pb_start_x+10*self.pb_hd+30+40+30+40+30+50+50+50+60+60, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 67),
-            # ChapterBar(self.pb_start_x, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 77),
-            # ChapterBar(self.pb_start_x +1*self.pb_hd+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 76),
-            # ChapterBar(self.pb_start_x +2*self.pb_hd+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 75),
-            # ChapterBar(self.pb_start_x +3*self.pb_hd+30+40+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 74),
-            # ChapterBar(self.pb_start_x +4*self.pb_hd+30+40+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 73),
-            # ChapterBar(self.pb_start_x +5*self.pb_hd+30+40+30+40+30, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 72),
-            # ChapterBar(self.pb_start_x +6*self.pb_hd+30+40+30+40+30+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 71),
-            # ChapterBar(self.pb_start_x +7*self.pb_hd+30+40+30+40+30+50+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 70),
+            # ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 77),
+            # ChapterRectangle(self.pb_start_x +1*self.pb_hd+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 76),
+            # ChapterRectangle(self.pb_start_x +2*self.pb_hd+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 75),
+            # ChapterRectangle(self.pb_start_x +3*self.pb_hd+30+40+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 74),
+            # ChapterRectangle(self.pb_start_x +4*self.pb_hd+30+40+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 73),
+            # ChapterRectangle(self.pb_start_x +5*self.pb_hd+30+40+30+40+30, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 72),
+            # ChapterRectangle(self.pb_start_x +6*self.pb_hd+30+40+30+40+30+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 71),
+            # ChapterRectangle(self.pb_start_x +7*self.pb_hd+30+40+30+40+30+50+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 70),
+            # ChapterRectangle(self.pb_start_x +8*self.pb_hd+30+40+30+40+30+50+50+50, self.pb_start_y + self.pb_vd*28, 60, self.pb_start_h, 69),
+            # ChapterRectangle(self.pb_start_x +9*self.pb_hd+30+40+30+40+30+50+50+50+60, self.pb_start_y + self.pb_vd*28, 60, self.pb_start_h, 68),
+            # ChapterRectangle(self.pb_start_x+10*self.pb_hd+30+40+30+40+30+50+50+50+60+60, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 67),
+            # ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 77),
+            # ChapterRectangle(self.pb_start_x +1*self.pb_hd+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 76),
+            # ChapterRectangle(self.pb_start_x +2*self.pb_hd+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 75),
+            # ChapterRectangle(self.pb_start_x +3*self.pb_hd+30+40+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 74),
+            # ChapterRectangle(self.pb_start_x +4*self.pb_hd+30+40+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 73),
+            # ChapterRectangle(self.pb_start_x +5*self.pb_hd+30+40+30+40+30, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 72),
+            # ChapterRectangle(self.pb_start_x +6*self.pb_hd+30+40+30+40+30+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 71),
+            # ChapterRectangle(self.pb_start_x +7*self.pb_hd+30+40+30+40+30+50+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 70),
+            # ChapterRectangle(self.pb_start_x +8*self.pb_hd+30+40+30+40+30+50+50+50, self.pb_start_y + self.pb_vd*28, 60, self.pb_start_h, 69),
+            # ChapterRectangle(self.pb_start_x +9*self.pb_hd+30+40+30+40+30+50+50+50+60, self.pb_start_y + self.pb_vd*28, 60, self.pb_start_h, 68),
+            # ChapterRectangle(self.pb_start_x+10*self.pb_hd+30+40+30+40+30+50+50+50+60+60, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 67),
+            # ChapterRectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 77),
+            # ChapterRectangle(self.pb_start_x +1*self.pb_hd+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 76),
+            # ChapterRectangle(self.pb_start_x +2*self.pb_hd+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 75),
+            # ChapterRectangle(self.pb_start_x +3*self.pb_hd+30+40+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 74),
+            # ChapterRectangle(self.pb_start_x +4*self.pb_hd+30+40+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 73),
+            # ChapterRectangle(self.pb_start_x +5*self.pb_hd+30+40+30+40+30, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 72),
+            # ChapterRectangle(self.pb_start_x +6*self.pb_hd+30+40+30+40+30+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 71),
+            # ChapterRectangle(self.pb_start_x +7*self.pb_hd+30+40+30+40+30+50+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 70),
         ]
 
         # Progress Bar Tab
@@ -315,7 +314,7 @@ class GTKHafizWindow(Gtk.Window):
         # Matrix Tab
         self.rects_per_col  = 19
         self.rects_per_line = 6
-        self.rectangles_matrix = []
+        self.list_rect_matrix = []
         drawingarea_matrix = Gtk.DrawingArea()
         drawingarea_matrix.connect("draw", self.on_draw_matrix)
         drawingarea_matrix.connect("button-press-event", self.on_click_matrix)
@@ -327,12 +326,12 @@ class GTKHafizWindow(Gtk.Window):
 
         # List Tab
         checkbutton_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        self.checkboxes = []
+        self.list_checkboxes = []
         for chapter in self.list_chapters:
             checkbutton = Gtk.CheckButton(label=f"{chapter.number}. ({chapter.name_latin}) {chapter.name_arabic}")
             if chapter.number in self.user.mem_chapters:
                 checkbutton.set_active(True)
-            self.checkboxes.append((checkbutton, chapter))
+            self.list_checkboxes.append((checkbutton, chapter))
             checkbutton.connect("toggled", lambda btn, obj=chapter: self.on_checkbox_toggled(btn, obj))
             checkbutton_container.pack_start(checkbutton, False, False, 0)
         scrolled_window = Gtk.ScrolledWindow()
@@ -366,29 +365,22 @@ class GTKHafizWindow(Gtk.Window):
         outerbox.pack_start(stack, True, True, 0)
 
     def on_click_outside_popover(self, widget, event):
-        if self.is_popover_active == True and \
-           event.x != self.current_mouse_x and \
-           event.y != self.current_mouse_y:
+        if (self.is_popover_active == True and
+            event.x != self.current_mouse_x and
+            event.y != self.current_mouse_y):
             self.is_popover_active = False
             self.chapter_popover.hide()
 
     def on_draw_progress_bar(self, widget, cr):
-        for rect in self.rectangles_progress_bar:
+        for rect in self.list_rect_progress_bar:
             cr.set_source_rgb(*rect.color)
             cr.rectangle(rect.x, rect.y, rect.width, rect.height)
             cr.fill()
 
     def show_chapter_popover(self, rect, widget, event):
         self.chapter_label.set_text(f"{rect.chapter}")
-        x = event.x
-        y = event.y
-
-        # Creates a Rectangle to place the popover
-        rect = Gdk.Rectangle()
-        rect.x = int(x)
-        rect.y = int(y)
-        rect.width = 1
-        rect.height = 1
+        e_x = event.x
+        e_y = event.y
 
         # Set popover position
         self.chapter_popover.set_relative_to(widget)
@@ -397,14 +389,14 @@ class GTKHafizWindow(Gtk.Window):
         self.chapter_popover.show_all()
 
         # Set current popover location and state so that it is gets hiden only by clicking outside this point
-        self.current_mouse_x = event.x
-        self.current_mouse_y = event.y
+        self.current_mouse_x = e_x
+        self.current_mouse_y = e_y
         self.is_popover_active = True
 
     def on_click_progress_bar(self, widget, event):
         if event.type == Gdk.EventType.BUTTON_PRESS:
             if event.button == Gdk.BUTTON_PRIMARY:
-                for rect in self.rectangles_progress_bar:
+                for rect in self.list_rect_progress_bar:
                     if (rect.x <= event.x <= rect.x + rect.width and
                         rect.y <= event.y <= rect.y + rect.height):
                         self.show_chapter_popover(rect, widget, event)
@@ -413,32 +405,31 @@ class GTKHafizWindow(Gtk.Window):
     def on_click_matrix(self, widget, event):
         if event.type == Gdk.EventType.BUTTON_PRESS:
             if event.button == Gdk.BUTTON_PRIMARY:
-                x, y = event.x, event.y
-                for rect in self.rectangles_matrix:
-                    rx = rect.x
-                    ry = rect.y
-                    width = rect.width
-                    height = rect.height
-                    chapter = rect.chapter
-                    color = rect.color
-                    if rx <= x <= rx + width and ry <= y <= ry + height:
+                e_x, e_y = event.x, event.y
+                for rect in self.list_rect_matrix:
+                    r_x = rect.x
+                    r_y = rect.y
+                    r_w = rect.width
+                    r_h = rect.height
+                    if r_x <= e_x <= r_x + r_w and r_y <= e_y <= r_y + r_h:
                         self.show_chapter_popover(rect, widget, event)
                         break
 
     def on_draw_matrix(self, widget, cr):
-        for rect in self.rectangles_matrix:
-            rx = rect.x
-            ry = rect.y
+        for rect in self.list_rect_matrix:
+            x = rect.x
+            y = rect.y
             width = rect.width
             height = rect.height
             chapter = rect.chapter
             color = rect.color
             cr.set_source_rgb(color[0], color[1], color[2])
-            cr.rectangle(rx, ry, width, height)
+            cr.rectangle(x, y, width, height)
             cr.fill()
 
     def on_about_clicked(self, widget):
         about = Gtk.AboutDialog(transient_for=self, modal=True)
+
         about.set_program_name("GTK Hafiz")
         about.set_version("0.0")
         about.set_comments("Track Qur'an memorization visualy")
@@ -453,21 +444,25 @@ class GTKHafizWindow(Gtk.Window):
         about.present()
 
     def refresh_rectangles(self):
-        self.rectangles_matrix = [] # updates rectangle colors by creating a new list
+        # Refresh Matrix Rectangles
+        self.list_rect_matrix = [] # updates rectangle colors by creating a new list
         for i in range(self.rects_per_col):
             for j in range(self.rects_per_line):
                 x = 155+ (self.rects_per_line-1-j) * 35 # from left to right
                 y = 15 + i * 20
                 chapter_num = i * (self.rects_per_line) + j + 1
                 r, g, b = self.rect_off_color if chapter_num in self.user.mem_chapters else self.rect_on_color
-                self.rectangles_matrix.append(ChapterBar(x, y, 30, 10, chapter_num, (r, g, b)))
-        
-        for rect in self.rectangles_progress_bar:
-            rect.color = self.rect_off_color if rect.chapter in self.user.mem_chapters else self.rect_on_color
+                self.list_rect_matrix.append(ChapterRectangle(x, y, 30, 10, chapter_num, (r, g, b)))
 
-        self.queue_draw() # redraw the matrix tab
+        # Refresh Progress Bar Rectangles
+        for rect in self.list_rect_progress_bar:
+            rect.color = self.rect_off_color if rect.chapter in self.user.mem_chapters else self.rect_on_color
+        
+        # Ensure Redraw
+        self.queue_draw() 
 
     def on_checkbox_toggled(self, button, chapter=''):
+        # Checkbox activation
         if button.get_active():
             self.user.mem_chapters.append(chapter.number)
             self.user.n_mem_chapters += 1
@@ -475,6 +470,7 @@ class GTKHafizWindow(Gtk.Window):
             self.user.n_mem_words    += chapter.n_words
             self.user.n_mem_letters  += chapter.n_letters
             self.db_manager.save_mem_chapters(self.user, chapter, 'add')
+        # Checkbox deactivation
         else:
             self.user.mem_chapters.remove(chapter.number)
             self.user.n_mem_chapters -= 1
@@ -482,6 +478,8 @@ class GTKHafizWindow(Gtk.Window):
             self.user.n_mem_words    -= chapter.n_words
             self.user.n_mem_letters  -= chapter.n_letters
             self.db_manager.save_mem_chapters(self.user, chapter, 'rm')
+        
+        # Refresh
         self.refresh_stats_label()
         self.refresh_rectangles()
 
