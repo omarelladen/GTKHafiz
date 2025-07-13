@@ -224,9 +224,9 @@ class Window(Gtk.Window):
             ChapterRectangle(self.pb_start_x+22*(self.pb_hd+16), self.pb_start_y + self.pb_vd*30, 16, self.pb_start_h, 92),
             ChapterRectangle(self.pb_start_x+23*(self.pb_hd+16), self.pb_start_y + self.pb_vd*30, 16, self.pb_start_h, 91),
             ChapterRectangle(self.pb_start_x+24*(self.pb_hd+16), self.pb_start_y + self.pb_vd*30, 16, self.pb_start_h, 90),
-            ChapterRectangle(self.pb_start_x+25*(self.pb_hd+16), self.pb_start_y + self.pb_vd*30, 16, self.pb_start_h, 79),
-            ChapterRectangle(self.pb_start_x+26*(self.pb_hd+16), self.pb_start_y + self.pb_vd*30, 16, self.pb_start_h, 78),
-            ChapterRectangle(self.pb_start_x+27*(self.pb_hd+16), self.pb_start_y + self.pb_vd*30, 14, self.pb_start_h, 77),
+            ChapterRectangle(self.pb_start_x+25*(self.pb_hd+16), self.pb_start_y + self.pb_vd*30, 16, self.pb_start_h, 89),
+            ChapterRectangle(self.pb_start_x+26*(self.pb_hd+16), self.pb_start_y + self.pb_vd*30, 16, self.pb_start_h, 88),
+            ChapterRectangle(self.pb_start_x+27*(self.pb_hd+16), self.pb_start_y + self.pb_vd*30, 14, self.pb_start_h, 87),
         ]
 
         # Progress Bar Tab
