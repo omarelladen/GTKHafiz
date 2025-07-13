@@ -1,9 +1,9 @@
-import gi
-gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk,Gio,Gdk,GdkPixbuf
-
 import sqlite3
 import os
+
+import gi
+gi.require_version("Gtk", "3.0")
+from gi.repository import Gtk, Gio, Gdk
 
 
 class Book:
@@ -401,7 +401,6 @@ class GTKHafizWindow(Gtk.Window):
         self.current_mouse_y = event.y
         self.is_popover_active = True
 
-    
     def on_click_progress_bar(self, widget, event):
         if event.type == Gdk.EventType.BUTTON_PRESS:
             if event.button == Gdk.BUTTON_PRIMARY:
@@ -574,18 +573,18 @@ class DBManager():
             con.close()
 
 
-
-if __name__ == '__main__':
-
+def main():
     # Load persistant data from db
-    g_db_filename = 'db.sqlite3'
-    g_db_manager = DBManager(g_db_filename)
-    g_user, g_list_books, g_list_chapters = g_db_manager.load_db_data()
-    g_book = g_list_books[0]
+    db_filename = 'db.sqlite3'
+    db_manager = DBManager(db_filename)
+    user, list_books, list_chapters = db_manager.load_db_data()
+    book = list_books[0]
 
     # Load GTK Window
-    g_win = GTKHafizWindow(g_db_manager, g_user, g_book, g_list_chapters)
-    g_win.connect("destroy", Gtk.main_quit)
-    g_win.show_all()
+    win = GTKHafizWindow(db_manager, user, book, list_chapters)
+    win.connect("destroy", Gtk.main_quit)
+    win.show_all()
     Gtk.main()
 
+if __name__ == '__main__':
+    main()
