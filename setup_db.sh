@@ -1,6 +1,19 @@
 #!/bin/bash
 
-DB_FILENAME=$(grep -oP '(?<=^DB_FILENAME=).*' config.conf)
+get_config_value()
+{
+    local section="$1"
+    local var="$2"
+    local file="$3"
+    local result=$(sed -n "/\[$section\]/,/^\[/{/$var/{s/$var=//p}}" "$file")
+    echo "$result"
+}
+
+DB_FILENAME=$(get_config_value "db" "DB_FILENAME" "config")
+if [ -z "$DB_FILENAME" ]; then
+    echo "Error: Unable to find variable in file!"
+    exit 1
+fi
 
 if [ -f "$DB_FILENAME" ]; then
     rm "$DB_FILENAME"
