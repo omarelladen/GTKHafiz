@@ -1,2 +1,1 @@
-[db]
-DB_FILENAME=db.sqlite3
+DB_FILENAME='db.sqlite3'

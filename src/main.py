@@ -2,21 +2,12 @@ import os
 
 import sqlite3
 
-import configparser
-
-def get_config_value(section, var, file):
-    config = configparser.ConfigParser()
-    config.read(file)
-    DB_FILENAME = config[section][var]
-    return DB_FILENAME
-
-DB_FILENAME = get_config_value('db', 'DB_FILENAME', 'config')
-
-
 import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gio, Gdk
 
+# Include config variables
+exec(open('config').read())
 
 class Book:
     def __init__(self,
