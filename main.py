@@ -10,7 +10,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 # Include config variables
 exec(open('config').read())
 
-from dbmanager import DBManager
+from db_manager import DBManager
 from window import Window
 
 def main():
