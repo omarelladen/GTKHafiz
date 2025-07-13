@@ -3,8 +3,6 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk,Gio,Gdk,GdkPixbuf
 
 import sqlite3
-dbfile = 'db.sqlite3'
-
 import os
 
 
@@ -75,14 +73,7 @@ class User:
         # self.mem_letters = mem_letters
         # self.mem_letters = mem_letters
 
-    def calc_pct_mem_chapters(self) -> float:
-        return round(self.n_mem_chapters / book.n_chapters * 100, 1)
-    def calc_pct_mem_words(self) -> float:
-        return round(self.n_mem_words / book.n_words * 100, 1)
-    def calc_pct_mem_verses(self) -> float:
-        return round(self.n_mem_verses / book.n_verses * 100, 1)
-    def calc_pct_mem_letters(self) -> float:
-        return round(self.n_mem_letters / book.n_letters * 100, 1)
+
 
 
 class ChapterBar:
@@ -103,12 +94,12 @@ class ChapterBar:
 
 
 class GTKHafizWindow(Gtk.Window):
-    def __init__(self,
-        user :User = None,
-        list_books :list[Book] = None,
-        list_chapters :list[Chapter] = None,
-    ):
+    def __init__(self, user, book, list_chapters):
         super().__init__()
+
+        self.user = user
+        self.book = book
+        self.list_chapters = list_chapters
 
         # Window
         self.win_default_l = 350
@@ -129,8 +120,6 @@ class GTKHafizWindow(Gtk.Window):
         # Menu Popover
         self.popover = Gtk.Popover()
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        # bt_preferences = Gtk.ModelButton(label="Preferences")
-        # vbox.pack_start(bt_preferences, False, True, 10)
         bt_about = Gtk.ModelButton(label="About GTK Hafiz")
         bt_about.connect("clicked", self.on_about_clicked)
         vbox.pack_start(bt_about, False, True, 10)
@@ -359,12 +348,12 @@ class GTKHafizWindow(Gtk.Window):
         # List Tab
         checkbutton_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         self.checkboxes = []
-        for c in list_chapters:
-            checkbutton = Gtk.CheckButton(label=f"{c.number}. ({c.name_latin}) {c.name_arabic}")
-            if c.number in user.mem_chapters:
+        for chapter in self.list_chapters:
+            checkbutton = Gtk.CheckButton(label=f"{chapter.number}. ({chapter.name_latin}) {chapter.name_arabic}")
+            if chapter.number in self.user.mem_chapters:
                 checkbutton.set_active(True)
-            self.checkboxes.append((checkbutton, c))
-            checkbutton.connect("toggled", lambda btn, obj=c: self.on_checkbox_toggled(btn, obj))
+            self.checkboxes.append((checkbutton, chapter))
+            checkbutton.connect("toggled", lambda btn, obj=chapter: self.on_checkbox_toggled(btn, obj))
             checkbutton_container.pack_start(checkbutton, False, False, 0)
         scrolled_window = Gtk.ScrolledWindow()
         scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
@@ -488,125 +477,139 @@ class GTKHafizWindow(Gtk.Window):
         about.present()
 
     def refresh_rectangles(self):
-        # Update rectangle colors by creating a new list
-        self.rectangles_matrix = []
+        self.rectangles_matrix = [] # Updates rectangle colors by creating a new list
         for i in range(self.rects_per_col):
             for j in range(self.rects_per_line):
                 x = 155+ (self.rects_per_line-1-j) * 35 # from left to right
                 y = 15 + i * 20
                 chapter_num = i * (self.rects_per_line) + j + 1
-                r, g, b = self.rect_off_color if chapter_num in user.mem_chapters else self.rect_on_color
+                r, g, b = self.rect_off_color if chapter_num in self.user.mem_chapters else self.rect_on_color
                 self.rectangles_matrix.append(ChapterBar(x, y, 30, 10, chapter_num, (r, g, b)))
         
         for rect in self.rectangles_progress_bar:
-            rect.color = self.rect_off_color if rect.chapter in user.mem_chapters else self.rect_on_color
+            rect.color = self.rect_off_color if rect.chapter in self.user.mem_chapters else self.rect_on_color
 
         self.queue_draw() # Redraw the matrix tab
 
     def on_checkbox_toggled(self, button, chapter=''):
         if button.get_active():
-            user.mem_chapters.append(chapter.number)
-            user.n_mem_chapters += 1
-            user.n_mem_verses   += chapter.n_verses
-            user.n_mem_words    += chapter.n_words
-            user.n_mem_letters  += chapter.n_letters
+            self.user.mem_chapters.append(chapter.number)
+            self.user.n_mem_chapters += 1
+            self.user.n_mem_verses   += chapter.n_verses
+            self.user.n_mem_words    += chapter.n_words
+            self.user.n_mem_letters  += chapter.n_letters
             self.save_mem_chapters(chapter, 'add')
         else:
-            user.mem_chapters.remove(chapter.number)
-            user.n_mem_chapters -= 1
-            user.n_mem_verses   -= chapter.n_verses
-            user.n_mem_words    -= chapter.n_words
-            user.n_mem_letters  -= chapter.n_letters
+            self.user.mem_chapters.remove(chapter.number)
+            self.user.n_mem_chapters -= 1
+            self.user.n_mem_verses   -= chapter.n_verses
+            self.user.n_mem_words    -= chapter.n_words
+            self.user.n_mem_letters  -= chapter.n_letters
             self.save_mem_chapters(chapter, 'rm')
         self.refresh_stats_label()
         self.refresh_rectangles()
 
     def refresh_stats_label(self):
         self.label_stats.set_markup(
-            f"<big><b>Username:</b> {user.username}</big>\n\n"
-            f"<big><b>Chapters:</b> {user.n_mem_chapters} ({user.calc_pct_mem_chapters()}%)</big>\n"
-            f"<big><b>Verses:</b> {user.n_mem_verses} ({user.calc_pct_mem_verses()}%)</big>\n"
-            f"<big><b>Words:</b> {user.n_mem_words} ({user.calc_pct_mem_words()}%)</big>\n"
-            f"<big><b>Letters:</b> {user.n_mem_letters} ({user.calc_pct_mem_letters()}%)</big>"
+            f"<big><b>Username:</b> {self.user.username}</big>\n\n"
+            f"<big><b>Chapters:</b> {self.user.n_mem_chapters} ({round(self.user.n_mem_chapters / self.book.n_chapters * 100, 1)}%)</big>\n"
+            f"<big><b>Verses:</b> {self.user.n_mem_verses} ({round(self.user.n_mem_verses / self.book.n_verses * 100, 1)}%)</big>\n"
+            f"<big><b>Words:</b> {self.user.n_mem_words} ({round(self.user.n_mem_words / self.book.n_words * 100, 1)}%)</big>\n"
+            f"<big><b>Letters:</b> {self.user.n_mem_letters} ({round(self.user.n_mem_letters / self.book.n_letters * 100, 1)}%)</big>"
         )
     
-    def save_mem_chapters(self, c, op):
-        con = sqlite3.connect(dbfile)
+    def save_mem_chapters(self, chapter, op):
+        con = sqlite3.connect(g_db)
         cur = con.cursor()
 
         cur.execute("""
             UPDATE users
             SET n_mem_chapters = ?, n_mem_verses = ?, n_mem_words = ?, n_mem_letters = ?
             WHERE username = ?
-        """, (user.n_mem_chapters, user.n_mem_verses, user.n_mem_words, user.n_mem_letters, user.username))
+        """, (self.user.n_mem_chapters, self.user.n_mem_verses, self.user.n_mem_words, self.user.n_mem_letters, self.user.username))
 
         if op == 'add':
             cur.execute("""
                 INSERT INTO mem_chapters
                 (users_username, chapters_number) VALUES (?, ?)
-            """, (user.username, c.number))
+            """, (self.user.username, chapter.number))
         elif op == 'rm':
             cur.execute("""
                 DELETE FROM mem_chapters
                 WHERE users_username = ? AND
                       chapters_number = ?
-            """, (user.username, c.number))
+            """, (self.user.username, chapter.number))
 
         con.commit()
         con.close()
 
 
 
+class DBManager():
+    def __init__(self, db):
+        self.db = db
 
-def load_db_data():
-    con = sqlite3.connect(dbfile)
-    cur = con.cursor()
+    def _load_db_books(self, cur):
+        db_table_books = [a for a in cur.execute("SELECT * FROM books")]
+        list_books=[]
+        for b in db_table_books:
+            list_books.append(Book(b[1], b[2], b[3], b[4], b[5], b[6]))
+        return list_books
 
-    db_table_books = [a for a in cur.execute("SELECT * FROM books")]
-    list_books=[]
-    for b in db_table_books:
-        list_books.append(Book(b[1], b[2], b[3], b[4], b[5], b[6]))
+    def _load_db_chapters(self, cur):
+        db_table_chapters = [a for a in cur.execute("SELECT * FROM chapters")]
+        list_chapters=[]
+        for c in db_table_chapters:
+            list_chapters.append(Chapter(c[0], c[1], c[2], c[3], c[4], c[5]))
+        return list_chapters
 
-    db_table_chapters = [a for a in cur.execute("SELECT * FROM chapters")]
-    list_chapters=[]
-    for c in db_table_chapters:
-        list_chapters.append(Chapter(c[0], c[1], c[2], c[3], c[4], c[5]))
+    def _load_db_user(self, cur):
+        db_table_users = [a for a in cur.execute("SELECT * FROM users")]
+        if len(db_table_users) > 0:
+            list_users =[]
+            for u in db_table_users:
+                list_users.append(User(u[0], u[1], u[2], u[3], u[4]))
+            user = list_users[0]
 
-    db_table_users = [a for a in cur.execute("SELECT * FROM users")]
-    if len(db_table_users) > 0:
-        list_users =[]
-        for u in db_table_users:
-            list_users.append(User(u[0], u[1], u[2], u[3], u[4]))
-        user = list_users[0]
+            db_table_users_mem_chapters = [a for a in cur.execute("SELECT * FROM mem_chapters")]
+            for t in db_table_users_mem_chapters:
+                user.mem_chapters.append(t[1])
+        else:
+            username = os.getlogin()
+            user = User(username)
 
-        db_table_users_mem_chapters = [a for a in cur.execute("SELECT * FROM mem_chapters")]
-        for t in db_table_users_mem_chapters:
-            user.mem_chapters.append(t[1])
-    else:
-        username = os.getlogin()
-        user = User(username)
+            cur.execute("""
+                INSERT INTO users
+                (username, n_mem_chapters, n_mem_words, n_mem_verses, n_mem_letters) VALUES (?, ?, ?, ?, ?)
+                """, (user.username, user.n_mem_chapters, user.n_mem_words, user.n_mem_verses, user.n_mem_letters))
+        return user
 
-        cur.execute("""
-            INSERT INTO users
-            (username, n_mem_chapters, n_mem_words, n_mem_verses, n_mem_letters) VALUES (?, ?, ?, ?, ?)
-            """, (user.username, user.n_mem_chapters, user.n_mem_words, user.n_mem_verses, user.n_mem_letters))
-    
-    con.commit()
-    con.close()
+    def load_db_data(self):
+        con = sqlite3.connect(self.db)
+        cur = con.cursor()
 
-    return user, list_books, list_chapters
+        list_books    = self._load_db_books(cur)
+        list_chapters = self._load_db_chapters(cur)
+        user          = self._load_db_user(cur)
+        
+        con.commit()
+        con.close()
+
+        return user, list_books, list_chapters
 
 
 
 if __name__ == '__main__':
 
     # Load persistant data from db
-    user, list_books, list_chapters = load_db_data()
-    book = list_books[0]
+    g_db = 'db.sqlite3'
+    g_db_manager = DBManager(g_db)
+    g_user, g_list_books, g_list_chapters = g_db_manager.load_db_data()
+    g_book = g_list_books[0]
 
     # Load GTK Window
-    win = GTKHafizWindow(user, list_books, list_chapters)
-    win.connect("destroy", Gtk.main_quit)
-    win.show_all()
+    g_win = GTKHafizWindow(g_user, g_book, g_list_chapters)
+    g_win.connect("destroy", Gtk.main_quit)
+    g_win.show_all()
     Gtk.main()
 
