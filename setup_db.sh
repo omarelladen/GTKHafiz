@@ -1,12 +1,12 @@
 #!/bin/bash
 
-DB="db.sqlite3"
+DB_FILENAME=$(grep -oP '(?<=^DB_FILENAME=).*' config.conf)
 
-if [ -f "$DB" ]; then
-    rm "$DB"
+if [ -f "$DB_FILENAME" ]; then
+    rm "$DB_FILENAME"
 fi
 
-sqlite3 "$DB" <<EOF
+sqlite3 "$DB_FILENAME" <<EOF
 
 CREATE TABLE IF NOT EXISTS
 books(
