@@ -8,8 +8,12 @@ sudo apt update
 sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0
 ```
 
-## Run
+## Run the App:
 ```bash
-bash setup_db.sh # Resets db
-python3 src/main.py
+python3 main.py
+```
+
+## Create or reset the Database:
+```bash
+bash setup_db.sh
 ```

@@ -56,8 +56,8 @@ mem_chapters(
 
 .mode csv
 
-.import data/books.csv books
-.import data/chapters.csv chapters
-# .import data/parts.csv parts
+.import "$BOOKS_FILE" books
+.import "$CHAPTERS_FILE" chapters
+# .import "$PARTS_FILE" parts
 
 EOF
