@@ -94,9 +94,10 @@ class ChapterBar:
 
 
 class GTKHafizWindow(Gtk.Window):
-    def __init__(self, user, book, list_chapters):
+    def __init__(self, db_manager, user, book, list_chapters):
         super().__init__()
 
+        self.db_manager = db_manager
         self.user = user
         self.book = book
         self.list_chapters = list_chapters
@@ -498,14 +499,14 @@ class GTKHafizWindow(Gtk.Window):
             self.user.n_mem_verses   += chapter.n_verses
             self.user.n_mem_words    += chapter.n_words
             self.user.n_mem_letters  += chapter.n_letters
-            self.save_mem_chapters(chapter, 'add')
+            self.db_manager.save_mem_chapters(self.user, chapter, 'add')
         else:
             self.user.mem_chapters.remove(chapter.number)
             self.user.n_mem_chapters -= 1
             self.user.n_mem_verses   -= chapter.n_verses
             self.user.n_mem_words    -= chapter.n_words
             self.user.n_mem_letters  -= chapter.n_letters
-            self.save_mem_chapters(chapter, 'rm')
+            self.db_manager.save_mem_chapters(self.user, chapter, 'rm')
         self.refresh_stats_label()
         self.refresh_rectangles()
 
@@ -517,32 +518,6 @@ class GTKHafizWindow(Gtk.Window):
             f"<big><b>Words:</b> {self.user.n_mem_words} ({round(self.user.n_mem_words / self.book.n_words * 100, 1)}%)</big>\n"
             f"<big><b>Letters:</b> {self.user.n_mem_letters} ({round(self.user.n_mem_letters / self.book.n_letters * 100, 1)}%)</big>"
         )
-    
-    def save_mem_chapters(self, chapter, op):
-        con = sqlite3.connect(g_db)
-        cur = con.cursor()
-
-        cur.execute("""
-            UPDATE users
-            SET n_mem_chapters = ?, n_mem_verses = ?, n_mem_words = ?, n_mem_letters = ?
-            WHERE username = ?
-        """, (self.user.n_mem_chapters, self.user.n_mem_verses, self.user.n_mem_words, self.user.n_mem_letters, self.user.username))
-
-        if op == 'add':
-            cur.execute("""
-                INSERT INTO mem_chapters
-                (users_username, chapters_number) VALUES (?, ?)
-            """, (self.user.username, chapter.number))
-        elif op == 'rm':
-            cur.execute("""
-                DELETE FROM mem_chapters
-                WHERE users_username = ? AND
-                      chapters_number = ?
-            """, (self.user.username, chapter.number))
-
-        con.commit()
-        con.close()
-
 
 
 class DBManager():
@@ -597,6 +572,30 @@ class DBManager():
 
         return user, list_books, list_chapters
 
+    def save_mem_chapters(self, user:User, chapter:Chapter, op:str):
+            con = sqlite3.connect(self.db)
+            cur = con.cursor()
+
+            cur.execute("""
+                UPDATE users
+                SET n_mem_chapters = ?, n_mem_verses = ?, n_mem_words = ?, n_mem_letters = ?
+                WHERE username = ?
+            """, (user.n_mem_chapters, user.n_mem_verses, user.n_mem_words, user.n_mem_letters, user.username))
+
+            if op == 'add':
+                cur.execute("""
+                    INSERT INTO mem_chapters
+                    (users_username, chapters_number) VALUES (?, ?)
+                """, (user.username, chapter.number))
+            elif op == 'rm':
+                cur.execute("""
+                    DELETE FROM mem_chapters
+                    WHERE users_username = ? AND
+                        chapters_number = ?
+                """, (user.username, chapter.number))
+
+            con.commit()
+            con.close()
 
 
 if __name__ == '__main__':
@@ -608,7 +607,7 @@ if __name__ == '__main__':
     g_book = g_list_books[0]
 
     # Load GTK Window
-    g_win = GTKHafizWindow(g_user, g_book, g_list_chapters)
+    g_win = GTKHafizWindow(g_db_manager, g_user, g_book, g_list_chapters)
     g_win.connect("destroy", Gtk.main_quit)
     g_win.show_all()
     Gtk.main()
