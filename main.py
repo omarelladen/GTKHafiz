@@ -74,8 +74,6 @@ class User:
         # self.mem_letters = mem_letters
 
 
-
-
 class ChapterBar:
     def __init__(self,
         x       :int = 0,
@@ -97,6 +95,7 @@ class GTKHafizWindow(Gtk.Window):
     def __init__(self, db_manager, user, book, list_chapters):
         super().__init__()
 
+        # Data
         self.db_manager = db_manager
         self.user = user
         self.book = book
@@ -113,7 +112,6 @@ class GTKHafizWindow(Gtk.Window):
         self.rect_on_color  = (0.5, 0.5, 0.5)
         self.rect_off_color = (0.0, 0.8, 0.0)
 
-
         # Vertical Box
         outerbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         self.add(outerbox)
@@ -128,7 +126,6 @@ class GTKHafizWindow(Gtk.Window):
         self.popover.add(vbox)
         self.popover.set_position(Gtk.PositionType.BOTTOM)
         
-
         # Header Bar
         headerbar = Gtk.HeaderBar()
         headerbar.set_show_close_button(True)
@@ -142,12 +139,10 @@ class GTKHafizWindow(Gtk.Window):
         bt_menu.add(image)
         headerbar.pack_end(bt_menu)
 
-
         # Stack
         stack = Gtk.Stack()
         stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
         stack.set_transition_duration(1000)
-
 
         # Progress Bars
         self.pb_start_x = 10
@@ -345,7 +340,6 @@ class GTKHafizWindow(Gtk.Window):
         # Create Rectangles for Progress Bar and Matrix
         self.refresh_rectangles()
 
-
         # List Tab
         checkbutton_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         self.checkboxes = []
@@ -361,12 +355,10 @@ class GTKHafizWindow(Gtk.Window):
         scrolled_window.add(checkbutton_container)
         stack.add_titled(scrolled_window, "list", "List")
 
-
         # Stats Tab
         self.label_stats = Gtk.Label()
         self.refresh_stats_label()
         stack.add_titled(self.label_stats, "stats", "Stats")
-
 
         # Chapter Popover
         self.chapter_popover = Gtk.Popover()
@@ -387,7 +379,6 @@ class GTKHafizWindow(Gtk.Window):
 
         outerbox.pack_start(stack_switcher, False, True, 0)
         outerbox.pack_start(stack, True, True, 0)
-
 
     def on_click_outside_popover(self, widget, event):
         if self.is_popover_active == True and \
@@ -521,24 +512,24 @@ class GTKHafizWindow(Gtk.Window):
 
 
 class DBManager():
-    def __init__(self, db):
-        self.db = db
+    def __init__(self, db_filename):
+        self.db_filename = db_filename
 
-    def _load_db_books(self, cur):
+    def __load_db_books(self, cur):
         db_table_books = [a for a in cur.execute("SELECT * FROM books")]
         list_books=[]
         for b in db_table_books:
             list_books.append(Book(b[1], b[2], b[3], b[4], b[5], b[6]))
         return list_books
 
-    def _load_db_chapters(self, cur):
+    def __load_db_chapters(self, cur):
         db_table_chapters = [a for a in cur.execute("SELECT * FROM chapters")]
         list_chapters=[]
         for c in db_table_chapters:
             list_chapters.append(Chapter(c[0], c[1], c[2], c[3], c[4], c[5]))
         return list_chapters
 
-    def _load_db_user(self, cur):
+    def __load_db_user(self, cur):
         db_table_users = [a for a in cur.execute("SELECT * FROM users")]
         if len(db_table_users) > 0:
             list_users =[]
@@ -560,12 +551,12 @@ class DBManager():
         return user
 
     def load_db_data(self):
-        con = sqlite3.connect(self.db)
+        con = sqlite3.connect(self.db_filename)
         cur = con.cursor()
 
-        list_books    = self._load_db_books(cur)
-        list_chapters = self._load_db_chapters(cur)
-        user          = self._load_db_user(cur)
+        list_books    = self.__load_db_books(cur)
+        list_chapters = self.__load_db_chapters(cur)
+        user          = self.__load_db_user(cur)
         
         con.commit()
         con.close()
@@ -573,7 +564,7 @@ class DBManager():
         return user, list_books, list_chapters
 
     def save_mem_chapters(self, user:User, chapter:Chapter, op:str):
-            con = sqlite3.connect(self.db)
+            con = sqlite3.connect(self.db_filename)
             cur = con.cursor()
 
             cur.execute("""
@@ -598,11 +589,12 @@ class DBManager():
             con.close()
 
 
+
 if __name__ == '__main__':
 
     # Load persistant data from db
-    g_db = 'db.sqlite3'
-    g_db_manager = DBManager(g_db)
+    g_db_filename = 'db.sqlite3'
+    g_db_manager = DBManager(g_db_filename)
     g_user, g_list_books, g_list_chapters = g_db_manager.load_db_data()
     g_book = g_list_books[0]
 
