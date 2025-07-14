@@ -329,7 +329,7 @@ class Window(Gtk.Window):
         about.set_program_name("GTK Hafiz")
         about.set_version("0.0")
         about.set_comments("Track Qur'an memorization visually")
-        about.set_website("https://github.com/omarelladen")
+        about.set_website("https://github.com/omarelladen/GTK-Hafiz")
         about.set_website_label("Repository")
         about.set_authors(["Omar El Laden"])
         about.set_license_type(Gtk.License.GPL_3_0)
