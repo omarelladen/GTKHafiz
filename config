@@ -1,4 +1,3 @@
 DB_FILENAME="db.sqlite3";
 BOOKS_FILE="data/books.csv";
 CHAPTERS_FILE="data/chapters.csv";
-PARTS_FILE="data/parts.csv";
