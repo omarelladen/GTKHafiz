@@ -1,4 +1,4 @@
-# GTK-Hafiz: Track Qur'an memorization visually
+# GTK Hafiz: Track Qur'an memorization visually
 <img width="523" height="494" alt="Screenshot from 2025-07-13 22-33-11" src="https://github.com/user-attachments/assets/a79808af-b225-443a-a153-050e3433f500" />
 <img width="524" height="491" alt="Screenshot from 2025-07-13 22-32-09" src="https://github.com/user-attachments/assets/303c1096-89eb-45a1-a29c-d0763ad63f9e" />
 <img width="524" height="494" alt="Screenshot from 2025-07-13 22-32-25" src="https://github.com/user-attachments/assets/23015a80-5139-4bdf-bce4-ebfa4866e8c0" />
