@@ -1,4 +1,6 @@
-# GTK Hafiz: Track Qur'an memorization visually
+# GTK Hafiz
+
+GTK Hafiz is a GTK 3 app to track Qur'an memorization visually.
 
 <p align="center" width="100%">
 <img src="./imgs/bars.png">
