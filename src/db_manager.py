@@ -8,7 +8,7 @@ from book import Book
 
 class DBManager():
     def __init__(self, db_filename):
-        self.db_filename = db_filename
+        self.__db_filename = db_filename
 
     def __load_db_books(self, cur):
         db_table_books = [a for a in cur.execute("SELECT * FROM books")]
@@ -46,7 +46,7 @@ class DBManager():
         return user
 
     def load_db_data(self):
-        con = sqlite3.connect(self.db_filename)
+        con = sqlite3.connect(self.__db_filename)
         cur = con.cursor()
 
         list_books    = self.__load_db_books(cur)
@@ -59,7 +59,7 @@ class DBManager():
         return user, list_books, list_chapters
 
     def save_mem_chapters(self, user:User, chapter:Chapter, op:str):
-            con = sqlite3.connect(self.db_filename)
+            con = sqlite3.connect(self.__db_filename)
             cur = con.cursor()
 
             cur.execute("""
