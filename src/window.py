@@ -1,5 +1,7 @@
+import os
+
 import gi
-from gi.repository import Gtk, Gio, Gdk
+from gi.repository import Gtk, Gio, Gdk, GdkPixbuf
 
 from rectangle import Rectangle
 
@@ -12,6 +14,11 @@ class Window(Gtk.Window):
         self.user = user
         self.book = book
         self.list_chapters = list_chapters
+
+        # Icon
+        self.icon_path = "imgs/icon.png"
+        pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(self.icon_path, 64, 64, True)
+        self.set_icon(pixbuf)
 
         # Window
         self.win_default_l = 350
@@ -135,9 +142,9 @@ class Window(Gtk.Window):
             Rectangle(self.pb_start_x+self.pb_hd+240, self.pb_start_y + self.pb_vd*16, 258, self.pb_start_h, 21),
 
             Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*17, 0, 0, "Juz 18"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*17, 60, self.pb_start_h, 23),
+            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*17, 60, self.pb_start_h, 25),
             Rectangle(self.pb_start_x+self.pb_hd+60, self.pb_start_y + self.pb_vd*17, 240, self.pb_start_h, 24),
-            Rectangle(self.pb_start_x+2*self.pb_hd+60+240, self.pb_start_y + self.pb_vd*17, 196, self.pb_start_h, 25),
+            Rectangle(self.pb_start_x+2*self.pb_hd+60+240, self.pb_start_y + self.pb_vd*17, 196, self.pb_start_h, 23),
     
             Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*18, 0, 0, "Juz 19"), 
             Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*18, 120, self.pb_start_h, 27),
@@ -247,13 +254,10 @@ class Window(Gtk.Window):
             Rectangle(self.pb_start_x+10*(self.pb_hd+11), self.pb_start_y + self.pb_vd*30, 11, self.pb_start_h, 104),
             Rectangle(self.pb_start_x+11*(self.pb_hd+11), self.pb_start_y + self.pb_vd*30, 11, self.pb_start_h, 103),
             Rectangle(self.pb_start_x+12*(self.pb_hd+11), self.pb_start_y + self.pb_vd*30, 11, self.pb_start_h, 102),
-
             Rectangle(self.pb_start_x+13*(self.pb_hd+11)                  , self.pb_start_y + self.pb_vd*30, 14, self.pb_start_h, 101),
             Rectangle(self.pb_start_x+13*(self.pb_hd+11)+1*self.pb_hd+1*14, self.pb_start_y + self.pb_vd*30, 14, self.pb_start_h, 100),
             Rectangle(self.pb_start_x+13*(self.pb_hd+11)+2*self.pb_hd+2*14, self.pb_start_y + self.pb_vd*30, 14, self.pb_start_h, 99),
-
             Rectangle(self.pb_start_x+13*(self.pb_hd+11)+3*self.pb_hd+3*14, self.pb_start_y + self.pb_vd*30, 35, self.pb_start_h, 98),
-
             Rectangle(self.pb_start_x+13*(self.pb_hd+11)+4*self.pb_hd+3*14+35, self.pb_start_y + self.pb_vd*30, 12, self.pb_start_h, 97),
             Rectangle(self.pb_start_x+13*(self.pb_hd+11)+5*self.pb_hd+3*14+35+12, self.pb_start_y + self.pb_vd*30, 20, self.pb_start_h, 96),
             Rectangle(self.pb_start_x+13*(self.pb_hd+11)+6*self.pb_hd+3*14+35+12+20, self.pb_start_y + self.pb_vd*30, 14, self.pb_start_h, 95),
@@ -364,14 +368,15 @@ class Window(Gtk.Window):
         about = Gtk.AboutDialog(transient_for=self, modal=True)
 
         about.set_program_name("GTK Hafiz")
-        about.set_version("0.0")
+        about.set_version("0.1.0")
         about.set_comments("Track Qur'an memorization visually")
         about.set_website("https://github.com/omarelladen/GTK-Hafiz")
         about.set_website_label("Repository")
         about.set_authors(["Omar El Laden"])
         about.set_license_type(Gtk.License.GPL_3_0)
         about.set_copyright("Copyright © 2025 Omar El Laden")
-        about.set_logo_icon_name("application-x-executable")
+        about.set_logo(GdkPixbuf.Pixbuf.new_from_file_at_scale(self.icon_path, 64, 64, True))
+
 
         about.connect("response", lambda dialog, response: dialog.destroy())
         about.present()
