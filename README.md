@@ -8,7 +8,7 @@
 </p>
 
 ## Requirements
-This GTK 3 app was made using PyGObject, which is a Python package which provides bindings for GObject based libraries such as GTK, GStreamer, WebKitGTK, GLib, GIO and many more.
+This GTK 3 app was made using PyGObject, which is a Python package that provides bindings for GObject based libraries such as GTK, GStreamer, WebKitGTK, GLib, GIO and many more.
 
 The dependencies usually come pre-installed on popular Linux distributions, such as Debian, Mint and Fedora, except Ubuntu 24 and 25 - which may not come with the 'python3-gi-cairo' package by default.
 
