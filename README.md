@@ -1,8 +1,10 @@
 # GTK Hafiz: Track Qur'an memorization visually
-<img width="523" height="494" alt="Screenshot from 2025-07-13 22-33-11" src="https://github.com/user-attachments/assets/a79808af-b225-443a-a153-050e3433f500" />
-<img width="524" height="491" alt="Screenshot from 2025-07-13 22-32-09" src="https://github.com/user-attachments/assets/303c1096-89eb-45a1-a29c-d0763ad63f9e" />
-<img width="524" height="494" alt="Screenshot from 2025-07-13 22-32-25" src="https://github.com/user-attachments/assets/23015a80-5139-4bdf-bce4-ebfa4866e8c0" />
-<img width="525" height="492" alt="Screenshot from 2025-07-13 22-32-34" src="https://github.com/user-attachments/assets/5276709a-6e76-4ec9-9e32-81c4e62d5538" />
+
+<img width="523" height="494" alt="gtk-hafiz_bar" src="https://github.com/user-attachments/assets/d7b25c72-e5aa-47ad-8830-2a4a1788661f" />
+<img width="524" height="491" alt="gtk-hafiz_matrix" src="https://github.com/user-attachments/assets/fa8b4769-c7be-4e53-a722-0ceb3e5f050c" />
+<img width="524" height="494" alt="gtk-hafiz_list" src="https://github.com/user-attachments/assets/38c35dd6-b96a-4ca7-8af0-0d2c97361132" />
+<img width="525" height="492" alt="gtk-hafiz_stats" src="https://github.com/user-attachments/assets/646f73fd-9544-402e-a065-33a184d1daa6" />
+
 
 ## Requirements (already pre-installed in most Linux distributions):
 - GTK+3
