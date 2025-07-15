@@ -37,3 +37,8 @@ Run the Bash Script:
 ```bash
 bash setup_db.sh
 ```
+
+## Credits
+- Data source: [Quran Analysis](https://qurananalysis.com/analysis/basic-statistics.php?lang=EN)
+- Progress bar inspiration: [ColorArabic](https://commons.wikimedia.org/wiki/File:ColorArabic.png)
+
