@@ -8,7 +8,7 @@ from book import Book
 
 class DBManager():
     def __init__(self, db_filename):
-        self.__db_filename = db_filename
+        self.db_filename = db_filename
 
     def __load_db_books(self, cur):
         db_table_books = [a for a in cur.execute("SELECT * FROM books")]
@@ -36,7 +36,10 @@ class DBManager():
             for t in db_table_users_mem_chapters:
                 user.mem_chapters.append(t[1])
         else:
-            username = os.getlogin()
+            try:
+                username = os.getlogin()
+            except:
+                username = 'user'
             user = User(username)
 
             cur.execute("""
@@ -46,20 +49,28 @@ class DBManager():
         return user
 
     def load_db_data(self):
-        con = sqlite3.connect(self.__db_filename)
-        cur = con.cursor()
-
-        list_books    = self.__load_db_books(cur)
-        list_chapters = self.__load_db_chapters(cur)
-        user          = self.__load_db_user(cur)
+        if not os.path.exists(self.db_filename):
+            print(f'Failed to find database "{self.db_filename}": File not found')
+            exit(1)
         
-        con.commit()
-        con.close()
+        try:    
+            con = sqlite3.connect(self.db_filename)
+            cur = con.cursor()
+
+            list_books    = self.__load_db_books(cur)
+            list_chapters = self.__load_db_chapters(cur)
+            user          = self.__load_db_user(cur)
+            
+            con.commit()
+            con.close()
+        except:
+            print(f'Failed to load data from "{self.db_filename}"')
+            exit(1)
 
         return user, list_books, list_chapters
 
     def save_mem_chapters(self, user:User, chapter:Chapter, op:str):
-            con = sqlite3.connect(self.__db_filename)
+            con = sqlite3.connect(self.db_filename)
             cur = con.cursor()
 
             cur.execute("""
