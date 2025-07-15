@@ -473,7 +473,6 @@ class Window(Gtk.Window):
 
     def refresh_stats_label(self):
         self.label_stats.set_markup(
-            f"<big><b>Username:</b> {self.user.username}</big>\n\n"
             f"<big><b>Chapters:</b> {self.user.n_mem_chapters} ({round(self.user.n_mem_chapters / self.book.n_chapters * 100, 1)}%)</big>\n"
             f"<big><b>Verses:</b> {self.user.n_mem_verses} ({round(self.user.n_mem_verses / self.book.n_verses * 100, 1)}%)</big>\n"
             f"<big><b>Words:</b> {self.user.n_mem_words} ({round(self.user.n_mem_words / self.book.n_words * 100, 1)}%)</big>\n"
