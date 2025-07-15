@@ -6,7 +6,7 @@ from gi.repository import Gtk, Gio, Gdk, GdkPixbuf
 from rectangle import Rectangle
 
 class Window(Gtk.Window):
-    def __init__(self, db_manager, user, book, list_chapters):
+    def __init__(self, icon_file, db_manager, user, book, list_chapters):
         super().__init__()
 
         # Data
@@ -16,9 +16,12 @@ class Window(Gtk.Window):
         self.list_chapters = list_chapters
 
         # Icon
-        self.icon_path = "imgs/icon.png"
-        pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(self.icon_path, 64, 64, True)
-        self.set_icon(pixbuf)
+        self.icon_path = icon_file
+        try:
+            self.pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(self.icon_path, 64, 64, True)
+            self.set_icon(self.pixbuf)
+        except:
+            print(f'Failed to load icon from "{self.icon_path}"')
 
         # Window
         self.win_default_l = 350
@@ -368,15 +371,18 @@ class Window(Gtk.Window):
         about = Gtk.AboutDialog(transient_for=self, modal=True)
 
         about.set_program_name("GTK Hafiz")
-        about.set_version("0.1.0")
+        about.set_version("0.1.1")
         about.set_comments("Track Qur'an memorization visually")
         about.set_website("https://github.com/omarelladen/GTK-Hafiz")
         about.set_website_label("Repository")
         about.set_authors(["Omar El Laden"])
         about.set_license_type(Gtk.License.GPL_3_0)
         about.set_copyright("Copyright © 2025 Omar El Laden")
-        about.set_logo(GdkPixbuf.Pixbuf.new_from_file_at_scale(self.icon_path, 64, 64, True))
 
+        try:
+            about.set_logo(self.pixbuf)
+        except:
+            print(f'Failed to load icon from "{self.icon_path}"')
 
         about.connect("response", lambda dialog, response: dialog.destroy())
         about.present()
