@@ -62,6 +62,7 @@ class DBManager():
             list_chapters = self.__load_db_chapters(cur)
             user          = self.__load_db_user(cur)
             
+            con.commit()
             con.close()
         except:
             print(f'Failed to load data from "{self.db_filename}"')
