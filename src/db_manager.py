@@ -1,6 +1,7 @@
 
 import sqlite3
 import os
+from concurrent.futures import ThreadPoolExecutor
 
 from user import User
 from chapter import Chapter
@@ -9,6 +10,7 @@ from book import Book
 class DBManager():
     def __init__(self, db_filename):
         self.db_filename = db_filename
+        self.executor = ThreadPoolExecutor(max_workers=1)
 
     def __load_db_books(self, cur):
         db_table_books = [a for a in cur.execute("SELECT * FROM books")]
@@ -49,9 +51,8 @@ class DBManager():
         return user
 
     def load_db_data(self):
-        if not os.path.exists(self.db_filename):
-            print(f'Failed to find database "{self.db_filename}": File not found')
-            exit(1)
+        if not os.path.isfile(self.db_filename):
+            raise FileNotFoundError(f'Failed to find database "{self.db_filename}"')
         
         try:    
             con = sqlite3.connect(self.db_filename)
@@ -61,7 +62,6 @@ class DBManager():
             list_chapters = self.__load_db_chapters(cur)
             user          = self.__load_db_user(cur)
             
-            con.commit()
             con.close()
         except:
             print(f'Failed to load data from "{self.db_filename}"')
@@ -69,7 +69,10 @@ class DBManager():
 
         return user, list_books, list_chapters
 
-    def save_mem_chapters(self, user:User, chapter:Chapter, op:str):
+    def save_mem_chapters(self, user, chapter, op):
+        self.executor.submit(self._save_mem_chapters, user, chapter, op)
+
+    def _save_mem_chapters(self, user:User, chapter:Chapter, op:str):
             con = sqlite3.connect(self.db_filename)
             cur = con.cursor()
 
