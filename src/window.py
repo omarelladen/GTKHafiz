@@ -29,7 +29,7 @@ class Window(Gtk.Window):
         self.set_border_width(6)
         self.set_default_size(self.win_default_l, self.win_default_h)
         self.set_size_request(580, 550)
-        self.set_resizable(False)
+        # self.set_resizable(False)
 
         # Rectangle colors
         self.rect_on_color  = (0.5, 0.5, 0.5)
@@ -67,212 +67,468 @@ class Window(Gtk.Window):
         stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
 
         # Progress Bars
-        self.pb_start_x = 14
-        self.pb_start_y = 20
-        self.pb_start_h = 10
-        self.pb_vd = self.pb_start_h + 2
-        self.pb_hd = 2
-        self.list_rect_progress_bar = [
-            Rectangle(0, 0 + self.pb_start_y + self.pb_vd*0, 0, 0, "Juz'"), 
+        pb_start_x = 14
+        pb_start_y = 20
+        pb_start_h = 10
+        pb_vd = pb_start_h + 2
+        pb_hd = 1
 
-            Rectangle(self.pb_start_x/4, self.pb_start_h + self.pb_start_y + self.pb_vd*0, 0, 0, "Juz 1"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*0, 490, self.pb_start_h, 2),
-            Rectangle(self.pb_start_x+self.pb_hd+490, self.pb_start_y + self.pb_vd*0, 8, self.pb_start_h, 1),
+        scale = 500
 
-            Rectangle(self.pb_start_x/4, self.pb_start_h + self.pb_start_y + self.pb_vd*1, 0, 0, "Juz 2"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*1, 500, self.pb_start_h, 2),
+        t_1 = 298
+        s_1 = round(scale/t_1, 2)
+        r_1 = 7 * s_1
+        r_2_1 = 291 * s_1
 
-            Rectangle(self.pb_start_x/4, self.pb_start_h + self.pb_start_y + self.pb_vd*2, 0, 0, "Juz 3"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*2, 300, self.pb_start_h, 3),
-            Rectangle(self.pb_start_x+self.pb_hd+300, self.pb_start_y + self.pb_vd*2, 198, self.pb_start_h, 2),
-            
-            Rectangle(self.pb_start_x/4, self.pb_start_h + self.pb_start_y + self.pb_vd*3, 0, 0, "Juz 4"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*3, 120, self.pb_start_h, 4),
-            Rectangle(self.pb_start_x+self.pb_hd+120, self.pb_start_y + self.pb_vd*3, 378, self.pb_start_h, 3),
+        t_2 = 300
+        s_2 = round(scale/t_2, 2)
+        r_2_2 = 300 * s_2
 
-            Rectangle(self.pb_start_x/4, self.pb_start_h + self.pb_start_y + self.pb_vd*4, 0, 0, "Juz 5"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*4, 500, self.pb_start_h, 4),
+        t_3 = 299.5
+        s_3 = round(scale/t_3, 2)
+        r_2_3 = 120 * s_3
+        r_3_1 = 179.5 * s_3
 
-            Rectangle(self.pb_start_x/4, self.pb_start_h + self.pb_start_y + self.pb_vd*5, 0, 0, "Juz 6"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*5, 380, self.pb_start_h, 5),
-            Rectangle(self.pb_start_x+self.pb_hd+380, self.pb_start_y + self.pb_vd*5, 118, self.pb_start_h, 4),
+        t_4 = 296.5
+        s_4 = round(scale/t_4, 2)
+        r_3_2 = 222.5 * s_4
+        r_4_1 = 74 * s_4
 
-            Rectangle(self.pb_start_x/4, self.pb_start_h + self.pb_start_y + self.pb_vd*6, 0, 0, "Juz 7"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*6, 320, self.pb_start_h, 6),
-            Rectangle(self.pb_start_x+self.pb_hd+320, self.pb_start_y + self.pb_vd*6, 178, self.pb_start_h, 5),
-    
-            Rectangle(self.pb_start_x/4, self.pb_start_h + self.pb_start_y + self.pb_vd*7, 0, 0, "Juz 8"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*7, 260, self.pb_start_h, 7),
-            Rectangle(self.pb_start_x+self.pb_hd+260, self.pb_start_y + self.pb_vd*7, 238, self.pb_start_h, 6),
+        t_5 = 300
+        s_5 = round(scale/t_5, 2)
+        r_4_2 = 300 * s_5
 
-            Rectangle(self.pb_start_x/4, self.pb_start_h + self.pb_start_y + self.pb_vd*8, 0, 0, "Juz 9"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*8, 120, self.pb_start_h, 8),
-            Rectangle(self.pb_start_x+self.pb_hd+120, self.pb_start_y + self.pb_vd*8, 378, self.pb_start_h, 7),
+        t_6 = 291.5
+        s_6 = round(scale/t_6, 2)
+        r_4_3 = 65 * s_6
+        r_5_1 = 226.5 * s_6
 
-            Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*9, 0, 0, "Juz 10"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*9, 350, self.pb_start_h, 9),
-            Rectangle(self.pb_start_x+self.pb_hd+350, self.pb_start_y + self.pb_vd*9, 148, self.pb_start_h, 8),
+        t_7 = 304.5
+        s_7 = round(scale/t_7, 2)
+        r_5_2 = 96.5 * s_7
+        r_6_1 = 208 * s_7
 
-            Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*10, 0, 0, "Juz 11"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*10, 20, self.pb_start_h, 11),
-            Rectangle(self.pb_start_x+self.pb_hd+20, self.pb_start_y + self.pb_vd*10, 315, self.pb_start_h, 10),
-            Rectangle(self.pb_start_x+2*self.pb_hd+20+315, self.pb_start_y + self.pb_vd*10, 161, self.pb_start_h, 9),
-            
-            Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*11, 0, 0, "Juz 12"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*11, 160, self.pb_start_h, 12),
-            Rectangle(self.pb_start_x+self.pb_hd+160, self.pb_start_y + self.pb_vd*11, 338, self.pb_start_h, 11),
+        t_8 = 298
+        s_8 = round(scale/t_8, 2)
+        r_6_2 = 135 * s_8
+        r_7_1 = 163 * s_8
 
-            Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*12, 0, 0, "Juz 13"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*12, 170, self.pb_start_h, 14),
-            Rectangle(self.pb_start_x+self.pb_hd+170, self.pb_start_y + self.pb_vd*12, 140, self.pb_start_h, 13),
-            Rectangle(self.pb_start_x+2*self.pb_hd+170+140, self.pb_start_y + self.pb_vd*12, 186, self.pb_start_h, 12),
+        t_9 = 298
+        s_9 = round(scale/t_9, 2)
+        r_7_2 = 225 * s_9
+        r_8_1 = 73 * s_9
 
-            Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*13, 0, 0, "Juz 14"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*13, 350, self.pb_start_h, 16),
-            Rectangle(self.pb_start_x+self.pb_hd+350, self.pb_start_y + self.pb_vd*13, 148, self.pb_start_h, 15),
+        t_10 = 296.5
+        s_10 = round(scale/t_10, 2)
+        r_8_2 = 75 * s_10
+        r_9_1 = 221.5 * s_10
 
-            Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*14, 0, 0, "Juz 15"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*14, 200, self.pb_start_h, 18),
-            Rectangle(self.pb_start_x+self.pb_hd+200, self.pb_start_y + self.pb_vd*14, 298, self.pb_start_h, 17),
+        t_11 = 298.5
+        s_11 = round(scale/t_11, 2)
+        r_9_2 = 91.5 * s_11
+        r_10 = 200 * s_11
+        r_11_1 = 7 * s_11
 
-            Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*15, 0, 0, "Juz 16"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*15, 220, self.pb_start_h, 20),
-            Rectangle(self.pb_start_x+self.pb_hd+220, self.pb_start_y + self.pb_vd*15, 170, self.pb_start_h, 19),
-            Rectangle(self.pb_start_x+2*self.pb_hd+220+170, self.pb_start_y + self.pb_vd*15, 106, self.pb_start_h, 18),
+        t_12 = 298
+        s_12 = round(scale/t_12, 2)
+        r_11_2 = 203 * s_12
+        r_12_1 = 95 * s_12
 
-            Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*16, 0, 0, "Juz 17"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*16, 240, self.pb_start_h, 22),
-            Rectangle(self.pb_start_x+self.pb_hd+240, self.pb_start_y + self.pb_vd*16, 258, self.pb_start_h, 21),
+        t_13 = 296
+        s_13 = round(scale/t_13, 2)
+        r_12_2 = 105 * s_13
+        r_13 = 90 * s_13
+        r_14 = 101 * s_13
 
-            Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*17, 0, 0, "Juz 18"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*17, 60, self.pb_start_h, 25),
-            Rectangle(self.pb_start_x+self.pb_hd+60, self.pb_start_y + self.pb_vd*17, 240, self.pb_start_h, 24),
-            Rectangle(self.pb_start_x+2*self.pb_hd+60+240, self.pb_start_y + self.pb_vd*17, 196, self.pb_start_h, 23),
-    
-            Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*18, 0, 0, "Juz 19"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*18, 120, self.pb_start_h, 27),
-            Rectangle(self.pb_start_x+self.pb_hd+120, self.pb_start_y + self.pb_vd*18, 250, self.pb_start_h, 26),
-            Rectangle(self.pb_start_x+2*self.pb_hd+120+250, self.pb_start_y + self.pb_vd*18, 126, self.pb_start_h, 25),
+        t_14 = 296
+        s_14 = round(scale/t_14, 2)
+        r_15 = 79 * s_14
+        r_16 = 217 * s_14
 
-            Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*19, 0, 0, "Juz 20"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*19, 130, self.pb_start_h, 29),
-            Rectangle(self.pb_start_x+self.pb_hd+130, self.pb_start_y + self.pb_vd*19, 270, self.pb_start_h, 28),
-            Rectangle(self.pb_start_x+2*self.pb_hd+130+270, self.pb_start_y + self.pb_vd*19, 96, self.pb_start_h, 27),
+        t_15 = 296
+        s_15 = round(scale/t_15, 2)
+        r_17 = 172 * s_15
+        r_18_1 = 124 * s_15
 
-            Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*20, 0, 0, "Juz 21"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*20, 100, self.pb_start_h, 33),
-            Rectangle(self.pb_start_x+self.pb_hd+100, self.pb_start_y + self.pb_vd*20, 60, self.pb_start_h, 32),
-            Rectangle(self.pb_start_x+2*self.pb_hd+100+60, self.pb_start_y + self.pb_vd*20, 70, self.pb_start_h, 31),
-            Rectangle(self.pb_start_x+3*self.pb_hd+100+60+70, self.pb_start_y + self.pb_vd*20, 200, self.pb_start_h, 30),
-            Rectangle(self.pb_start_x+4*self.pb_hd+100+60+70+200, self.pb_start_y + self.pb_vd*20, 62, self.pb_start_h, 29),
+        t_16 = 296
+        s_16 = round(scale/t_16, 2)
+        r_18_2 = 45 * s_16
+        r_19 = 107 * s_16
+        r_20 = 144 * s_16
 
-            Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*21, 0, 0, "Juz 22"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*21, 40, self.pb_start_h, 36),
-            Rectangle(self.pb_start_x+self.pb_hd+40, self.pb_start_y + self.pb_vd*21, 140, self.pb_start_h, 35),
-            Rectangle(self.pb_start_x+2*self.pb_hd+40+140, self.pb_start_y + self.pb_vd*21, 120, self.pb_start_h, 34),
-            Rectangle(self.pb_start_x+3*self.pb_hd+40+140+120, self.pb_start_y + self.pb_vd*21, 194, self.pb_start_h, 33),
+        t_17 = 295
+        s_17 = round(scale/t_17, 2)
+        r_21 = 147 * s_17
+        r_22 = 148 * s_17
 
-            Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*22, 0, 0, "Juz 23"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*22, 100, self.pb_start_h, 39),
-            Rectangle(self.pb_start_x+self.pb_hd+100, self.pb_start_y + self.pb_vd*22, 140, self.pb_start_h, 38),
-            Rectangle(self.pb_start_x+2*self.pb_hd+100+140, self.pb_start_y + self.pb_vd*22, 140, self.pb_start_h, 37),
-            Rectangle(self.pb_start_x+3*self.pb_hd+100+140+140, self.pb_start_y + self.pb_vd*22, 114, self.pb_start_h, 36),
+        t_18 = 295
+        s_18 = round(scale/t_18, 2)
+        r_23 = 118 * s_18
+        r_24 = 144 * s_18
+        r_25_1 = 33 * s_18
 
-            Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*23, 0, 0, "Juz 24"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*23, 130, self.pb_start_h, 41),
-            Rectangle(self.pb_start_x+self.pb_hd+130, self.pb_start_y + self.pb_vd*23, 200, self.pb_start_h, 40),
-            Rectangle(self.pb_start_x+2*self.pb_hd+130+200, self.pb_start_y + self.pb_vd*23, 166, self.pb_start_h, 39),
+        t_19 = 296
+        s_19 = round(scale/t_19, 2)
+        r_25_2 = 74 * s_19
+        r_26 = 148 * s_19
+        r_27_1 = 74 * s_19
 
-            Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*24, 0, 0, "Juz 25"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*24, 90, self.pb_start_h, 45),
-            Rectangle(self.pb_start_x+self.pb_hd+90, self.pb_start_y + self.pb_vd*24, 50, self.pb_start_h, 44),
-            Rectangle(self.pb_start_x+2*self.pb_hd+90+50, self.pb_start_y + self.pb_vd*24, 130, self.pb_start_h, 43),
-            Rectangle(self.pb_start_x+3*self.pb_hd+90+50+130, self.pb_start_y + self.pb_vd*24, 190, self.pb_start_h, 42),
-            Rectangle(self.pb_start_x+4*self.pb_hd+90+50+130+190, self.pb_start_y + self.pb_vd*24, 32, self.pb_start_h, 41),
+        t_20 = 296
+        s_20 = round(scale/t_20, 2)
+        r_27_2 = 52 * s_20
+        r_28 = 163 * s_20
+        r_29_1 = 81 * s_20
 
-            Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*25, 0, 0, "Juz 26"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*25, 30, self.pb_start_h, 51),
-            Rectangle(self.pb_start_x+self.pb_hd+30, self.pb_start_y + self.pb_vd*25, 60, self.pb_start_h, 50),
-            Rectangle(self.pb_start_x+2*self.pb_hd+30+60, self.pb_start_y + self.pb_vd*25, 50, self.pb_start_h, 49),
-            Rectangle(self.pb_start_x+3*self.pb_hd+30+60+50, self.pb_start_y + self.pb_vd*25, 110, self.pb_start_h, 48),
-            Rectangle(self.pb_start_x+4*self.pb_hd+30+60+50+110, self.pb_start_y + self.pb_vd*25, 140, self.pb_start_h, 47),
-            Rectangle(self.pb_start_x+5*self.pb_hd+30+60+50+110+140, self.pb_start_y + self.pb_vd*25, 100, self.pb_start_h, 46),
+        t_21 = 292
+        s_21 = round(scale/t_21, 2)
+        r_29_2 = 39 * s_21
+        r_30 = 94 * s_21
+        r_31 = 57 * s_21
+        r_32 = 43 * s_21
+        r_33_1 = 59 * s_21
 
-            Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*26, 0, 0, "Juz 27"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*26, 110, self.pb_start_h, 57),
-            Rectangle(self.pb_start_x+1*self.pb_hd+110, self.pb_start_y + self.pb_vd*26, 70, self.pb_start_h, 56),
-            Rectangle(self.pb_start_x+2*self.pb_hd+110+70, self.pb_start_y + self.pb_vd*26, 60, self.pb_start_h, 55),
-            Rectangle(self.pb_start_x+3*self.pb_hd+110+70+60, self.pb_start_y + self.pb_vd*26, 90, self.pb_start_h, 54),
-            Rectangle(self.pb_start_x+4*self.pb_hd+110+70+60+90, self.pb_start_y + self.pb_vd*26, 70, self.pb_start_h, 53),
-            Rectangle(self.pb_start_x+5*self.pb_hd+110+70+60+90+70, self.pb_start_y + self.pb_vd*26, 40, self.pb_start_h, 52),
-            Rectangle(self.pb_start_x+6*self.pb_hd+110+70+60+90+70+40, self.pb_start_y + self.pb_vd*26, 48, self.pb_start_h, 51),
+        t_22 = 294
+        s_22 = round(scale/t_22, 2)
+        r_33_2 = 90 * s_22
+        r_34 = 95 * s_22
+        r_35 = 84 * s_22
+        r_36_1 = 25 * s_22
 
-            Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*27, 0, 0, "Juz 28"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*27, 40, self.pb_start_h, 66),
-            Rectangle(self.pb_start_x+1*self.pb_hd+40, self.pb_start_y + self.pb_vd*27, 50, self.pb_start_h, 65),
-            Rectangle(self.pb_start_x+2*self.pb_hd+40+50,self.pb_start_y + self.pb_vd*27, 40, self.pb_start_h, 64),
-            Rectangle(self.pb_start_x+3*self.pb_hd+40+50+40, self.pb_start_y + self.pb_vd*27, 30, self.pb_start_h, 63),
-            Rectangle(self.pb_start_x+4*self.pb_hd+40+50+40+30, self.pb_start_y + self.pb_vd*27, 30, self.pb_start_h, 62),
-            Rectangle(self.pb_start_x+5*self.pb_hd+40+50+40+30+30, self.pb_start_y + self.pb_vd*27, 40, self.pb_start_h, 61),
-            Rectangle(self.pb_start_x+6*self.pb_hd+40+50+40+30+30+40, self.pb_start_y + self.pb_vd*27, 70, self.pb_start_h, 60),
-            Rectangle(self.pb_start_x+7*self.pb_hd+40+50+40+30+30+40+70, self.pb_start_y + self.pb_vd*27, 100, self.pb_start_h, 59),
-            Rectangle(self.pb_start_x+8*self.pb_hd+40+50+40+30+30+40+70+100, self.pb_start_y + self.pb_vd*27, 84, self.pb_start_h, 58),
+        t_23 = 294
+        s_23 = round(scale/t_23, 2)
+        r_36_2 = 59 * s_23
+        r_37 = 103 * s_23
+        r_38 = 77 * s_23
+        r_39_1 = 55 * s_23
 
-            Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*28, 0, 0, "Juz 29"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 77),
-            Rectangle(self.pb_start_x +1*self.pb_hd+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 76),
-            Rectangle(self.pb_start_x +2*self.pb_hd+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 75),
-            Rectangle(self.pb_start_x +3*self.pb_hd+30+40+30, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 74),
-            Rectangle(self.pb_start_x +4*self.pb_hd+30+40+30+40, self.pb_start_y + self.pb_vd*28, 30, self.pb_start_h, 73),
-            Rectangle(self.pb_start_x +5*self.pb_hd+30+40+30+40+30, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 72),
-            Rectangle(self.pb_start_x +6*self.pb_hd+30+40+30+40+30+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 71),
-            Rectangle(self.pb_start_x +7*self.pb_hd+30+40+30+40+30+50+50, self.pb_start_y + self.pb_vd*28, 50, self.pb_start_h, 70),
-            Rectangle(self.pb_start_x +8*self.pb_hd+30+40+30+40+30+50+50+50, self.pb_start_y + self.pb_vd*28, 60, self.pb_start_h, 69),
-            Rectangle(self.pb_start_x +9*self.pb_hd+30+40+30+40+30+50+50+50+60, self.pb_start_y + self.pb_vd*28, 60, self.pb_start_h, 68),
-            Rectangle(self.pb_start_x+10*self.pb_hd+30+40+30+40+30+50+50+50+60+60, self.pb_start_y + self.pb_vd*28, 40, self.pb_start_h, 67),
+        t_24 = 296
+        s_24 = round(scale/t_24, 2)
+        r_39_2 = 77 * s_24
+        r_40 = 146 * s_24
+        r_41_1 = 73 * s_24
 
-            Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*29, 0, 0, "Juz 30"), 
-            Rectangle(self.pb_start_x, self.pb_start_y + self.pb_vd*29, 20, self.pb_start_h, 86),
-            Rectangle(self.pb_start_x+1*self.pb_hd+20, self.pb_start_y + self.pb_vd*29, 45, self.pb_start_h, 85),
-            Rectangle(self.pb_start_x+2*self.pb_hd+20+45, self.pb_start_y + self.pb_vd*29, 45, self.pb_start_h, 84),
-            Rectangle(self.pb_start_x+3*self.pb_hd+20+45+45, self.pb_start_y + self.pb_vd*29, 80, self.pb_start_h, 83),
-            Rectangle(self.pb_start_x+4*self.pb_hd+20+45+45+80, self.pb_start_y + self.pb_vd*29, 30, self.pb_start_h, 82),
-            Rectangle(self.pb_start_x+5*self.pb_hd+20+45+45+80+30, self.pb_start_y + self.pb_vd*29, 40, self.pb_start_h, 81),
-            Rectangle(self.pb_start_x+6*self.pb_hd+20+45+45+80+30+40, self.pb_start_y + self.pb_vd*29, 70, self.pb_start_h, 80),
-            Rectangle(self.pb_start_x+7*self.pb_hd+20+45+45+80+30+40+70, self.pb_start_y + self.pb_vd*29, 80, self.pb_start_h, 79),
-            Rectangle(self.pb_start_x+8*self.pb_hd+20+45+45+80+30+40+70+80, self.pb_start_y + self.pb_vd*29, 74, self.pb_start_h, 78),
+        t_25 = 298
+        s_25 = round(scale/t_25, 2)
+        r_41_2 = 15 * s_25
+        r_42 = 92 * s_25
+        r_43 = 99 * s_25
+        r_44 = 42 * s_25
+        r_45 = 50 * s_25
+
+        t_26 = 282
+        s_26 = round(scale/t_26, 2)
+        r_46 = 66 * s_26
+        r_47 = 59 * s_26
+        r_48 = 64 * s_26
+        r_49 = 37 * s_26
+        r_50 = 39 * s_26
+        r_51_1 = 17 * s_26
+
+        t_27 = 288
+        s_27 = round(scale/t_27, 2)
+        r_51_2 = 22 * s_27
+        r_52 = 35 * s_27
+        r_53 = 38 * s_27
+        r_54 = 38 * s_27
+        r_55 = 45 * s_27
+        r_56 = 47 * s_27
+        r_57 = 63 * s_27
+
+        t_28 = 282
+        s_28 = round(scale/t_28, 2)
+        r_58 = 49 * s_28
+        r_59 = 51 * s_28
+        r_60 = 35 * s_28
+        r_61 = 22 * s_28
+        r_62 = 19 * s_28
+        r_63 = 21 * s_28
+        r_64 = 28 * s_28
+        r_65 = 29 * s_28
+        r_66 = 28 * s_28
+
+        t_29 = 278
+        s_29 = round(scale/t_29, 2)
+        r_67 = 33 * s_29
+        r_68 = 32 * s_29
+        r_69 = 27 * s_29
+        r_70 = 24 * s_29
+        r_71 = 24 * s_29
+        r_72 = 28 * s_29
+        r_73 = 20 * s_29
+        r_74 = 26 * s_29
+        r_75 = 17 * s_29
+        r_76 = 25 * s_29
+        r_77 = 22 * s_29
+
+        t_30 = 271
+        s_30 = round(scale/t_30, 2)
+        r_78 = 20 * s_30
+        r_79 = 20 * s_30
+        r_80 = 15 * s_30
+        r_81 = 12 * s_30
+        r_82 = 9 * s_30
+        r_83 = 19 * s_30
+        r_84 = 12 * s_30
+        r_85 = 12 * s_30
+        r_86 = 7 * s_30
+        r_87 = 8 * s_30
+        r_88 = 11 * s_30
+        r_89 = 16 * s_30
+        r_90 = 9 * s_30
+        r_91 = 7 * s_30
+        r_92 = 8 * s_30
+        r_93 = 5 * s_30
+        r_94 = 3 * s_30
+        r_95 = 4 * s_30
+        r_96 = 8 * s_30
+        r_97 = 3 * s_30
+        r_98 = 10 * s_30
+        r_99 = 4 * s_30
+        r_100 = 5 * s_30
+        r_101 = 5 * s_30
+        r_102 = 3 * s_30
+        r_103 = 2 * s_30
+        r_104 = 4 * s_30
+        r_105 = 3 * s_30
+        r_106 = 3 * s_30
+        r_107 = 4 * s_30
+        r_108 = 2 * s_30
+        r_109 = 3 * s_30
+        r_110 = 3 * s_30
+        r_111 = 3 * s_30
+        r_112 = 2 * s_30
+        r_113 = 3 * s_30
+        r_114 = 4 * s_30
+
+        self.list_rect_progress_bar = []
+        self.list_rect_progress_bar.append(Rectangle(0, 0 + pb_start_y + pb_vd*0, 0, 0, "Juz'"))
+
+        self.list_rect_progress_bar.append(Rectangle(pb_start_x/4, pb_start_h+pb_start_y + pb_vd*0, 0, 0, "Juz 1"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y+pb_vd*0, r_2_1, pb_start_h, 2)); acum += r_2_1
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y+pb_vd*0, r_1, pb_start_h, 1))
+
+        self.list_rect_progress_bar.append(Rectangle(pb_start_x/4, pb_start_h + pb_start_y + pb_vd*1, 0, 0, "Juz 2"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*1, r_2_2, pb_start_h, 2))
+
+        self.list_rect_progress_bar.append(Rectangle(pb_start_x/4, pb_start_h + pb_start_y + pb_vd*2, 0, 0, "Juz 3"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*2, r_3_1, pb_start_h, 3)); acum += r_3_1
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*2, r_2_3, pb_start_h, 2))
+
+        self.list_rect_progress_bar.append(Rectangle(pb_start_x/4, pb_start_h + pb_start_y + pb_vd*3, 0, 0, "Juz 4"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*3, r_4_1, pb_start_h, 4)); acum += r_4_1
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*3, r_3_2, pb_start_h, 3))
+
+        self.list_rect_progress_bar.append(Rectangle(pb_start_x/4, pb_start_h + pb_start_y + pb_vd*4, 0, 0, "Juz 5"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*4, r_4_2, pb_start_h, 4))
+
+        self.list_rect_progress_bar.append(Rectangle(pb_start_x/4, pb_start_h + pb_start_y + pb_vd*5, 0, 0, "Juz 6"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*5, r_5_1, pb_start_h, 5)); acum += r_5_1
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*5, r_4_3, pb_start_h, 4))
+
+        self.list_rect_progress_bar.append(Rectangle(pb_start_x/4, pb_start_h + pb_start_y + pb_vd*6, 0, 0, "Juz 7"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*6, r_6_1, pb_start_h, 6)); acum += r_6_1
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*6, r_5_2, pb_start_h, 5))
+
+        self.list_rect_progress_bar.append(Rectangle(pb_start_x/4, pb_start_h + pb_start_y + pb_vd*7, 0, 0, "Juz 8"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*7, r_7_1, pb_start_h, 7)); acum += r_7_1
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*7, r_6_2, pb_start_h, 6))
+
+        self.list_rect_progress_bar.append(Rectangle(pb_start_x/4, pb_start_h + pb_start_y + pb_vd*8, 0, 0, "Juz 9"),)
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*8, r_8_1, pb_start_h, 8)); acum += r_8_1
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*8, r_7_2, pb_start_h, 7))
+
+        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*9, 0, 0, "Juz 10"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*9, r_9_1, pb_start_h, 9)); acum += r_9_1
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*9, r_8_2, pb_start_h, 8))
+
+        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*10, 0, 0, "Juz 11"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*10, r_11_1, pb_start_h, 11)); acum += r_11_1
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*10, r_10, pb_start_h, 10)); acum += r_10
+        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*10, r_9_2, pb_start_h, 9))
+
+        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*11, 0, 0, "Juz 12"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(pb_start_x, pb_start_y + pb_vd*11, r_12_1, pb_start_h, 12))
+        self.list_rect_progress_bar.append(Rectangle(pb_start_x+1*pb_hd+r_12_1, pb_start_y + pb_vd*11, r_11_2, pb_start_h, 11))
+
+        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*12, 0, 0, "Juz 13"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*12, r_14, pb_start_h, 14)); acum += r_14
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*12, r_13, pb_start_h, 13)); acum += r_13
+        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*12, r_12_2, pb_start_h, 12))
+
+        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*13, 0, 0, "Juz 14"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*13, r_16, pb_start_h, 16)); acum += r_16
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*13, r_15, pb_start_h, 15))
+
+        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*14, 0, 0, "Juz 15"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*14, r_18_1, pb_start_h, 18)); acum += r_18_1
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*14, r_17, pb_start_h, 17))
+
+        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*15, 0, 0, "Juz 16"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*15, r_20, pb_start_h, 20)); acum += r_20
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*15, r_19, pb_start_h, 19)); acum += r_19
+        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*15, r_18_2, pb_start_h, 18))
+
+        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*16, 0, 0, "Juz 17"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*16, r_22, pb_start_h, 22)); acum += r_22
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*16, r_21, pb_start_h, 21))
+
+        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*17, 0, 0, "Juz 18"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*17, r_25_1, pb_start_h, 25)); acum += r_25_1
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*17, r_24, pb_start_h, 24)); acum += r_24
+        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*17, r_23, pb_start_h, 23))
+
+        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*18, 0, 0, "Juz 19"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*18, r_27_1, pb_start_h, 27)); acum += r_27_1
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*18, r_26, pb_start_h, 26)); acum += r_26
+        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*18, r_25_2, pb_start_h, 25))
+
+        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*19, 0, 0, "Juz 20"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*19, r_29_1, pb_start_h, 29)); acum += r_29_1
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*19, r_28, pb_start_h, 28)); acum += r_28
+        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*19, r_27_2, pb_start_h, 27))
+
+        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*20, 0, 0, "Juz 21"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*20, r_33_1, pb_start_h, 33)); acum += r_33_1
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*20, r_32, pb_start_h, 32)); acum += r_32
+        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*20, r_31, pb_start_h, 31)); acum += r_31
+        self.list_rect_progress_bar.append(Rectangle(3*pb_hd+acum, pb_start_y + pb_vd*20, r_30, pb_start_h, 30)); acum += r_30
+        self.list_rect_progress_bar.append(Rectangle(4*pb_hd+acum, pb_start_y + pb_vd*20, r_29_2, pb_start_h, 29))
+
+        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*21, 0, 0, "Juz 22"),)
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*21, r_36_1, pb_start_h, 36)); acum += r_36_1
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*21, r_35, pb_start_h, 35)); acum += r_35
+        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*21, r_34, pb_start_h, 34)); acum += r_34
+        self.list_rect_progress_bar.append(Rectangle(3*pb_hd+acum, pb_start_y + pb_vd*21, r_33_2, pb_start_h, 33))
+
+        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*22, 0, 0, "Juz 23"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*22, r_39_1, pb_start_h, 39)); acum += r_39_1
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*22, r_38, pb_start_h, 38)); acum += r_38
+        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*22, r_37, pb_start_h, 37)); acum += r_37
+        self.list_rect_progress_bar.append(Rectangle(3*pb_hd+acum, pb_start_y + pb_vd*22, r_36_2, pb_start_h, 36))
+
+        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*23, 0, 0, "Juz 24"),)
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*23, r_41_1, pb_start_h, 41)); acum += r_41_1
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*23, r_40, pb_start_h, 40)); acum += r_40
+        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*23, r_39_2, pb_start_h, 39))
+
+        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*24, 0, 0, "Juz 25"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*24, r_45, pb_start_h, 45)); acum += r_45
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*24, r_44, pb_start_h, 44)); acum += r_44
+        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*24, r_43, pb_start_h, 43)); acum += r_43
+        self.list_rect_progress_bar.append(Rectangle(3*pb_hd+acum, pb_start_y + pb_vd*24, r_42, pb_start_h, 42)); acum += r_42
+        self.list_rect_progress_bar.append(Rectangle(4*pb_hd+acum, pb_start_y + pb_vd*24, r_41_2, pb_start_h, 41))
+
+        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*25, 0, 0, "Juz 26"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*25, r_51_1, pb_start_h, 51)); acum += r_51_1
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*25, r_50, pb_start_h, 50)); acum += r_50
+        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*25, r_49, pb_start_h, 49)); acum += r_49
+        self.list_rect_progress_bar.append(Rectangle(3*pb_hd+acum, pb_start_y + pb_vd*25, r_48, pb_start_h, 48)); acum += r_48
+        self.list_rect_progress_bar.append(Rectangle(4*pb_hd+acum, pb_start_y + pb_vd*25, r_47, pb_start_h, 47)); acum += r_47
+        self.list_rect_progress_bar.append(Rectangle(5*pb_hd+acum, pb_start_y + pb_vd*25, r_46, pb_start_h, 46))
+
+        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*26, 0, 0, "Juz 27"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*26, r_57, pb_start_h, 57)); acum += r_57
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*26, r_56, pb_start_h, 56)); acum += r_56
+        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*26, r_55, pb_start_h, 55)); acum += r_55
+        self.list_rect_progress_bar.append(Rectangle(3*pb_hd+acum, pb_start_y + pb_vd*26, r_54, pb_start_h, 54)); acum += r_54
+        self.list_rect_progress_bar.append(Rectangle(4*pb_hd+acum, pb_start_y + pb_vd*26, r_53, pb_start_h, 53)); acum += r_53
+        self.list_rect_progress_bar.append(Rectangle(5*pb_hd+acum, pb_start_y + pb_vd*26, r_52, pb_start_h, 52)); acum += r_52
+        self.list_rect_progress_bar.append(Rectangle(6*pb_hd+acum, pb_start_y + pb_vd*26, r_51_2, pb_start_h, 51))
+
+        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*27, 0, 0, "Juz 28"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*27, r_66, pb_start_h, 66)); acum += r_66
+        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*27, r_65, pb_start_h, 65)); acum += r_65
+        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*27, r_64, pb_start_h, 64)); acum += r_64
+        self.list_rect_progress_bar.append(Rectangle(3*pb_hd+acum, pb_start_y + pb_vd*27, r_63, pb_start_h, 63)); acum += r_63
+        self.list_rect_progress_bar.append(Rectangle(4*pb_hd+acum, pb_start_y + pb_vd*27, r_62, pb_start_h, 62)); acum += r_62
+        self.list_rect_progress_bar.append(Rectangle(5*pb_hd+acum, pb_start_y + pb_vd*27, r_61, pb_start_h, 61)); acum += r_61
+        self.list_rect_progress_bar.append(Rectangle(6*pb_hd+acum, pb_start_y + pb_vd*27, r_60, pb_start_h, 60)); acum += r_60
+        self.list_rect_progress_bar.append(Rectangle(7*pb_hd+acum, pb_start_y + pb_vd*27, r_59, pb_start_h, 59)); acum += r_59
+        self.list_rect_progress_bar.append(Rectangle(8*pb_hd+acum, pb_start_y + pb_vd*27, r_58, pb_start_h, 58))
+
+        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*28, 0, 0, "Juz 29"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle( 0*pb_hd+acum, pb_start_y + pb_vd*28, r_77, pb_start_h, 77)); acum += r_77
+        self.list_rect_progress_bar.append(Rectangle( 1*pb_hd+acum, pb_start_y + pb_vd*28, r_76, pb_start_h, 76)); acum += r_76
+        self.list_rect_progress_bar.append(Rectangle( 2*pb_hd+acum, pb_start_y + pb_vd*28, r_75, pb_start_h, 75)); acum += r_75
+        self.list_rect_progress_bar.append(Rectangle( 3*pb_hd+acum, pb_start_y + pb_vd*28, r_74, pb_start_h, 74)); acum += r_74
+        self.list_rect_progress_bar.append(Rectangle( 4*pb_hd+acum, pb_start_y + pb_vd*28, r_73, pb_start_h, 73)); acum += r_73
+        self.list_rect_progress_bar.append(Rectangle( 5*pb_hd+acum, pb_start_y + pb_vd*28, r_72, pb_start_h, 72)); acum += r_72
+        self.list_rect_progress_bar.append(Rectangle( 6*pb_hd+acum, pb_start_y + pb_vd*28, r_71, pb_start_h, 71)); acum += r_71
+        self.list_rect_progress_bar.append(Rectangle( 7*pb_hd+acum, pb_start_y + pb_vd*28, r_70, pb_start_h, 70)); acum += r_70
+        self.list_rect_progress_bar.append(Rectangle( 8*pb_hd+acum, pb_start_y + pb_vd*28, r_69, pb_start_h, 69)); acum += r_69
+        self.list_rect_progress_bar.append(Rectangle( 9*pb_hd+acum, pb_start_y + pb_vd*28, r_68, pb_start_h, 68)); acum += r_68
+        self.list_rect_progress_bar.append(Rectangle(10*pb_hd+acum, pb_start_y + pb_vd*28, r_67, pb_start_h, 67))
 
 
-            Rectangle(0, self.pb_start_h + self.pb_start_y + self.pb_vd*30, 0, 0, "Juz 30"), 
-            Rectangle(self.pb_start_x,                    self.pb_start_y + self.pb_vd*30, 11, self.pb_start_h, 114),
-            Rectangle(self.pb_start_x +1*(self.pb_hd+11), self.pb_start_y + self.pb_vd*30, 11, self.pb_start_h, 113),
-            Rectangle(self.pb_start_x +2*(self.pb_hd+11), self.pb_start_y + self.pb_vd*30, 11, self.pb_start_h, 112),
-            Rectangle(self.pb_start_x +3*(self.pb_hd+11), self.pb_start_y + self.pb_vd*30, 11, self.pb_start_h, 111),
-            Rectangle(self.pb_start_x +4*(self.pb_hd+11), self.pb_start_y + self.pb_vd*30, 11, self.pb_start_h, 110),
-            Rectangle(self.pb_start_x +5*(self.pb_hd+11), self.pb_start_y + self.pb_vd*30, 11, self.pb_start_h, 109),
-            Rectangle(self.pb_start_x +6*(self.pb_hd+11), self.pb_start_y + self.pb_vd*30, 11, self.pb_start_h, 108),
-            Rectangle(self.pb_start_x +7*(self.pb_hd+11), self.pb_start_y + self.pb_vd*30, 11, self.pb_start_h, 107),
-            Rectangle(self.pb_start_x +8*(self.pb_hd+11), self.pb_start_y + self.pb_vd*30, 11, self.pb_start_h, 106),
-            Rectangle(self.pb_start_x +9*(self.pb_hd+11), self.pb_start_y + self.pb_vd*30, 11, self.pb_start_h, 105),
-            Rectangle(self.pb_start_x+10*(self.pb_hd+11), self.pb_start_y + self.pb_vd*30, 11, self.pb_start_h, 104),
-            Rectangle(self.pb_start_x+11*(self.pb_hd+11), self.pb_start_y + self.pb_vd*30, 11, self.pb_start_h, 103),
-            Rectangle(self.pb_start_x+12*(self.pb_hd+11), self.pb_start_y + self.pb_vd*30, 11, self.pb_start_h, 102),
-            Rectangle(self.pb_start_x+13*(self.pb_hd+11)                  , self.pb_start_y + self.pb_vd*30, 14, self.pb_start_h, 101),
-            Rectangle(self.pb_start_x+13*(self.pb_hd+11)+1*self.pb_hd+1*14, self.pb_start_y + self.pb_vd*30, 14, self.pb_start_h, 100),
-            Rectangle(self.pb_start_x+13*(self.pb_hd+11)+2*self.pb_hd+2*14, self.pb_start_y + self.pb_vd*30, 14, self.pb_start_h, 99),
-            Rectangle(self.pb_start_x+13*(self.pb_hd+11)+3*self.pb_hd+3*14, self.pb_start_y + self.pb_vd*30, 35, self.pb_start_h, 98),
-            Rectangle(self.pb_start_x+13*(self.pb_hd+11)+4*self.pb_hd+3*14+35, self.pb_start_y + self.pb_vd*30, 12, self.pb_start_h, 97),
-            Rectangle(self.pb_start_x+13*(self.pb_hd+11)+5*self.pb_hd+3*14+35+12, self.pb_start_y + self.pb_vd*30, 20, self.pb_start_h, 96),
-            Rectangle(self.pb_start_x+13*(self.pb_hd+11)+6*self.pb_hd+3*14+35+12+20, self.pb_start_y + self.pb_vd*30, 14, self.pb_start_h, 95),
-            Rectangle(self.pb_start_x+13*(self.pb_hd+11)+7*self.pb_hd+3*14+35+12+20+14, self.pb_start_y + self.pb_vd*30, 12, self.pb_start_h, 94),
-            Rectangle(self.pb_start_x+13*(self.pb_hd+11)+8*self.pb_hd+3*14+35+12+20+14+12, self.pb_start_y + self.pb_vd*30, 14, self.pb_start_h, 93),
-            Rectangle(self.pb_start_x+13*(self.pb_hd+11)+9*self.pb_hd+3*14+35+12+20+14+12+14, self.pb_start_y + self.pb_vd*30, 20, self.pb_start_h, 92),
-            Rectangle(self.pb_start_x+13*(self.pb_hd+11)+10*self.pb_hd+3*14+35+12+20+14+12+14+20, self.pb_start_y + self.pb_vd*30, 20, self.pb_start_h, 91),
-            Rectangle(self.pb_start_x+13*(self.pb_hd+11)+11*self.pb_hd+3*14+35+12+20+14+12+14+2*20, self.pb_start_y + self.pb_vd*30, 25, self.pb_start_h, 90),
-            Rectangle(self.pb_start_x+13*(self.pb_hd+11)+12*self.pb_hd+3*14+35+12+20+14+12+14+2*20+25, self.pb_start_y + self.pb_vd*30, 35, self.pb_start_h, 89),
-            Rectangle(self.pb_start_x+13*(self.pb_hd+11)+13*self.pb_hd+3*14+35+12+20+14+12+14+2*20+25+35, self.pb_start_y + self.pb_vd*30, 30, self.pb_start_h, 88),
-            Rectangle(self.pb_start_x+13*(self.pb_hd+11)+14*self.pb_hd+3*14+35+12+20+14+12+14+2*20+25+35+30, self.pb_start_y + self.pb_vd*30, 24, self.pb_start_h, 87),
-        ]
+        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*29, 0, 0, "Juz 30"))
+        acum = pb_start_x
+        self.list_rect_progress_bar.append(Rectangle( 0*pb_hd+acum, pb_start_y + pb_vd*29, r_114, pb_start_h, 114)); acum += r_114
+        self.list_rect_progress_bar.append(Rectangle( 1*pb_hd+acum, pb_start_y + pb_vd*29, r_113, pb_start_h, 113)); acum += r_113
+        self.list_rect_progress_bar.append(Rectangle( 2*pb_hd+acum, pb_start_y + pb_vd*29, r_112, pb_start_h, 112)); acum += r_112
+        self.list_rect_progress_bar.append(Rectangle( 3*pb_hd+acum, pb_start_y + pb_vd*29, r_111, pb_start_h, 111)); acum += r_111
+        self.list_rect_progress_bar.append(Rectangle( 4*pb_hd+acum, pb_start_y + pb_vd*29, r_110, pb_start_h, 110)); acum += r_110
+        self.list_rect_progress_bar.append(Rectangle( 5*pb_hd+acum, pb_start_y + pb_vd*29, r_109, pb_start_h, 109)); acum += r_109
+        self.list_rect_progress_bar.append(Rectangle( 6*pb_hd+acum, pb_start_y + pb_vd*29, r_108, pb_start_h, 108)); acum += r_108
+        self.list_rect_progress_bar.append(Rectangle( 7*pb_hd+acum, pb_start_y + pb_vd*29, r_107, pb_start_h, 107)); acum += r_107
+        self.list_rect_progress_bar.append(Rectangle( 8*pb_hd+acum, pb_start_y + pb_vd*29, r_106, pb_start_h, 106)); acum += r_106
+        self.list_rect_progress_bar.append(Rectangle( 9*pb_hd+acum, pb_start_y + pb_vd*29, r_105, pb_start_h, 105)); acum += r_106
+        self.list_rect_progress_bar.append(Rectangle(10*pb_hd+acum, pb_start_y + pb_vd*29, r_104, pb_start_h, 104)); acum += r_104
+        self.list_rect_progress_bar.append(Rectangle(11*pb_hd+acum, pb_start_y + pb_vd*29, r_103, pb_start_h, 103)); acum += r_103
+        self.list_rect_progress_bar.append(Rectangle(12*pb_hd+acum, pb_start_y + pb_vd*29, r_102, pb_start_h, 102)); acum += r_102
+        self.list_rect_progress_bar.append(Rectangle(13*pb_hd+acum, pb_start_y + pb_vd*29, r_101, pb_start_h, 101)); acum += r_101
+        self.list_rect_progress_bar.append(Rectangle(14*pb_hd+acum, pb_start_y + pb_vd*29, r_100, pb_start_h, 100)); acum += r_100
+        self.list_rect_progress_bar.append(Rectangle(15*pb_hd+acum, pb_start_y + pb_vd*29, r_99,  pb_start_h, 99)); acum += r_99
+        self.list_rect_progress_bar.append(Rectangle(16*pb_hd+acum, pb_start_y + pb_vd*29, r_98,  pb_start_h, 98)); acum += r_98
+        self.list_rect_progress_bar.append(Rectangle(17*pb_hd+acum, pb_start_y + pb_vd*29, r_97,  pb_start_h, 97)); acum += r_97
+        self.list_rect_progress_bar.append(Rectangle(18*pb_hd+acum, pb_start_y + pb_vd*29, r_96,  pb_start_h, 96)); acum += r_96
+        self.list_rect_progress_bar.append(Rectangle(19*pb_hd+acum, pb_start_y + pb_vd*29, r_95,  pb_start_h, 95)); acum += r_95
+        self.list_rect_progress_bar.append(Rectangle(20*pb_hd+acum, pb_start_y + pb_vd*29, r_94,  pb_start_h, 94)); acum += r_94
+        self.list_rect_progress_bar.append(Rectangle(21*pb_hd+acum, pb_start_y + pb_vd*29, r_93,  pb_start_h, 93)); acum += r_93
+        self.list_rect_progress_bar.append(Rectangle(22*pb_hd+acum, pb_start_y + pb_vd*29, r_92,  pb_start_h, 92)); acum += r_92
+        self.list_rect_progress_bar.append(Rectangle(23*pb_hd+acum, pb_start_y + pb_vd*29, r_91,  pb_start_h, 91)); acum += r_91
+        self.list_rect_progress_bar.append(Rectangle(24*pb_hd+acum, pb_start_y + pb_vd*29, r_90,  pb_start_h, 90)); acum += r_90
+        self.list_rect_progress_bar.append(Rectangle(25*pb_hd+acum, pb_start_y + pb_vd*29, r_89,  pb_start_h, 89)); acum += r_89
+        self.list_rect_progress_bar.append(Rectangle(26*pb_hd+acum, pb_start_y + pb_vd*29, r_88,  pb_start_h, 88)); acum += r_88
+        self.list_rect_progress_bar.append(Rectangle(27*pb_hd+acum, pb_start_y + pb_vd*29, r_87,  pb_start_h, 87)); acum += r_87
+        self.list_rect_progress_bar.append(Rectangle(28*pb_hd+acum, pb_start_y + pb_vd*29, r_86,  pb_start_h, 86)); acum += r_86
+        self.list_rect_progress_bar.append(Rectangle(29*pb_hd+acum, pb_start_y + pb_vd*29, r_85,  pb_start_h, 85)); acum += r_85
+        self.list_rect_progress_bar.append(Rectangle(30*pb_hd+acum, pb_start_y + pb_vd*29, r_84,  pb_start_h, 84)); acum += r_84
+        self.list_rect_progress_bar.append(Rectangle(31*pb_hd+acum, pb_start_y + pb_vd*29, r_83,  pb_start_h, 83)); acum += r_83
+        self.list_rect_progress_bar.append(Rectangle(32*pb_hd+acum, pb_start_y + pb_vd*29, r_82,  pb_start_h, 82)); acum += r_82
+        self.list_rect_progress_bar.append(Rectangle(33*pb_hd+acum, pb_start_y + pb_vd*29, r_81,  pb_start_h, 81)); acum += r_81
+        self.list_rect_progress_bar.append(Rectangle(34*pb_hd+acum, pb_start_y + pb_vd*29, r_80,  pb_start_h, 80)); acum += r_80
+        self.list_rect_progress_bar.append(Rectangle(35*pb_hd+acum, pb_start_y + pb_vd*29, r_79,  pb_start_h, 79)); acum += r_79
+        self.list_rect_progress_bar.append(Rectangle(36*pb_hd+acum, pb_start_y + pb_vd*29, r_78,  pb_start_h, 78))
+
 
         # Progress Bar Tab
         drawingarea_progress_bar = Gtk.DrawingArea()
