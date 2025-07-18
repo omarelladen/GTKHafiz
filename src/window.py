@@ -18,7 +18,7 @@ class Window(Gtk.Window):
         # Icon
         self.icon_path = icon_file
         try:
-            self.pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(self.icon_path, 64, 64, True)
+            self.pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_pb_line_width(self.icon_path, 64, 64, True)
             self.set_icon(self.pixbuf)
         except:
             print(f'Failed to load icon from "{self.icon_path}"')
@@ -29,7 +29,7 @@ class Window(Gtk.Window):
         self.set_border_width(6)
         self.set_default_size(self.win_default_l, self.win_default_h)
         self.set_size_request(580, 550)
-        # self.set_resizable(False)
+        self.set_resizable(False)
 
         # Vertical Box
         outerbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
@@ -63,175 +63,174 @@ class Window(Gtk.Window):
         stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
 
         # Create Progress Bars Rectangles
-        pb_start_x = 14
-        pb_start_y = 20
-        pb_start_h = 10
-        pb_vd = pb_start_h + 2
-        pb_hd = 0 #1
-
-        scale = 500
+        pb_line_x0 = 14 # initial x
+        pb_line_y0 = 20 # initial y
+        pb_height = 10 # bar height
+        pb_lines_dist = pb_height + 2 # distance between lines
+        pb_dist = 1 # distance between 2 bars
+        pb_line_width = 500 # lenght of line
 
         t_1 = 298
-        s_1 = round(scale/t_1, 2)
-        r_1 = 7 * s_1
+        s_1 = pb_line_width/t_1
+        r_1   = 7   * s_1
         r_2_1 = 291 * s_1
 
         t_2 = 300
-        s_2 = round(scale/t_2, 2)
+        s_2 = pb_line_width/t_2
         r_2_2 = 300 * s_2
 
         t_3 = 299.5
-        s_3 = round(scale/t_3, 2)
-        r_2_3 = 120 * s_3
+        s_3 = pb_line_width/t_3
+        r_2_3 = 120   * s_3
         r_3_1 = 179.5 * s_3
 
         t_4 = 296.5
-        s_4 = round(scale/t_4, 2)
+        s_4 = pb_line_width/t_4
         r_3_2 = 222.5 * s_4
-        r_4_1 = 74 * s_4
+        r_4_1 = 74    * s_4
 
         t_5 = 300
-        s_5 = round(scale/t_5, 2)
+        s_5 = pb_line_width/t_5
         r_4_2 = 300 * s_5
 
         t_6 = 291.5
-        s_6 = round(scale/t_6, 2)
-        r_4_3 = 65 * s_6
+        s_6 = pb_line_width/t_6
+        r_4_3 = 65    * s_6
         r_5_1 = 226.5 * s_6
 
         t_7 = 304.5
-        s_7 = round(scale/t_7, 2)
+        s_7 = pb_line_width/t_7
         r_5_2 = 96.5 * s_7
-        r_6_1 = 208 * s_7
+        r_6_1 = 208  * s_7
 
         t_8 = 298
-        s_8 = round(scale/t_8, 2)
+        s_8 = pb_line_width/t_8
         r_6_2 = 135 * s_8
         r_7_1 = 163 * s_8
 
         t_9 = 298
-        s_9 = round(scale/t_9, 2)
+        s_9 = pb_line_width/t_9
         r_7_2 = 225 * s_9
-        r_8_1 = 73 * s_9
+        r_8_1 = 73  * s_9
 
         t_10 = 296.5
-        s_10 = round(scale/t_10, 2)
-        r_8_2 = 75 * s_10
+        s_10 = pb_line_width/t_10
+        r_8_2 = 75    * s_10
         r_9_1 = 221.5 * s_10
 
         t_11 = 298.5
-        s_11 = round(scale/t_11, 2)
-        r_9_2 = 91.5 * s_11
-        r_10 = 200 * s_11
-        r_11_1 = 7 * s_11
+        s_11 = pb_line_width/t_11
+        r_9_2  = 91.5 * s_11
+        r_10   = 200  * s_11
+        r_11_1 = 7    * s_11
 
         t_12 = 298
-        s_12 = round(scale/t_12, 2)
+        s_12 = pb_line_width/t_12
         r_11_2 = 203 * s_12
-        r_12_1 = 95 * s_12
+        r_12_1 = 95  * s_12
 
         t_13 = 296
-        s_13 = round(scale/t_13, 2)
+        s_13 = pb_line_width/t_13
         r_12_2 = 105 * s_13
-        r_13 = 90 * s_13
-        r_14 = 101 * s_13
+        r_13   = 90  * s_13
+        r_14   = 101 * s_13
 
         t_14 = 296
-        s_14 = round(scale/t_14, 2)
-        r_15 = 79 * s_14
+        s_14 = pb_line_width/t_14
+        r_15 = 79  * s_14
         r_16 = 217 * s_14
 
         t_15 = 296
-        s_15 = round(scale/t_15, 2)
-        r_17 = 172 * s_15
+        s_15 = pb_line_width/t_15
+        r_17   = 172 * s_15
         r_18_1 = 124 * s_15
 
         t_16 = 296
-        s_16 = round(scale/t_16, 2)
-        r_18_2 = 45 * s_16
-        r_19 = 107 * s_16
-        r_20 = 144 * s_16
+        s_16 = pb_line_width/t_16
+        r_18_2 = 45  * s_16
+        r_19   = 107 * s_16
+        r_20   = 144 * s_16
 
         t_17 = 295
-        s_17 = round(scale/t_17, 2)
+        s_17 = pb_line_width/t_17
         r_21 = 147 * s_17
         r_22 = 148 * s_17
 
         t_18 = 295
-        s_18 = round(scale/t_18, 2)
-        r_23 = 118 * s_18
-        r_24 = 144 * s_18
-        r_25_1 = 33 * s_18
+        s_18 = pb_line_width/t_18
+        r_23   = 118 * s_18
+        r_24   = 144 * s_18
+        r_25_1 = 33  * s_18
 
         t_19 = 296
-        s_19 = round(scale/t_19, 2)
-        r_25_2 = 74 * s_19
-        r_26 = 148 * s_19
-        r_27_1 = 74 * s_19
+        s_19 = pb_line_width/t_19
+        r_25_2 = 74  * s_19
+        r_26   = 148 * s_19
+        r_27_1 = 74  * s_19
 
         t_20 = 296
-        s_20 = round(scale/t_20, 2)
-        r_27_2 = 52 * s_20
-        r_28 = 163 * s_20
-        r_29_1 = 81 * s_20
+        s_20 = pb_line_width/t_20
+        r_27_2 = 52  * s_20
+        r_28   = 163 * s_20
+        r_29_1 = 81  * s_20
 
         t_21 = 292
-        s_21 = round(scale/t_21, 2)
+        s_21 = pb_line_width/t_21
         r_29_2 = 39 * s_21
-        r_30 = 94 * s_21
-        r_31 = 57 * s_21
-        r_32 = 43 * s_21
+        r_30   = 94 * s_21
+        r_31   = 57 * s_21
+        r_32   = 43 * s_21
         r_33_1 = 59 * s_21
 
         t_22 = 294
-        s_22 = round(scale/t_22, 2)
+        s_22 = pb_line_width/t_22
         r_33_2 = 90 * s_22
-        r_34 = 95 * s_22
-        r_35 = 84 * s_22
+        r_34   = 95 * s_22
+        r_35   = 84 * s_22
         r_36_1 = 25 * s_22
 
         t_23 = 294
-        s_23 = round(scale/t_23, 2)
-        r_36_2 = 59 * s_23
-        r_37 = 103 * s_23
-        r_38 = 77 * s_23
-        r_39_1 = 55 * s_23
+        s_23 = pb_line_width/t_23
+        r_36_2 = 59  * s_23
+        r_37   = 103 * s_23
+        r_38   = 77  * s_23
+        r_39_1 = 55  * s_23
 
         t_24 = 296
-        s_24 = round(scale/t_24, 2)
-        r_39_2 = 77 * s_24
-        r_40 = 146 * s_24
-        r_41_1 = 73 * s_24
+        s_24 = pb_line_width/t_24
+        r_39_2 = 77  * s_24
+        r_40   = 146 * s_24
+        r_41_1 = 73  * s_24
 
         t_25 = 298
-        s_25 = round(scale/t_25, 2)
+        s_25 = pb_line_width/t_25
         r_41_2 = 15 * s_25
-        r_42 = 92 * s_25
-        r_43 = 99 * s_25
-        r_44 = 42 * s_25
-        r_45 = 50 * s_25
+        r_42   = 92 * s_25
+        r_43   = 99 * s_25
+        r_44   = 42 * s_25
+        r_45   = 50 * s_25
 
         t_26 = 282
-        s_26 = round(scale/t_26, 2)
-        r_46 = 66 * s_26
-        r_47 = 59 * s_26
-        r_48 = 64 * s_26
-        r_49 = 37 * s_26
-        r_50 = 39 * s_26
+        s_26 = pb_line_width/t_26
+        r_46   = 66 * s_26
+        r_47   = 59 * s_26
+        r_48   = 64 * s_26
+        r_49   = 37 * s_26
+        r_50   = 39 * s_26
         r_51_1 = 17 * s_26
 
         t_27 = 288
-        s_27 = round(scale/t_27, 2)
+        s_27 = pb_line_width/t_27
         r_51_2 = 22 * s_27
-        r_52 = 35 * s_27
-        r_53 = 38 * s_27
-        r_54 = 38 * s_27
-        r_55 = 45 * s_27
-        r_56 = 47 * s_27
-        r_57 = 63 * s_27
+        r_52   = 35 * s_27
+        r_53   = 38 * s_27
+        r_54   = 38 * s_27
+        r_55   = 45 * s_27
+        r_56   = 47 * s_27
+        r_57   = 63 * s_27
 
         t_28 = 282
-        s_28 = round(scale/t_28, 2)
+        s_28 = pb_line_width/t_28
         r_58 = 49 * s_28
         r_59 = 51 * s_28
         r_60 = 35 * s_28
@@ -243,7 +242,7 @@ class Window(Gtk.Window):
         r_66 = 28 * s_28
 
         t_29 = 278
-        s_29 = round(scale/t_29, 2)
+        s_29 = pb_line_width/t_29
         r_67 = 33 * s_29
         r_68 = 32 * s_29
         r_69 = 27 * s_29
@@ -257,273 +256,274 @@ class Window(Gtk.Window):
         r_77 = 22 * s_29
 
         t_30 = 271
-        s_30 = round(scale/t_30, 2)
-        r_78 = 20 * s_30
-        r_79 = 20 * s_30
-        r_80 = 15 * s_30
-        r_81 = 12 * s_30
-        r_82 = 9 * s_30
-        r_83 = 19 * s_30
-        r_84 = 12 * s_30
-        r_85 = 12 * s_30
-        r_86 = 7 * s_30
-        r_87 = 8 * s_30
-        r_88 = 11 * s_30
-        r_89 = 16 * s_30
-        r_90 = 9 * s_30
-        r_91 = 7 * s_30
-        r_92 = 8 * s_30
-        r_93 = 5 * s_30
-        r_94 = 3 * s_30
-        r_95 = 4 * s_30
-        r_96 = 8 * s_30
-        r_97 = 3 * s_30
-        r_98 = 10 * s_30
-        r_99 = 4 * s_30
-        r_100 = 5 * s_30
-        r_101 = 5 * s_30
-        r_102 = 3 * s_30
-        r_103 = 2 * s_30
-        r_104 = 4 * s_30
-        r_105 = 3 * s_30
-        r_106 = 3 * s_30
-        r_107 = 4 * s_30
-        r_108 = 2 * s_30
-        r_109 = 3 * s_30
-        r_110 = 3 * s_30
-        r_111 = 3 * s_30
-        r_112 = 2 * s_30
-        r_113 = 3 * s_30
-        r_114 = 4 * s_30
+        s_30 = pb_line_width/t_30
+        r_78  = 20 * s_30
+        r_79  = 20 * s_30
+        r_80  = 15 * s_30
+        r_81  = 12 * s_30
+        r_82  = 9  * s_30
+        r_83  = 19 * s_30
+        r_84  = 12 * s_30
+        r_85  = 12 * s_30
+        r_86  = 7  * s_30
+        r_87  = 8  * s_30
+        r_88  = 11 * s_30
+        r_89  = 16 * s_30
+        r_90  = 9  * s_30
+        r_91  = 7  * s_30
+        r_92  = 8  * s_30
+        r_93  = 5  * s_30
+        r_94  = 3  * s_30
+        r_95  = 4  * s_30
+        r_96  = 8  * s_30
+        r_97  = 3  * s_30
+        r_98  = 10 * s_30
+        r_99  = 4  * s_30
+        r_100 = 5  * s_30
+        r_101 = 5  * s_30
+        r_102 = 3  * s_30
+        r_103 = 2  * s_30
+        r_104 = 4  * s_30
+        r_105 = 3  * s_30
+        r_106 = 3  * s_30
+        r_107 = 4  * s_30
+        r_108 = 2  * s_30
+        r_109 = 3  * s_30
+        r_110 = 3  * s_30
+        r_111 = 3  * s_30
+        r_112 = 2  * s_30
+        r_113 = 3  * s_30
+        r_114 = 4  * s_30
+
 
         self.list_rect_progress_bar = []
-        self.list_rect_progress_bar.append(Rectangle(0, 0 + pb_start_y + pb_vd*0, 0, 0, "Juz'"))
+        self.list_rect_progress_bar.append(Rectangle(0, 0 + pb_line_y0 + pb_lines_dist*0, 0, 0, "Juz'"))
 
-        self.list_rect_progress_bar.append(Rectangle(pb_start_x/4, pb_start_h+pb_start_y + pb_vd*0, 0, 0, "Juz 1"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y+pb_vd*0, r_2_1, pb_start_h, 2)); acum += r_2_1
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y+pb_vd*0, r_1, pb_start_h, 1))
+        self.list_rect_progress_bar.append(Rectangle(pb_line_x0/4, pb_height+pb_line_y0 + pb_lines_dist*0, 0, 0, "Juz 1"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0+pb_lines_dist*0, r_2_1-pb_dist, pb_height, 2)); pb_offset += r_2_1
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0+pb_lines_dist*0, r_1,         pb_height, 1))
 
-        self.list_rect_progress_bar.append(Rectangle(pb_start_x/4, pb_start_h + pb_start_y + pb_vd*1, 0, 0, "Juz 2"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*1, r_2_2, pb_start_h, 2))
+        self.list_rect_progress_bar.append(Rectangle(pb_line_x0/4, pb_height + pb_line_y0 + pb_lines_dist*1, 0, 0, "Juz 2"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*1, r_2_2, pb_height, 2))
 
-        self.list_rect_progress_bar.append(Rectangle(pb_start_x/4, pb_start_h + pb_start_y + pb_vd*2, 0, 0, "Juz 3"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*2, r_3_1, pb_start_h, 3)); acum += r_3_1
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*2, r_2_3, pb_start_h, 2))
+        self.list_rect_progress_bar.append(Rectangle(pb_line_x0/4, pb_height + pb_line_y0 + pb_lines_dist*2, 0, 0, "Juz 3"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*2, r_3_1-pb_dist, pb_height, 3)); pb_offset += r_3_1
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*2, r_2_3,       pb_height, 2))
 
-        self.list_rect_progress_bar.append(Rectangle(pb_start_x/4, pb_start_h + pb_start_y + pb_vd*3, 0, 0, "Juz 4"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*3, r_4_1, pb_start_h, 4)); acum += r_4_1
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*3, r_3_2, pb_start_h, 3))
+        self.list_rect_progress_bar.append(Rectangle(pb_line_x0/4, pb_height + pb_line_y0 + pb_lines_dist*3, 0, 0, "Juz 4"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*3, r_4_1-pb_dist, pb_height, 4)); pb_offset += r_4_1
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*3, r_3_2,       pb_height, 3))
 
-        self.list_rect_progress_bar.append(Rectangle(pb_start_x/4, pb_start_h + pb_start_y + pb_vd*4, 0, 0, "Juz 5"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*4, r_4_2, pb_start_h, 4))
+        self.list_rect_progress_bar.append(Rectangle(pb_line_x0/4, pb_height + pb_line_y0 + pb_lines_dist*4, 0, 0, "Juz 5"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*4, r_4_2, pb_height, 4))
 
-        self.list_rect_progress_bar.append(Rectangle(pb_start_x/4, pb_start_h + pb_start_y + pb_vd*5, 0, 0, "Juz 6"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*5, r_5_1, pb_start_h, 5)); acum += r_5_1
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*5, r_4_3, pb_start_h, 4))
+        self.list_rect_progress_bar.append(Rectangle(pb_line_x0/4, pb_height + pb_line_y0 + pb_lines_dist*5, 0, 0, "Juz 6"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*5, r_5_1-pb_dist, pb_height, 5)); pb_offset += r_5_1
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*5, r_4_3, pb_height, 4))
 
-        self.list_rect_progress_bar.append(Rectangle(pb_start_x/4, pb_start_h + pb_start_y + pb_vd*6, 0, 0, "Juz 7"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*6, r_6_1, pb_start_h, 6)); acum += r_6_1
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*6, r_5_2, pb_start_h, 5))
+        self.list_rect_progress_bar.append(Rectangle(pb_line_x0/4, pb_height + pb_line_y0 + pb_lines_dist*6, 0, 0, "Juz 7"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*6, r_6_1-pb_dist, pb_height, 6)); pb_offset += r_6_1
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*6, r_5_2,       pb_height, 5))
 
-        self.list_rect_progress_bar.append(Rectangle(pb_start_x/4, pb_start_h + pb_start_y + pb_vd*7, 0, 0, "Juz 8"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*7, r_7_1, pb_start_h, 7)); acum += r_7_1
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*7, r_6_2, pb_start_h, 6))
+        self.list_rect_progress_bar.append(Rectangle(pb_line_x0/4, pb_height + pb_line_y0 + pb_lines_dist*7, 0, 0, "Juz 8"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*7, r_7_1-pb_dist, pb_height, 7)); pb_offset += r_7_1
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*7, r_6_2,       pb_height, 6))
 
-        self.list_rect_progress_bar.append(Rectangle(pb_start_x/4, pb_start_h + pb_start_y + pb_vd*8, 0, 0, "Juz 9"),)
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*8, r_8_1, pb_start_h, 8)); acum += r_8_1
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*8, r_7_2, pb_start_h, 7))
+        self.list_rect_progress_bar.append(Rectangle(pb_line_x0/4, pb_height + pb_line_y0 + pb_lines_dist*8, 0, 0, "Juz 9"),)
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*8, r_8_1-pb_dist, pb_height, 8)); pb_offset += r_8_1
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*8, r_7_2,       pb_height, 7))
 
-        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*9, 0, 0, "Juz 10"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*9, r_9_1, pb_start_h, 9)); acum += r_9_1
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*9, r_8_2, pb_start_h, 8))
+        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*9, 0, 0, "Juz 10"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*9, r_9_1-pb_dist, pb_height, 9)); pb_offset += r_9_1
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*9, r_8_2,       pb_height, 8))
 
-        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*10, 0, 0, "Juz 11"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*10, r_11_1, pb_start_h, 11)); acum += r_11_1
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*10, r_10, pb_start_h, 10)); acum += r_10
-        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*10, r_9_2, pb_start_h, 9))
+        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*10, 0, 0, "Juz 11"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*10, r_11_1-pb_dist, pb_height, 11)); pb_offset += r_11_1
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*10, r_10  -pb_dist, pb_height, 10)); pb_offset += r_10
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*10, r_9_2,        pb_height, 9))
 
-        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*11, 0, 0, "Juz 12"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(pb_start_x, pb_start_y + pb_vd*11, r_12_1, pb_start_h, 12))
-        self.list_rect_progress_bar.append(Rectangle(pb_start_x+1*pb_hd+r_12_1, pb_start_y + pb_vd*11, r_11_2, pb_start_h, 11))
+        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*11, 0, 0, "Juz 12"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*11, r_12_1-pb_dist, pb_height, 12)); pb_offset += r_12_1
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*11, r_11_2, pb_height, 11))
 
-        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*12, 0, 0, "Juz 13"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*12, r_14, pb_start_h, 14)); acum += r_14
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*12, r_13, pb_start_h, 13)); acum += r_13
-        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*12, r_12_2, pb_start_h, 12))
+        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*12, 0, 0, "Juz 13"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*12, r_14-pb_dist, pb_height, 14)); pb_offset += r_14
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*12, r_13-pb_dist, pb_height, 13)); pb_offset += r_13
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*12, r_12_2,     pb_height, 12))
 
-        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*13, 0, 0, "Juz 14"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*13, r_16, pb_start_h, 16)); acum += r_16
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*13, r_15, pb_start_h, 15))
+        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*13, 0, 0, "Juz 14"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*13, r_16-pb_dist, pb_height, 16)); pb_offset += r_16
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*13, r_15,       pb_height, 15))
 
-        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*14, 0, 0, "Juz 15"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*14, r_18_1, pb_start_h, 18)); acum += r_18_1
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*14, r_17, pb_start_h, 17))
+        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*14, 0, 0, "Juz 15"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*14, r_18_1-pb_dist, pb_height, 18)); pb_offset += r_18_1
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*14, r_17,         pb_height, 17))
 
-        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*15, 0, 0, "Juz 16"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*15, r_20, pb_start_h, 20)); acum += r_20
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*15, r_19, pb_start_h, 19)); acum += r_19
-        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*15, r_18_2, pb_start_h, 18))
+        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*15, 0, 0, "Juz 16"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*15, r_20-pb_dist, pb_height, 20)); pb_offset += r_20
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*15, r_19-pb_dist, pb_height, 19)); pb_offset += r_19
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*15, r_18_2,     pb_height, 18))
 
-        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*16, 0, 0, "Juz 17"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*16, r_22, pb_start_h, 22)); acum += r_22
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*16, r_21, pb_start_h, 21))
+        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*16, 0, 0, "Juz 17"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*16, r_22, pb_height, 22)); pb_offset += r_22
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*16, r_21, pb_height, 21))
 
-        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*17, 0, 0, "Juz 18"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*17, r_25_1, pb_start_h, 25)); acum += r_25_1
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*17, r_24, pb_start_h, 24)); acum += r_24
-        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*17, r_23, pb_start_h, 23))
+        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*17, 0, 0, "Juz 18"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*17, r_25_1-pb_dist, pb_height, 25)); pb_offset += r_25_1
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*17, r_24  -pb_dist, pb_height, 24)); pb_offset += r_24
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*17, r_23,         pb_height, 23))
 
-        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*18, 0, 0, "Juz 19"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*18, r_27_1, pb_start_h, 27)); acum += r_27_1
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*18, r_26, pb_start_h, 26)); acum += r_26
-        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*18, r_25_2, pb_start_h, 25))
+        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*18, 0, 0, "Juz 19"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*18, r_27_1-pb_dist, pb_height, 27)); pb_offset += r_27_1
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*18, r_26  -pb_dist, pb_height, 26)); pb_offset += r_26
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*18, r_25_2,       pb_height, 25))
 
-        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*19, 0, 0, "Juz 20"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*19, r_29_1, pb_start_h, 29)); acum += r_29_1
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*19, r_28, pb_start_h, 28)); acum += r_28
-        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*19, r_27_2, pb_start_h, 27))
+        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*19, 0, 0, "Juz 20"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*19, r_29_1-pb_dist, pb_height, 29)); pb_offset += r_29_1
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*19, r_28  -pb_dist, pb_height, 28)); pb_offset += r_28
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*19, r_27_2,       pb_height, 27))
 
-        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*20, 0, 0, "Juz 21"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*20, r_33_1, pb_start_h, 33)); acum += r_33_1
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*20, r_32, pb_start_h, 32)); acum += r_32
-        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*20, r_31, pb_start_h, 31)); acum += r_31
-        self.list_rect_progress_bar.append(Rectangle(3*pb_hd+acum, pb_start_y + pb_vd*20, r_30, pb_start_h, 30)); acum += r_30
-        self.list_rect_progress_bar.append(Rectangle(4*pb_hd+acum, pb_start_y + pb_vd*20, r_29_2, pb_start_h, 29))
+        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*20, 0, 0, "Juz 21"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*20, r_33_1-pb_dist, pb_height, 33)); pb_offset += r_33_1
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*20, r_32  -pb_dist, pb_height, 32)); pb_offset += r_32
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*20, r_31  -pb_dist, pb_height, 31)); pb_offset += r_31
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*20, r_30  -pb_dist, pb_height, 30)); pb_offset += r_30
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*20, r_29_2,       pb_height, 29))
 
-        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*21, 0, 0, "Juz 22"),)
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*21, r_36_1, pb_start_h, 36)); acum += r_36_1
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*21, r_35, pb_start_h, 35)); acum += r_35
-        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*21, r_34, pb_start_h, 34)); acum += r_34
-        self.list_rect_progress_bar.append(Rectangle(3*pb_hd+acum, pb_start_y + pb_vd*21, r_33_2, pb_start_h, 33))
+        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*21, 0, 0, "Juz 22"),)
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*21, r_36_1-pb_dist, pb_height, 36)); pb_offset += r_36_1
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*21, r_35  -pb_dist, pb_height, 35)); pb_offset += r_35
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*21, r_34  -pb_dist, pb_height, 34)); pb_offset += r_34
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*21, r_33_2,       pb_height, 33))
 
-        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*22, 0, 0, "Juz 23"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*22, r_39_1, pb_start_h, 39)); acum += r_39_1
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*22, r_38, pb_start_h, 38)); acum += r_38
-        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*22, r_37, pb_start_h, 37)); acum += r_37
-        self.list_rect_progress_bar.append(Rectangle(3*pb_hd+acum, pb_start_y + pb_vd*22, r_36_2, pb_start_h, 36))
+        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*22, 0, 0, "Juz 23"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*22, r_39_1-pb_dist, pb_height, 39)); pb_offset += r_39_1
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*22, r_38  -pb_dist, pb_height, 38)); pb_offset += r_38
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*22, r_37  -pb_dist, pb_height, 37)); pb_offset += r_37
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*22, r_36_2,       pb_height, 36))
 
-        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*23, 0, 0, "Juz 24"),)
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*23, r_41_1, pb_start_h, 41)); acum += r_41_1
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*23, r_40, pb_start_h, 40)); acum += r_40
-        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*23, r_39_2, pb_start_h, 39))
+        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*23, 0, 0, "Juz 24"),)
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*23, r_41_1-pb_dist, pb_height, 41)); pb_offset += r_41_1
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*23, r_40  -pb_dist, pb_height, 40)); pb_offset += r_40
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*23, r_39_2,       pb_height, 39))
 
-        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*24, 0, 0, "Juz 25"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*24, r_45, pb_start_h, 45)); acum += r_45
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*24, r_44, pb_start_h, 44)); acum += r_44
-        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*24, r_43, pb_start_h, 43)); acum += r_43
-        self.list_rect_progress_bar.append(Rectangle(3*pb_hd+acum, pb_start_y + pb_vd*24, r_42, pb_start_h, 42)); acum += r_42
-        self.list_rect_progress_bar.append(Rectangle(4*pb_hd+acum, pb_start_y + pb_vd*24, r_41_2, pb_start_h, 41))
+        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*24, 0, 0, "Juz 25"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*24, r_45-pb_dist, pb_height, 45)); pb_offset += r_45
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*24, r_44-pb_dist, pb_height, 44)); pb_offset += r_44
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*24, r_43-pb_dist, pb_height, 43)); pb_offset += r_43
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*24, r_42-pb_dist, pb_height, 42)); pb_offset += r_42
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*24, r_41_2,     pb_height, 41))
 
-        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*25, 0, 0, "Juz 26"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*25, r_51_1, pb_start_h, 51)); acum += r_51_1
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*25, r_50, pb_start_h, 50)); acum += r_50
-        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*25, r_49, pb_start_h, 49)); acum += r_49
-        self.list_rect_progress_bar.append(Rectangle(3*pb_hd+acum, pb_start_y + pb_vd*25, r_48, pb_start_h, 48)); acum += r_48
-        self.list_rect_progress_bar.append(Rectangle(4*pb_hd+acum, pb_start_y + pb_vd*25, r_47, pb_start_h, 47)); acum += r_47
-        self.list_rect_progress_bar.append(Rectangle(5*pb_hd+acum, pb_start_y + pb_vd*25, r_46, pb_start_h, 46))
+        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*25, 0, 0, "Juz 26"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*25, r_51_1-pb_dist, pb_height, 51)); pb_offset += r_51_1
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*25, r_50  -pb_dist, pb_height, 50)); pb_offset += r_50
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*25, r_49  -pb_dist, pb_height, 49)); pb_offset += r_49
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*25, r_48  -pb_dist, pb_height, 48)); pb_offset += r_48
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*25, r_47  -pb_dist, pb_height, 47)); pb_offset += r_47
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*25, r_46,         pb_height, 46))
 
-        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*26, 0, 0, "Juz 27"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*26, r_57, pb_start_h, 57)); acum += r_57
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*26, r_56, pb_start_h, 56)); acum += r_56
-        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*26, r_55, pb_start_h, 55)); acum += r_55
-        self.list_rect_progress_bar.append(Rectangle(3*pb_hd+acum, pb_start_y + pb_vd*26, r_54, pb_start_h, 54)); acum += r_54
-        self.list_rect_progress_bar.append(Rectangle(4*pb_hd+acum, pb_start_y + pb_vd*26, r_53, pb_start_h, 53)); acum += r_53
-        self.list_rect_progress_bar.append(Rectangle(5*pb_hd+acum, pb_start_y + pb_vd*26, r_52, pb_start_h, 52)); acum += r_52
-        self.list_rect_progress_bar.append(Rectangle(6*pb_hd+acum, pb_start_y + pb_vd*26, r_51_2, pb_start_h, 51))
+        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*26, 0, 0, "Juz 27"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*26, r_57-pb_dist, pb_height, 57)); pb_offset += r_57
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*26, r_56-pb_dist, pb_height, 56)); pb_offset += r_56
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*26, r_55-pb_dist, pb_height, 55)); pb_offset += r_55
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*26, r_54-pb_dist, pb_height, 54)); pb_offset += r_54
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*26, r_53-pb_dist, pb_height, 53)); pb_offset += r_53
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*26, r_52-pb_dist, pb_height, 52)); pb_offset += r_52
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*26, r_51_2,     pb_height, 51))
 
-        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*27, 0, 0, "Juz 28"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle(0*pb_hd+acum, pb_start_y + pb_vd*27, r_66, pb_start_h, 66)); acum += r_66
-        self.list_rect_progress_bar.append(Rectangle(1*pb_hd+acum, pb_start_y + pb_vd*27, r_65, pb_start_h, 65)); acum += r_65
-        self.list_rect_progress_bar.append(Rectangle(2*pb_hd+acum, pb_start_y + pb_vd*27, r_64, pb_start_h, 64)); acum += r_64
-        self.list_rect_progress_bar.append(Rectangle(3*pb_hd+acum, pb_start_y + pb_vd*27, r_63, pb_start_h, 63)); acum += r_63
-        self.list_rect_progress_bar.append(Rectangle(4*pb_hd+acum, pb_start_y + pb_vd*27, r_62, pb_start_h, 62)); acum += r_62
-        self.list_rect_progress_bar.append(Rectangle(5*pb_hd+acum, pb_start_y + pb_vd*27, r_61, pb_start_h, 61)); acum += r_61
-        self.list_rect_progress_bar.append(Rectangle(6*pb_hd+acum, pb_start_y + pb_vd*27, r_60, pb_start_h, 60)); acum += r_60
-        self.list_rect_progress_bar.append(Rectangle(7*pb_hd+acum, pb_start_y + pb_vd*27, r_59, pb_start_h, 59)); acum += r_59
-        self.list_rect_progress_bar.append(Rectangle(8*pb_hd+acum, pb_start_y + pb_vd*27, r_58, pb_start_h, 58))
+        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*27, 0, 0, "Juz 28"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*27, r_66-pb_dist, pb_height, 66)); pb_offset += r_66
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*27, r_65-pb_dist, pb_height, 65)); pb_offset += r_65
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*27, r_64-pb_dist, pb_height, 64)); pb_offset += r_64
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*27, r_63-pb_dist, pb_height, 63)); pb_offset += r_63
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*27, r_62-pb_dist, pb_height, 62)); pb_offset += r_62
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*27, r_61-pb_dist, pb_height, 61)); pb_offset += r_61
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*27, r_60-pb_dist, pb_height, 60)); pb_offset += r_60
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*27, r_59-pb_dist, pb_height, 59)); pb_offset += r_59
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*27, r_58,       pb_height, 58))
 
-        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*28, 0, 0, "Juz 29"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle( 0*pb_hd+acum, pb_start_y + pb_vd*28, r_77, pb_start_h, 77)); acum += r_77
-        self.list_rect_progress_bar.append(Rectangle( 1*pb_hd+acum, pb_start_y + pb_vd*28, r_76, pb_start_h, 76)); acum += r_76
-        self.list_rect_progress_bar.append(Rectangle( 2*pb_hd+acum, pb_start_y + pb_vd*28, r_75, pb_start_h, 75)); acum += r_75
-        self.list_rect_progress_bar.append(Rectangle( 3*pb_hd+acum, pb_start_y + pb_vd*28, r_74, pb_start_h, 74)); acum += r_74
-        self.list_rect_progress_bar.append(Rectangle( 4*pb_hd+acum, pb_start_y + pb_vd*28, r_73, pb_start_h, 73)); acum += r_73
-        self.list_rect_progress_bar.append(Rectangle( 5*pb_hd+acum, pb_start_y + pb_vd*28, r_72, pb_start_h, 72)); acum += r_72
-        self.list_rect_progress_bar.append(Rectangle( 6*pb_hd+acum, pb_start_y + pb_vd*28, r_71, pb_start_h, 71)); acum += r_71
-        self.list_rect_progress_bar.append(Rectangle( 7*pb_hd+acum, pb_start_y + pb_vd*28, r_70, pb_start_h, 70)); acum += r_70
-        self.list_rect_progress_bar.append(Rectangle( 8*pb_hd+acum, pb_start_y + pb_vd*28, r_69, pb_start_h, 69)); acum += r_69
-        self.list_rect_progress_bar.append(Rectangle( 9*pb_hd+acum, pb_start_y + pb_vd*28, r_68, pb_start_h, 68)); acum += r_68
-        self.list_rect_progress_bar.append(Rectangle(10*pb_hd+acum, pb_start_y + pb_vd*28, r_67, pb_start_h, 67))
+        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*28, 0, 0, "Juz 29"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*28, r_77-pb_dist, pb_height, 77)); pb_offset += r_77
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*28, r_76-pb_dist, pb_height, 76)); pb_offset += r_76
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*28, r_75-pb_dist, pb_height, 75)); pb_offset += r_75
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*28, r_74-pb_dist, pb_height, 74)); pb_offset += r_74
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*28, r_73-pb_dist, pb_height, 73)); pb_offset += r_73
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*28, r_72-pb_dist, pb_height, 72)); pb_offset += r_72
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*28, r_71-pb_dist, pb_height, 71)); pb_offset += r_71
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*28, r_70-pb_dist, pb_height, 70)); pb_offset += r_70
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*28, r_69-pb_dist, pb_height, 69)); pb_offset += r_69
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*28, r_68-pb_dist, pb_height, 68)); pb_offset += r_68
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*28, r_67,       pb_height, 67))
 
 
-        self.list_rect_progress_bar.append(Rectangle(0, pb_start_h + pb_start_y + pb_vd*29, 0, 0, "Juz 30"))
-        acum = pb_start_x
-        self.list_rect_progress_bar.append(Rectangle( 0*pb_hd+acum, pb_start_y + pb_vd*29, r_114, pb_start_h, 114)); acum += r_114
-        self.list_rect_progress_bar.append(Rectangle( 1*pb_hd+acum, pb_start_y + pb_vd*29, r_113, pb_start_h, 113)); acum += r_113
-        self.list_rect_progress_bar.append(Rectangle( 2*pb_hd+acum, pb_start_y + pb_vd*29, r_112, pb_start_h, 112)); acum += r_112
-        self.list_rect_progress_bar.append(Rectangle( 3*pb_hd+acum, pb_start_y + pb_vd*29, r_111, pb_start_h, 111)); acum += r_111
-        self.list_rect_progress_bar.append(Rectangle( 4*pb_hd+acum, pb_start_y + pb_vd*29, r_110, pb_start_h, 110)); acum += r_110
-        self.list_rect_progress_bar.append(Rectangle( 5*pb_hd+acum, pb_start_y + pb_vd*29, r_109, pb_start_h, 109)); acum += r_109
-        self.list_rect_progress_bar.append(Rectangle( 6*pb_hd+acum, pb_start_y + pb_vd*29, r_108, pb_start_h, 108)); acum += r_108
-        self.list_rect_progress_bar.append(Rectangle( 7*pb_hd+acum, pb_start_y + pb_vd*29, r_107, pb_start_h, 107)); acum += r_107
-        self.list_rect_progress_bar.append(Rectangle( 8*pb_hd+acum, pb_start_y + pb_vd*29, r_106, pb_start_h, 106)); acum += r_106
-        self.list_rect_progress_bar.append(Rectangle( 9*pb_hd+acum, pb_start_y + pb_vd*29, r_105, pb_start_h, 105)); acum += r_106
-        self.list_rect_progress_bar.append(Rectangle(10*pb_hd+acum, pb_start_y + pb_vd*29, r_104, pb_start_h, 104)); acum += r_104
-        self.list_rect_progress_bar.append(Rectangle(11*pb_hd+acum, pb_start_y + pb_vd*29, r_103, pb_start_h, 103)); acum += r_103
-        self.list_rect_progress_bar.append(Rectangle(12*pb_hd+acum, pb_start_y + pb_vd*29, r_102, pb_start_h, 102)); acum += r_102
-        self.list_rect_progress_bar.append(Rectangle(13*pb_hd+acum, pb_start_y + pb_vd*29, r_101, pb_start_h, 101)); acum += r_101
-        self.list_rect_progress_bar.append(Rectangle(14*pb_hd+acum, pb_start_y + pb_vd*29, r_100, pb_start_h, 100)); acum += r_100
-        self.list_rect_progress_bar.append(Rectangle(15*pb_hd+acum, pb_start_y + pb_vd*29, r_99,  pb_start_h, 99)); acum += r_99
-        self.list_rect_progress_bar.append(Rectangle(16*pb_hd+acum, pb_start_y + pb_vd*29, r_98,  pb_start_h, 98)); acum += r_98
-        self.list_rect_progress_bar.append(Rectangle(17*pb_hd+acum, pb_start_y + pb_vd*29, r_97,  pb_start_h, 97)); acum += r_97
-        self.list_rect_progress_bar.append(Rectangle(18*pb_hd+acum, pb_start_y + pb_vd*29, r_96,  pb_start_h, 96)); acum += r_96
-        self.list_rect_progress_bar.append(Rectangle(19*pb_hd+acum, pb_start_y + pb_vd*29, r_95,  pb_start_h, 95)); acum += r_95
-        self.list_rect_progress_bar.append(Rectangle(20*pb_hd+acum, pb_start_y + pb_vd*29, r_94,  pb_start_h, 94)); acum += r_94
-        self.list_rect_progress_bar.append(Rectangle(21*pb_hd+acum, pb_start_y + pb_vd*29, r_93,  pb_start_h, 93)); acum += r_93
-        self.list_rect_progress_bar.append(Rectangle(22*pb_hd+acum, pb_start_y + pb_vd*29, r_92,  pb_start_h, 92)); acum += r_92
-        self.list_rect_progress_bar.append(Rectangle(23*pb_hd+acum, pb_start_y + pb_vd*29, r_91,  pb_start_h, 91)); acum += r_91
-        self.list_rect_progress_bar.append(Rectangle(24*pb_hd+acum, pb_start_y + pb_vd*29, r_90,  pb_start_h, 90)); acum += r_90
-        self.list_rect_progress_bar.append(Rectangle(25*pb_hd+acum, pb_start_y + pb_vd*29, r_89,  pb_start_h, 89)); acum += r_89
-        self.list_rect_progress_bar.append(Rectangle(26*pb_hd+acum, pb_start_y + pb_vd*29, r_88,  pb_start_h, 88)); acum += r_88
-        self.list_rect_progress_bar.append(Rectangle(27*pb_hd+acum, pb_start_y + pb_vd*29, r_87,  pb_start_h, 87)); acum += r_87
-        self.list_rect_progress_bar.append(Rectangle(28*pb_hd+acum, pb_start_y + pb_vd*29, r_86,  pb_start_h, 86)); acum += r_86
-        self.list_rect_progress_bar.append(Rectangle(29*pb_hd+acum, pb_start_y + pb_vd*29, r_85,  pb_start_h, 85)); acum += r_85
-        self.list_rect_progress_bar.append(Rectangle(30*pb_hd+acum, pb_start_y + pb_vd*29, r_84,  pb_start_h, 84)); acum += r_84
-        self.list_rect_progress_bar.append(Rectangle(31*pb_hd+acum, pb_start_y + pb_vd*29, r_83,  pb_start_h, 83)); acum += r_83
-        self.list_rect_progress_bar.append(Rectangle(32*pb_hd+acum, pb_start_y + pb_vd*29, r_82,  pb_start_h, 82)); acum += r_82
-        self.list_rect_progress_bar.append(Rectangle(33*pb_hd+acum, pb_start_y + pb_vd*29, r_81,  pb_start_h, 81)); acum += r_81
-        self.list_rect_progress_bar.append(Rectangle(34*pb_hd+acum, pb_start_y + pb_vd*29, r_80,  pb_start_h, 80)); acum += r_80
-        self.list_rect_progress_bar.append(Rectangle(35*pb_hd+acum, pb_start_y + pb_vd*29, r_79,  pb_start_h, 79)); acum += r_79
-        self.list_rect_progress_bar.append(Rectangle(36*pb_hd+acum, pb_start_y + pb_vd*29, r_78,  pb_start_h, 78))
+        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*29, 0, 0, "Juz 30"))
+        pb_offset = pb_line_x0
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_114-pb_dist, pb_height, 114)); pb_offset += r_114
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_113-pb_dist, pb_height, 113)); pb_offset += r_113
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_112-pb_dist, pb_height, 112)); pb_offset += r_112
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_111-pb_dist, pb_height, 111)); pb_offset += r_111
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_110-pb_dist, pb_height, 110)); pb_offset += r_110
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_109-pb_dist, pb_height, 109)); pb_offset += r_109
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_108-pb_dist, pb_height, 108)); pb_offset += r_108
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_107-pb_dist, pb_height, 107)); pb_offset += r_107
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_106-pb_dist, pb_height, 106)); pb_offset += r_106
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_105-pb_dist, pb_height, 105)); pb_offset += r_106
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_104-pb_dist, pb_height, 104)); pb_offset += r_104
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_103-pb_dist, pb_height, 103)); pb_offset += r_103
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_102-pb_dist, pb_height, 102)); pb_offset += r_102
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_101-pb_dist, pb_height, 101)); pb_offset += r_101
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_100-pb_dist, pb_height, 100)); pb_offset += r_100
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_99 -pb_dist,  pb_height, 99)); pb_offset += r_99
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_98 -pb_dist,  pb_height, 98)); pb_offset += r_98
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_97 -pb_dist,  pb_height, 97)); pb_offset += r_97
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_96 -pb_dist,  pb_height, 96)); pb_offset += r_96
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_95 -pb_dist,  pb_height, 95)); pb_offset += r_95
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_94 -pb_dist,  pb_height, 94)); pb_offset += r_94
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_93 -pb_dist,  pb_height, 93)); pb_offset += r_93
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_92 -pb_dist,  pb_height, 92)); pb_offset += r_92
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_91 -pb_dist,  pb_height, 91)); pb_offset += r_91
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_90 -pb_dist,  pb_height, 90)); pb_offset += r_90
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_89 -pb_dist,  pb_height, 89)); pb_offset += r_89
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_88 -pb_dist,  pb_height, 88)); pb_offset += r_88
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_87 -pb_dist,  pb_height, 87)); pb_offset += r_87
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_86 -pb_dist,  pb_height, 86)); pb_offset += r_86
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_85 -pb_dist,  pb_height, 85)); pb_offset += r_85
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_84 -pb_dist,  pb_height, 84)); pb_offset += r_84
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_83 -pb_dist,  pb_height, 83)); pb_offset += r_83
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_82 -pb_dist,  pb_height, 82)); pb_offset += r_82
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_81 -pb_dist,  pb_height, 81)); pb_offset += r_81
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_80 -pb_dist,  pb_height, 80)); pb_offset += r_80
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_79 -pb_dist,  pb_height, 79)); pb_offset += r_79
+        self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_78,         pb_height, 78))
 
 
         # Progress Bar Tab
@@ -609,7 +609,8 @@ class Window(Gtk.Window):
             if event.button == Gdk.BUTTON_PRIMARY:
                 for rect in self.list_rect_progress_bar:
                     if (rect.x <= event.x <= rect.x + rect.width and
-                        rect.y <= event.y <= rect.y + rect.height):
+                        rect.y <= event.y <= rect.y + rect.height and
+                        isinstance(rect.caption, int)):
                         self.show_chapter_popover(rect, widget, event)
                         break
 
@@ -722,8 +723,7 @@ class Window(Gtk.Window):
         for rect in self.list_rect_progress_bar:
             rect.color = rect.on_color if rect.caption in self.user.mem_chapters else rect.off_color
         
-        # Ensure Redraw
-        self.queue_draw() 
+        self.queue_draw() # ensure Redraw
 
 
     def refresh_stats_label(self):
