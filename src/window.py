@@ -31,10 +31,6 @@ class Window(Gtk.Window):
         self.set_size_request(580, 550)
         # self.set_resizable(False)
 
-        # Rectangle colors
-        self.rect_on_color  = (0.5, 0.5, 0.5)
-        self.rect_off_color = (0.0, 0.8, 0.0)
-
         # Vertical Box
         outerbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         self.add(outerbox)
@@ -66,12 +62,12 @@ class Window(Gtk.Window):
         stack = Gtk.Stack()
         stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
 
-        # Progress Bars
+        # Create Progress Bars Rectangles
         pb_start_x = 14
         pb_start_y = 20
         pb_start_h = 10
         pb_vd = pb_start_h + 2
-        pb_hd = 1
+        pb_hd = 0 #1
 
         scale = 500
 
@@ -547,6 +543,15 @@ class Window(Gtk.Window):
         drawingarea_matrix.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         stack.add_titled(drawingarea_matrix, "matrix", "Matrix")
 
+        # Create Matrix Rectangles
+        self.list_rect_matrix = []
+        for i in range(self.rects_per_col):
+            for j in range(self.rects_per_line):
+                x = 155+ (self.rects_per_line-1-j) * 35 # from left to right
+                y = 15 + i * 20
+                chapter_num = i * (self.rects_per_line) + j + 1
+                self.list_rect_matrix.append(Rectangle(x, y, 30, 10, chapter_num))
+
         # Create Rectangles for Progress Bar and Matrix
         self.refresh_rectangles()
 
@@ -710,18 +715,12 @@ class Window(Gtk.Window):
 
     def refresh_rectangles(self):
         # Refresh Matrix Rectangles
-        self.list_rect_matrix = [] # updates rectangle colors by creating a new list
-        for i in range(self.rects_per_col):
-            for j in range(self.rects_per_line):
-                x = 155+ (self.rects_per_line-1-j) * 35 # from left to right
-                y = 15 + i * 20
-                chapter_num = i * (self.rects_per_line) + j + 1
-                r, g, b = self.rect_off_color if chapter_num in self.user.mem_chapters else self.rect_on_color
-                self.list_rect_matrix.append(Rectangle(x, y, 30, 10, chapter_num, (r, g, b)))
+        for rect in self.list_rect_matrix:
+            rect.color = rect.on_color if rect.caption in self.user.mem_chapters else rect.off_color
 
         # Refresh Progress Bar Rectangles
         for rect in self.list_rect_progress_bar:
-            rect.color = self.rect_off_color if rect.caption in self.user.mem_chapters else self.rect_on_color
+            rect.color = rect.on_color if rect.caption in self.user.mem_chapters else rect.off_color
         
         # Ensure Redraw
         self.queue_draw() 
