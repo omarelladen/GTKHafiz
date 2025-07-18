@@ -18,7 +18,7 @@ class Window(Gtk.Window):
         # Icon
         self.icon_path = icon_file
         try:
-            self.pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_pb_line_width(self.icon_path, 64, 64, True)
+            self.pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(self.icon_path, 64, 64, True)
             self.set_icon(self.pixbuf)
         except:
             print(f'Failed to load icon from "{self.icon_path}"')
