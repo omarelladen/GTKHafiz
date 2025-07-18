@@ -12,7 +12,7 @@ GTK Hafiz is a simple GTK 3 app to track Qur'an memorization visually.
 </p>
 
 ## Requirements
-This GTK 3 app was made using [PyGObject](https://pygobject.gnome.org/), which is a Python package that provides bindings for GObject based libraries such as GTK, GStreamer, WebKitGTK, GLib, GIO and many more.
+This GTK 3 app uses [PyGObject](https://pygobject.gnome.org/), which is a Python package that provides bindings for GObject based libraries such as GTK, GStreamer, WebKitGTK, GLib, GIO and many more.
 
 The dependencies usually come pre-installed on popular Linux distributions, such as Debian, Mint and Fedora, except on newer versions of Ubuntu - which might not come with the 'python3-gi-cairo' package by default.
 
