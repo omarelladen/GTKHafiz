@@ -633,7 +633,7 @@ class Window(Gtk.Window):
         about = Gtk.AboutDialog(transient_for=self, modal=True)
 
         about.set_program_name("GTK Hafiz")
-        about.set_version("0.1.1")
+        about.set_version("0.2.0")
         about.set_comments("Track Qur'an memorization visually")
         about.set_website("https://github.com/omarelladen/GTK-Hafiz")
         about.set_website_label("Repository")
