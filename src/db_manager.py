@@ -27,27 +27,27 @@ class DBManager():
         return list_chapters
 
     def __load_db_user(self, cur):
-        db_table_users = [a for a in cur.execute("SELECT * FROM users")]
-        if len(db_table_users) > 0:
-            list_users =[]
-            for u in db_table_users:
-                list_users.append(User(u[0], u[1], u[2], u[3], u[4]))
-            user = list_users[0]
+        
+        # Get the username from system 
+        try:
+            username = os.getlogin()
+        except:
+            username = 'user'
 
+        user_data = cur.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
+
+        if user_data: # username already exists on the db, so load it
+            user = User(user_data[0], user_data[1], user_data[2], user_data[3], user_data[4])
             db_table_users_mem_chapters = [a for a in cur.execute("SELECT * FROM mem_chapters")]
             for t in db_table_users_mem_chapters:
                 user.mem_chapters.append(t[1])
-        else:
-            try:
-                username = os.getlogin()
-            except:
-                username = 'user'
+        else: # create a new user on the db
             user = User(username)
-
             cur.execute("""
                 INSERT INTO users
                 (username, n_mem_chapters, n_mem_words, n_mem_verses, n_mem_letters) VALUES (?, ?, ?, ?, ?)
                 """, (user.username, user.n_mem_chapters, user.n_mem_words, user.n_mem_verses, user.n_mem_letters))
+
         return user
 
     def load_db_data(self):
