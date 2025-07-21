@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
 # Include config variables
-. config
+. "$PWD"/config
 
 if [ -f "$DB_FILENAME" ]; then
     rm "$DB_FILENAME"

@@ -17,26 +17,26 @@ This GTK 3 app uses [PyGObject](https://pygobject.gnome.org/), which is a Python
 The dependencies usually come pre-installed on popular Linux distributions, such as Debian, Mint and Fedora, except on newer versions of Ubuntu - which might not come with the 'python3-gi-cairo' package by default.
 
 To install them on Debian-based distributions:
-```bash
+```sh
 sudo apt install python3-gi python3-gi-cairo python3-cairo gir1.2-gtk-3.0
 ```
 To configure on other operating systems, including Windows, follow the instructions on the [PyGObject website](https://pygobject.gnome.org/getting_started.html), making sure to replace 'GTK4' with 'GTK3' when instaling packages.
 
 ## Run the App:
-```bash
+```sh
 python3 main.py
 ```
 
 ## Reset the Database:
-The database setup is made using the sqlite3 CLI via a Bash script.
+The database setup is made using the sqlite3 CLI via a Shell script.
 
 To install the sqlite3 CLI on Debian-based distributions:
-```bash
+```sh
 sudo apt install sqlite3
 ```
-Run the Bash Script:
-```bash
-bash setup_db.sh
+Run the Shell Script:
+```sh
+sh setup_db.sh
 ```
 
 ## Credits
