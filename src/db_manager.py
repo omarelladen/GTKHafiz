@@ -36,12 +36,12 @@ class DBManager():
 
         user_data = cur.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
 
-        if user_data: # username already exists on the db, so load it
+        if user_data: # username already exists in the db, so load it
             user = User(user_data[0], user_data[1], user_data[2], user_data[3], user_data[4])
             db_table_users_mem_chapters = [a for a in cur.execute("SELECT * FROM mem_chapters")]
             for t in db_table_users_mem_chapters:
                 user.mem_chapters.append(t[1])
-        else: # create a new user on the db
+        else: # create a new user in the db
             user = User(username)
             cur.execute("""
                 INSERT INTO users
