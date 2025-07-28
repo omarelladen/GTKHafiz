@@ -15,6 +15,8 @@ class Window(Gtk.Window):
         self.book = book
         self.list_chapters = list_chapters
 
+        self.user_data_changed = False
+
         # Icon
         self.icon_path = icon_file
         try:
@@ -597,7 +599,8 @@ class Window(Gtk.Window):
 
 
     def on_destroy(self, window):
-        self.db_manager.save_user_data()
+        if self.user_data_changed:
+            self.db_manager.save_user_data()
         Gtk.main_quit()
 
     def on_click_outside_popover(self, widget, event):
@@ -662,6 +665,7 @@ class Window(Gtk.Window):
             self.user.n_mem_verses   += chapter.n_verses
             self.user.n_mem_words    += chapter.n_words
             self.user.n_mem_letters  += chapter.n_letters
+
         # Checkbox deactivation
         else:
             self.user.mem_chapters.remove(chapter.number)
@@ -670,6 +674,8 @@ class Window(Gtk.Window):
             self.user.n_mem_words    -= chapter.n_words
             self.user.n_mem_letters  -= chapter.n_letters
         
+        self.user_data_changed = True
+
         # Refresh
         self.refresh_stats_label()
         self.refresh_rectangles()
