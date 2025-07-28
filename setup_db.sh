@@ -8,7 +8,6 @@ if [ -f "$DB_FILENAME" ]; then
 fi
 
 sqlite3 "$DB_FILENAME" <<EOF
-
 CREATE TABLE IF NOT EXISTS
 books
 (
