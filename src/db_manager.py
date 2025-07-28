@@ -92,7 +92,7 @@ class DBManager():
                 cur.execute("""
                     DELETE FROM mem_chapters
                     WHERE users_username = ? AND
-                        chapters_number = ?
+                          chapters_number = ?
                 """, (user.username, chapter.number))
 
             con.commit()
