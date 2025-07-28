@@ -1,7 +1,6 @@
 
 import sqlite3
 import os
-from concurrent.futures import ThreadPoolExecutor
 
 from user import User
 from chapter import Chapter
@@ -10,7 +9,6 @@ from book import Book
 class DBManager():
     def __init__(self, db_filename):
         self.db_filename = db_filename
-        self.executor = ThreadPoolExecutor(max_workers=1)
 
     def __load_db_books(self, cur):
         db_table_books = [a for a in cur.execute("SELECT * FROM books")]
@@ -37,18 +35,18 @@ class DBManager():
         user_data = cur.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
 
         if user_data: # username already exists in the db, so load it
-            user = User(user_data[0], user_data[1], user_data[2], user_data[3], user_data[4])
+            self.__user = User(user_data[0], user_data[1], user_data[2], user_data[3], user_data[4])
             db_table_users_mem_chapters = [a for a in cur.execute("SELECT * FROM mem_chapters")]
             for t in db_table_users_mem_chapters:
-                user.mem_chapters.append(t[1])
+                self.__user.mem_chapters.append(t[1])
         else: # create a new user in the db
-            user = User(username)
+            self.__user = User(username)
             cur.execute("""
                 INSERT INTO users
                 (username, n_mem_chapters, n_mem_words, n_mem_verses, n_mem_letters) VALUES (?, ?, ?, ?, ?)
-                """, (user.username, user.n_mem_chapters, user.n_mem_words, user.n_mem_verses, user.n_mem_letters))
+                """, (self.__user.username, self.__user.n_mem_chapters, self.__user.n_mem_words, self.__user.n_mem_verses, self.__user.n_mem_letters))
 
-        return user
+        return self.__user
 
     def load_db_data(self):
         if not os.path.isfile(self.db_filename):
@@ -70,30 +68,26 @@ class DBManager():
 
         return user, list_books, list_chapters
 
-    def save_mem_chapters(self, user, chapter, op):
-        self.executor.submit(self._save_mem_chapters, user, chapter, op)
+    def save_user_data(self):
+        con = sqlite3.connect(self.db_filename)
+        cur = con.cursor()
 
-    def _save_mem_chapters(self, user:User, chapter:Chapter, op:str):
-            con = sqlite3.connect(self.db_filename)
-            cur = con.cursor()
+        cur.execute("""
+            UPDATE users
+            SET n_mem_chapters = ?, n_mem_verses = ?, n_mem_words = ?, n_mem_letters = ?
+            WHERE username = ?
+        """, (self.__user.n_mem_chapters, self.__user.n_mem_verses, self.__user.n_mem_words, self.__user.n_mem_letters, self.__user.username))
 
+        cur.execute("""
+            DELETE FROM mem_chapters
+            WHERE users_username = ?
+        """, (self.__user.username,))
+
+        for c in self.__user.mem_chapters:
             cur.execute("""
-                UPDATE users
-                SET n_mem_chapters = ?, n_mem_verses = ?, n_mem_words = ?, n_mem_letters = ?
-                WHERE username = ?
-            """, (user.n_mem_chapters, user.n_mem_verses, user.n_mem_words, user.n_mem_letters, user.username))
+                INSERT INTO mem_chapters
+                (users_username, chapters_number) VALUES (?, ?)
+            """, (self.__user.username, c))
 
-            if op == 'add':
-                cur.execute("""
-                    INSERT INTO mem_chapters
-                    (users_username, chapters_number) VALUES (?, ?)
-                """, (user.username, chapter.number))
-            elif op == 'rm':
-                cur.execute("""
-                    DELETE FROM mem_chapters
-                    WHERE users_username = ? AND
-                          chapters_number = ?
-                """, (user.username, chapter.number))
-
-            con.commit()
-            con.close()
+        con.commit()
+        con.close()

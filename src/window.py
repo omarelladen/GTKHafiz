@@ -596,6 +596,10 @@ class Window(Gtk.Window):
         outerbox.pack_start(stack, True, True, 0)
 
 
+    def on_destroy(self, window):
+        self.db_manager.save_user_data()
+        Gtk.main_quit()
+
     def on_click_outside_popover(self, widget, event):
         if (self.is_popover_chapter_active == True and
             event.x != self.cursor_when_popover_chapter_x and
@@ -658,7 +662,6 @@ class Window(Gtk.Window):
             self.user.n_mem_verses   += chapter.n_verses
             self.user.n_mem_words    += chapter.n_words
             self.user.n_mem_letters  += chapter.n_letters
-            self.db_manager.save_mem_chapters(self.user, chapter, 'add')
         # Checkbox deactivation
         else:
             self.user.mem_chapters.remove(chapter.number)
@@ -666,7 +669,6 @@ class Window(Gtk.Window):
             self.user.n_mem_verses   -= chapter.n_verses
             self.user.n_mem_words    -= chapter.n_words
             self.user.n_mem_letters  -= chapter.n_letters
-            self.db_manager.save_mem_chapters(self.user, chapter, 'rm')
         
         # Refresh
         self.refresh_stats_label()
