@@ -13,6 +13,7 @@ exec(open('config').read())
 from db_manager import DBManager
 from window import Window
 
+
 def main():
     # Load persistant data from db
     db_manager = DBManager(DB_FILENAME)
@@ -21,7 +22,7 @@ def main():
 
     # Load GTK Window
     win = Window(ICON_FILE, db_manager, user, book, list_chapters)
-    win.connect("destroy", Gtk.main_quit)
+    win.connect("destroy", win.on_destroy)
     win.show_all()
     Gtk.main()
 
