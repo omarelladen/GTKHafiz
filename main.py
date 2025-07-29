@@ -17,14 +17,18 @@ from window import Window
 def main():
     # Load persistant data from db
     db_manager = DBManager(DB_FILENAME)
-    user, list_books, list_chapters = db_manager.load_db_data()
-    book = list_books[0]
 
-    # Load GTK Window
-    win = Window(ICON_FILE, db_manager, user, book, list_chapters)
-    win.connect("destroy", win.on_destroy)
-    win.show_all()
-    Gtk.main()
+    try:
+        user, list_books, list_chapters = db_manager.load_db_data()
+        book = list_books[0]
+
+        # Load GTK Window
+        win = Window(ICON_FILE, db_manager, user, book, list_chapters)
+        win.connect("destroy", win.on_destroy)
+        win.show_all()
+        Gtk.main()
+    except Exception as e:
+        print(f"Error starting aplication: {e}")
 
 if __name__ == '__main__':
     main()

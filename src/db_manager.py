@@ -25,7 +25,6 @@ class DBManager():
         return list_chapters
 
     def __load_db_user(self, cur):
-        
         # Get the username from system 
         try:
             username = os.getlogin()
@@ -62,11 +61,10 @@ class DBManager():
             
             con.commit()
             con.close()
-        except:
-            print(f'Failed to load data from "{self.db_filename}"')
-            exit(1)
-
-        return user, list_books, list_chapters
+        except con.DatabaseError:
+            raise con.DatabaseError(f'Failed to load data from "{self.db_filename}"')
+        else:
+            return user, list_books, list_chapters
 
     def save_user_data(self):
         con = sqlite3.connect(self.db_filename)
