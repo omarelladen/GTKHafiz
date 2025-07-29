@@ -19,6 +19,7 @@ class Window(Gtk.Window):
 
         # Icon
         self.icon_path = icon_file
+        self.pixbuf = None
         try:
             self.pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(self.icon_path, 64, 64, True)
             self.set_icon(self.pixbuf)
@@ -603,6 +604,7 @@ class Window(Gtk.Window):
             self.db_manager.save_user_data()
         Gtk.main_quit()
 
+
     def on_click_outside_popover(self, widget, event):
         if (self.is_popover_chapter_active == True and
             event.x != self.cursor_when_popover_chapter_x and
@@ -648,16 +650,14 @@ class Window(Gtk.Window):
         about.set_license_type(Gtk.License.GPL_3_0)
         about.set_copyright("Copyright © 2025 Omar El Laden")
 
-        try:
+        if self.pixbuf:
             about.set_logo(self.pixbuf)
-        except:
-            print(f'Failed to load icon from "{self.icon_path}"')
 
         about.connect("response", lambda dialog, response: dialog.destroy())
         about.present()
 
 
-    def on_toggle_checkbox(self, button, chapter=''):
+    def on_toggle_checkbox(self, button, chapter):
         # Checkbox activation
         if button.get_active():
             self.user.mem_chapters.append(chapter.number)
