@@ -21,7 +21,7 @@ def main():
         book = list_books[0]
 
         # Load GTK Window
-        win = Window(ICON_FILE, db_manager, user, book, list_chapters)
+        win = Window(ICON_FILE, BAR_SIZES_FILE, db_manager, user, book, list_chapters)
         win.connect("destroy", win.on_destroy)
         win.show_all()
         Gtk.main()
