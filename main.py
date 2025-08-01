@@ -1,11 +1,11 @@
 import os
 
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
+
 import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
-
-import sys
-sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 
 # Include config variables
 exec(open('config').read())
@@ -13,12 +13,10 @@ exec(open('config').read())
 from db_manager import DBManager
 from window import Window
 
-
 def main():
-    # Load persistant data from db
     db_manager = DBManager(DB_FILENAME)
-
     try:
+        # Load persistant data from db
         user, list_books, list_chapters = db_manager.load_db_data()
         book = list_books[0]
 

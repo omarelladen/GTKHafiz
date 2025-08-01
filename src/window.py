@@ -4,9 +4,19 @@ import gi
 from gi.repository import Gtk, Gio, Gdk, GdkPixbuf
 
 from rectangle import Rectangle
+from db_manager import DBManager
+from user import User
+from book import Book
+from chapter import Chapter
 
 class Window(Gtk.Window):
-    def __init__(self, icon_file, db_manager, user, book, list_chapters):
+    def __init__(self, 
+        icon_file: str = '',
+        db_manager: DBManager = None,
+        user: User = None,
+        book: Book = None,
+        list_chapters: list[Chapter] = []
+    ):
         super().__init__()
 
         # Data
@@ -18,19 +28,18 @@ class Window(Gtk.Window):
         self.user_data_changed = False
 
         # Icon
-        self.icon_path = icon_file
-        self.pixbuf = None
         try:
-            self.pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(self.icon_path, 64, 64, True)
+            self.pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(icon_file, 64, 64, True)
             self.set_icon(self.pixbuf)
         except:
-            print(f'Failed to load icon from "{self.icon_path}"')
+            self.pixbuf = None
+            print(f'Failed to load icon from "{icon_file}"')
 
         # Window
-        self.win_default_l = 350
-        self.win_default_h = 400
+        win_default_l = 350
+        win_default_h = 400
         self.set_border_width(6)
-        self.set_default_size(self.win_default_l, self.win_default_h)
+        self.set_default_size(win_default_l, win_default_h)
         self.set_size_request(580, 550)
         self.set_resizable(False)
 
@@ -39,15 +48,15 @@ class Window(Gtk.Window):
         self.add(outerbox)
 
         # Menu Popover
-        self.popover_menu = Gtk.Popover()
+        popover_menu = Gtk.Popover()
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         bt_about = Gtk.ModelButton(label="About GTK Hafiz")
-        bt_about.connect("clicked", self.on_click_about)
+        bt_about.connect("clicked", self._on_click_about)
         vbox.pack_start(bt_about, False, True, 10)
         vbox.show_all()
-        self.popover_menu.add(vbox)
-        self.popover_menu.set_position(Gtk.PositionType.BOTTOM)
-        
+        popover_menu.add(vbox)
+        popover_menu.set_position(Gtk.PositionType.BOTTOM)
+
         # Header Bar
         headerbar = Gtk.HeaderBar()
         headerbar.set_show_close_button(True)
@@ -55,7 +64,7 @@ class Window(Gtk.Window):
         self.set_titlebar(headerbar)
 
         # Menu Button
-        bt_menu = Gtk.MenuButton(popover=self.popover_menu)
+        bt_menu = Gtk.MenuButton(popover=popover_menu)
         icon = Gio.ThemedIcon(name="open-menu-symbolic")
         image = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.BUTTON)
         bt_menu.add(image)
@@ -66,12 +75,12 @@ class Window(Gtk.Window):
         stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
 
         # Create Progress Bars Rectangles
-        pb_line_x0 = 14 # initial x
-        pb_line_y0 = 20 # initial y
-        pb_height = 10 # bar height
-        pb_lines_dist = pb_height + 2 # distance between lines
-        pb_dist = 1 # distance between 2 bars
-        pb_line_width = 500 # lenght of line
+        pb_line_x0 = 14  # initial x
+        pb_line_y0 = 20  # initial y
+        pb_height = 10  # bar height
+        pb_lines_dist = pb_height + 2  # distance between lines
+        pb_dist = 1  # distance between 2 bars
+        pb_line_width = 500  # lenght of line
 
         t_1 = 298
         s_1 = pb_line_width/t_1
@@ -298,7 +307,6 @@ class Window(Gtk.Window):
         r_113 = 3  * s_30
         r_114 = 4  * s_30
 
-
         self.list_rect_progress_bar = []
         self.list_rect_progress_bar.append(Rectangle(0, 0 + pb_line_y0 + pb_lines_dist*0, 0, 0, "Juz'"))
 
@@ -340,7 +348,7 @@ class Window(Gtk.Window):
         self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*7, r_7_1-pb_dist, pb_height, 7)); pb_offset += r_7_1
         self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*7, r_6_2,       pb_height, 6))
 
-        self.list_rect_progress_bar.append(Rectangle(pb_line_x0/4, pb_height + pb_line_y0 + pb_lines_dist*8, 0, 0, "Juz 9"),)
+        self.list_rect_progress_bar.append(Rectangle(pb_line_x0/4, pb_height + pb_line_y0 + pb_lines_dist*8, 0, 0, "Juz 9"))
         pb_offset = pb_line_x0
         self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*8, r_8_1-pb_dist, pb_height, 8)); pb_offset += r_8_1
         self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*8, r_7_2,       pb_height, 7))
@@ -414,7 +422,7 @@ class Window(Gtk.Window):
         self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*20, r_30  -pb_dist, pb_height, 30)); pb_offset += r_30
         self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*20, r_29_2,       pb_height, 29))
 
-        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*21, 0, 0, "Juz 22"),)
+        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*21, 0, 0, "Juz 22"))
         pb_offset = pb_line_x0
         self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*21, r_36_1-pb_dist, pb_height, 36)); pb_offset += r_36_1
         self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*21, r_35  -pb_dist, pb_height, 35)); pb_offset += r_35
@@ -428,7 +436,7 @@ class Window(Gtk.Window):
         self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*22, r_37  -pb_dist, pb_height, 37)); pb_offset += r_37
         self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*22, r_36_2,       pb_height, 36))
 
-        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*23, 0, 0, "Juz 24"),)
+        self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*23, 0, 0, "Juz 24"))
         pb_offset = pb_line_x0
         self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*23, r_41_1-pb_dist, pb_height, 41)); pb_offset += r_41_1
         self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*23, r_40  -pb_dist, pb_height, 40)); pb_offset += r_40
@@ -487,7 +495,6 @@ class Window(Gtk.Window):
         self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*28, r_68-pb_dist, pb_height, 68)); pb_offset += r_68
         self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*28, r_67,       pb_height, 67))
 
-
         self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*29, 0, 0, "Juz 30"))
         pb_offset = pb_line_x0
         self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_114-pb_dist, pb_height, 114)); pb_offset += r_114
@@ -528,45 +535,43 @@ class Window(Gtk.Window):
         self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_79 -pb_dist,  pb_height, 79)); pb_offset += r_79
         self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*29, r_78,         pb_height, 78))
 
-
         # Progress Bar Tab
         drawingarea_progress_bar = Gtk.DrawingArea()
-        drawingarea_progress_bar.connect("draw", self.on_draw_progress_bar)
-        drawingarea_progress_bar.connect("button-press-event", self.on_click_progress_bar)
+        drawingarea_progress_bar.connect("draw", self._on_draw_progress_bar)
+        drawingarea_progress_bar.connect("button-press-event", self._on_click_progress_bar)
         drawingarea_progress_bar.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         stack.add_titled(drawingarea_progress_bar, "bars", "Bars")
 
         # Matrix Tab
-        self.rects_per_col  = 19
-        self.rects_per_line = 6
-        self.list_rect_matrix = []
+        rects_per_col = 19
+        rects_per_line = 6
         drawingarea_matrix = Gtk.DrawingArea()
-        drawingarea_matrix.connect("draw", self.on_draw_matrix)
-        drawingarea_matrix.connect("button-press-event", self.on_click_matrix)
+        drawingarea_matrix.connect("draw", self._on_draw_matrix)
+        drawingarea_matrix.connect("button-press-event", self._on_click_matrix)
         drawingarea_matrix.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         stack.add_titled(drawingarea_matrix, "matrix", "Matrix")
 
         # Create Matrix Rectangles
         self.list_rect_matrix = []
-        for i in range(self.rects_per_col):
-            for j in range(self.rects_per_line):
-                x = 155+ (self.rects_per_line-1-j) * 35 # from left to right
-                y = 15 + i * 20
-                chapter_num = i * (self.rects_per_line) + j + 1
+        for i in range(rects_per_col):
+            for j in range(rects_per_line):
+                x = 155 + (rects_per_line-1-j)*35  # from left to right
+                y = 15 + i*20
+                chapter_num = i*(rects_per_line) + j + 1
                 self.list_rect_matrix.append(Rectangle(x, y, 30, 10, chapter_num))
 
         # Create Rectangles for Progress Bar and Matrix
-        self.refresh_rectangles()
+        self._refresh_rectangles()
 
         # List Tab
         checkbutton_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        self.list_checkboxes = []
+        list_checkboxes = []
         for chapter in self.list_chapters:
             checkbutton = Gtk.CheckButton(label=f"{chapter.number}. ({chapter.name_latin}) {chapter.name_arabic}")
             if chapter.number in self.user.mem_chapters:
                 checkbutton.set_active(True)
-            self.list_checkboxes.append((checkbutton, chapter))
-            checkbutton.connect("toggled", lambda btn, obj=chapter: self.on_toggle_checkbox(btn, obj))
+            list_checkboxes.append((checkbutton, chapter))
+            checkbutton.connect("toggled", lambda btn, obj=chapter: self._on_toggle_checkbox(btn, obj))
             checkbutton_container.pack_start(checkbutton, False, False, 0)
         scrolled_window = Gtk.ScrolledWindow()
         scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
@@ -575,7 +580,7 @@ class Window(Gtk.Window):
 
         # Stats Tab
         self.label_stats = Gtk.Label()
-        self.refresh_stats_label()
+        self._refresh_stats_label()
         stack.add_titled(self.label_stats, "stats", "Statistics")
 
         # Chapter Popover
@@ -588,7 +593,7 @@ class Window(Gtk.Window):
         self.cursor_when_popover_chapter_y = None
 
         # All clicks will be checked to be able to hide the chapter popovers
-        self.connect("button-press-event", self.on_click_outside_popover)
+        self.connect("button-press-event", self._on_click_outside_popover)
 
         # Stack Switcher
         stackswitcher = Gtk.StackSwitcher()
@@ -598,33 +603,29 @@ class Window(Gtk.Window):
         outerbox.pack_start(stackswitcher, False, True, 0)
         outerbox.pack_start(stack, True, True, 0)
 
-
     def on_destroy(self, window):
         if self.user_data_changed:
             self.db_manager.save_user_data()
         Gtk.main_quit()
 
-
-    def on_click_outside_popover(self, widget, event):
+    def _on_click_outside_popover(self, widget, event):
         if (self.is_popover_chapter_active == True and
             event.x != self.cursor_when_popover_chapter_x and
             event.y != self.cursor_when_popover_chapter_y):
             self.is_popover_chapter_active = False
             self.popover_chapter.hide()
 
-
-    def on_click_progress_bar(self, widget, event):
+    def _on_click_progress_bar(self, widget, event):
         if event.type == Gdk.EventType.BUTTON_PRESS:
             if event.button == Gdk.BUTTON_PRIMARY:
                 for rect in self.list_rect_progress_bar:
                     if (rect.x <= event.x <= rect.x + rect.width and
                         rect.y <= event.y <= rect.y + rect.height and
                         isinstance(rect.caption, int)):
-                        self.show_chapter_popover(rect, widget, event)
+                        self._show_chapter_popover(rect, widget, event)
                         break
 
-
-    def on_click_matrix(self, widget, event):
+    def _on_click_matrix(self, widget, event):
         if event.type == Gdk.EventType.BUTTON_PRESS:
             if event.button == Gdk.BUTTON_PRIMARY:
                 e_x, e_y = event.x, event.y
@@ -633,12 +634,12 @@ class Window(Gtk.Window):
                     r_y = rect.y
                     r_w = rect.width
                     r_h = rect.height
-                    if r_x <= e_x <= r_x + r_w and r_y <= e_y <= r_y + r_h:
-                        self.show_chapter_popover(rect, widget, event)
+                    if (r_x <= e_x <= r_x + r_w and
+                        r_y <= e_y <= r_y + r_h):
+                        self._show_chapter_popover(rect, widget, event)
                         break
 
-
-    def on_click_about(self, widget):
+    def _on_click_about(self, widget):
         about = Gtk.AboutDialog(transient_for=self, modal=True)
 
         about.set_program_name("GTK Hafiz")
@@ -656,8 +657,7 @@ class Window(Gtk.Window):
         about.connect("response", lambda dialog, response: dialog.destroy())
         about.present()
 
-
-    def on_toggle_checkbox(self, button, chapter):
+    def _on_toggle_checkbox(self, button, chapter):
         # Checkbox activation
         if button.get_active():
             self.user.mem_chapters.append(chapter.number)
@@ -673,15 +673,14 @@ class Window(Gtk.Window):
             self.user.n_mem_verses   -= chapter.n_verses
             self.user.n_mem_words    -= chapter.n_words
             self.user.n_mem_letters  -= chapter.n_letters
-        
+
         self.user_data_changed = True
 
         # Refresh
-        self.refresh_stats_label()
-        self.refresh_rectangles()
+        self._refresh_stats_label()
+        self._refresh_rectangles()
 
-
-    def on_draw_matrix(self, widget, cr):
+    def _on_draw_matrix(self, widget, cr):
         for rect in self.list_rect_matrix:
             r_x = rect.x
             r_y = rect.y
@@ -692,8 +691,7 @@ class Window(Gtk.Window):
             cr.rectangle(r_x, r_y, r_w, r_h)
             cr.fill()
 
-
-    def on_draw_progress_bar(self, widget, cr):
+    def _on_draw_progress_bar(self, widget, cr):
         for rect in self.list_rect_progress_bar:
             cr.set_source_rgb(*rect.color)
             cr.rectangle(rect.x, rect.y, rect.width, rect.height)
@@ -704,9 +702,9 @@ class Window(Gtk.Window):
 
             cr.fill()
 
-
-    def show_chapter_popover(self, rect, widget, event):
+    def _show_chapter_popover(self, rect, widget, event):
         self.label_chapter.set_text(f"{rect.caption}")
+
         e_x = event.x
         e_y = event.y
 
@@ -721,20 +719,18 @@ class Window(Gtk.Window):
         self.cursor_when_popover_chapter_y = e_y
         self.is_popover_chapter_active = True
 
-
-    def refresh_rectangles(self):
+    def _refresh_rectangles(self):
         # Refresh Matrix Rectangles
         for rect in self.list_rect_matrix:
             rect.color = rect.on_color if rect.caption in self.user.mem_chapters else rect.off_color
-
+    
         # Refresh Progress Bar Rectangles
         for rect in self.list_rect_progress_bar:
             rect.color = rect.on_color if rect.caption in self.user.mem_chapters else rect.off_color
-        
-        self.queue_draw() # ensure Redraw
 
+        self.queue_draw()  # ensure Redraw
 
-    def refresh_stats_label(self):
+    def _refresh_stats_label(self):
         self.label_stats.set_markup(
             f"<big><b>Chapters:</b> {self.user.n_mem_chapters} ({round(self.user.n_mem_chapters / self.book.n_chapters * 100, 1)}%)</big>\n"
             f"<big><b>Verses:</b> {self.user.n_mem_verses} ({round(self.user.n_mem_verses / self.book.n_verses * 100, 1)}%)</big>\n"

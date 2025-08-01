@@ -2,12 +2,12 @@ from chapter import Chapter
 
 class User:
     def __init__(self,
-        username         :str = '',
-        n_mem_chapters   :int = 0,
-        n_mem_words      :int = 0,
-        n_mem_verses     :int = 0,
-        n_mem_letters    :int = 0,
-        mem_chapters     :list[Chapter] = [],
+        username: str = '',
+        n_mem_chapters: int = 0,
+        n_mem_words: int = 0,
+        n_mem_verses: int = 0,
+        n_mem_letters: int = 0,
+        mem_chapters: list[Chapter] = [],
     ):
         self.username = username
         self.mem_chapters = mem_chapters
