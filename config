@@ -1,4 +1,5 @@
-DB_FILENAME="db.sqlite3";
+DB_FILENAME="data/db.sqlite3";
 BOOKS_FILE="data/books.csv";
 CHAPTERS_FILE="data/chapters.csv";
 ICON_FILE="imgs/icon.png";
+BAR_SIZES_FILE="data/bar_sizes.csv";
