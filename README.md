@@ -22,13 +22,25 @@ sudo apt install python3-gi python3-gi-cairo python3-cairo gir1.2-gtk-3.0
 ```
 To configure on other operating systems, including Windows, follow the instructions on the [PyGObject website](https://pygobject.gnome.org/getting_started.html), making sure to replace 'GTK4' with 'GTK3' when instaling packages.
 
-## Run the App:
+## Add desktop entry:
+To launch the app directly from the desktop environment, there is a Shell script which after executed will add a desktop entry to ~/.local/share/applications/gtk-hafiz.desktop and also setup the scripts/launcher.sh that will be called to start the app.
+
+To add the entry:
 ```sh
-python3 main.py
+sh scripts/setup_desktop_entry.sh
 ```
 
-## Reset the Database:
-The database setup is made using the sqlite3 CLI via a Shell script.
+You can also directly run:
+```sh
+sh scripts/launcher.sh
+```
+or:
+```sh
+python3 src/main.py
+```
+
+## Reset the database:
+The database setup is done executing a Shell script that recreates the database and inserts the necessary CSV files from data/ using the sqlite3 CLI.
 
 To install the sqlite3 CLI on Debian-based distributions:
 ```sh
@@ -36,10 +48,10 @@ sudo apt install sqlite3
 ```
 Run the Shell Script:
 ```sh
-sh setup_db.sh
+sh scripts/setup_db.sh
 ```
 
 ## Credits
 - Data source: [Quran Analysis](https://qurananalysis.com/analysis/basic-statistics.php?lang=EN)
-- Progress bar inspiration: [ColorArabic](https://commons.wikimedia.org/wiki/File:ColorArabic.png)
+- Inspiration: [ColorArabic](https://commons.wikimedia.org/wiki/File:ColorArabic.png)
 
