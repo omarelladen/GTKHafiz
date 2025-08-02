@@ -84,7 +84,7 @@ class Window(Gtk.Window):
         pb_dist = 1  # distance between 2 bars
         self.list_rect_progress_bar = []
         self.list_rect_progress_bar.append(Rectangle(0, 0 + pb_line_y0 + pb_lines_dist*0, 0, 0, "Juz'"))
-        last_part = -1
+        last_part = None
         with open(bar_sizes_file, mode='r') as file:
             reader = csv.reader(file)
             for line in reader:
@@ -206,7 +206,7 @@ class Window(Gtk.Window):
         about = Gtk.AboutDialog(transient_for=self, modal=True)
 
         about.set_program_name("GTK Hafiz")
-        about.set_version("0.2.1")
+        about.set_version("0.3.0")
         about.set_comments("Track Qur'an memorization visually")
         about.set_website("https://github.com/omarelladen/GTK-Hafiz")
         about.set_website_label("Repository")
