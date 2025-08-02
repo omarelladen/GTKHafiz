@@ -136,9 +136,9 @@ with open(BAR_SIZES_FILE, mode='w') as file:
 
     t_24 = 296
     s_24 = pb_line_width/t_24
-    writer.writerow([24, 39, 77  * s_24])
-    writer.writerow([24, 40, 146 * s_24])
     writer.writerow([24, 41, 73  * s_24])
+    writer.writerow([24, 40, 146 * s_24])
+    writer.writerow([24, 39, 77  * s_24])
 
     t_25 = 298
     s_25 = pb_line_width/t_25
