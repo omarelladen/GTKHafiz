@@ -5,7 +5,7 @@ pb_line_width = 500  # total line length of juz'
 exec(open('config').read())
 
 n_lines = []
-with open('data/lines.csv', mode='r') as file:
+with open(LINES_FILE, mode='r') as file:
     reader = csv.reader(file)
     for line in reader:
         n_lines.append(line)
