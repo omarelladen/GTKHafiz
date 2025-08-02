@@ -84,19 +84,20 @@ class Window(Gtk.Window):
         pb_dist = 1  # distance between 2 bars
         self.list_rect_progress_bar = []
         self.list_rect_progress_bar.append(Rectangle(0, 0 + pb_line_y0 + pb_lines_dist*0, 0, 0, "Juz'"))
-        last_part = None
+        prev_juz = None
         with open(bar_sizes_file, mode='r') as file:
             reader = csv.reader(file)
             for line in reader:
-                part = int(line[0])
+                juz = int(line[0])
                 chapter = int(line[1])
                 length = float(line[2])
-                if part != last_part:
-                    self.list_rect_progress_bar.append(Rectangle(0, pb_height + pb_line_y0 + pb_lines_dist*(part-1), 0, 0, f"Juz' {part}"))
+                if juz != prev_juz:
+                    num_pos = 0 if juz >= 10 else pb_line_x0/4
+                    self.list_rect_progress_bar.append(Rectangle(num_pos, pb_height + pb_line_y0 + pb_lines_dist*(juz-1), 0, 0, f"Juz' {juz}"))
                     pb_offset = pb_line_x0
-                self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*(part-1), length-pb_dist, pb_height, chapter))
+                self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*(juz-1), length-pb_dist, pb_height, chapter))
                 pb_offset += length
-                last_part = part
+                prev_juz = juz
 
         # Progress Bar Tab
         drawingarea_progress_bar = Gtk.DrawingArea()
