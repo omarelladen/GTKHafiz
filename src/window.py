@@ -90,7 +90,7 @@ class Window(Gtk.Window):
             for line in reader:
                 juz = int(line[0])
                 chapter = int(line[1])
-                length = float(line[2])
+                length = float(line[3])
                 if juz != prev_juz:
                     num_pos = 0 if juz >= 10 else pb_line_x0/4
                     self.list_rect_progress_bar.append(Rectangle(num_pos, pb_height + pb_line_y0 + pb_lines_dist*(juz-1), 0, 0, f"Juz' {juz}"))
