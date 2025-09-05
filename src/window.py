@@ -10,47 +10,6 @@ from user import User
 from book import Book
 from chapter import Chapter
 
-'''
-self.pixbuf
-
-win_default_l
-win_default_h
-outerbox
-popover_menu
-vbox
-bt_about
-headerbar
-bt_menu
-icon
-image
-stack
-pb_line_x0
-pb_line_y0
-pb_heigh
-pb_lines_dist
-pb_dist
-
-self.list_rect_progress_bar
-
-prev_juz
-drawingarea_progress_bar
-rects_per_col
-rects_per_line
-drawingarea_matrix
-self.list_rect_matrix
-checkbutton_container
-list_checkboxes = []
-scrolled_window
-
-self.label_stats
-self.popover_chapter
-self.label_chapter
-self.is_popover_chapter_active
-self.cursor_when_popover_chapter_x
-self.cursor_when_popover_chapter_y
-
-stackswitcher
-'''
 class Window(Gtk.Window):
     def __init__(self, 
         icon_file: str = '',
@@ -97,8 +56,8 @@ class Window(Gtk.Window):
         # Menu Button
         bt_menu = Gtk.MenuButton(popover=popover_menu)
         icon = Gio.ThemedIcon(name="open-menu-symbolic")
-        image = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.BUTTON)
-        bt_menu.add(image)
+        img_icon = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.BUTTON)
+        bt_menu.add(img_icon)
         headerbar.pack_end(bt_menu)
 
         # Stack
