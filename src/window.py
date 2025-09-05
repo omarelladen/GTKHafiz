@@ -210,7 +210,7 @@ class Window(Gtk.Window):
         about.connect("response", lambda dialog, response: dialog.destroy())
         about.present()
 
-    def _on_toggle_checkbox(self, button, chapter):  #
+    def _on_toggle_checkbox(self, button, chapter):
         # Checkbox activation
         if button.get_active():
             self.app.user.mem_chapters.append(chapter.number)
@@ -281,7 +281,7 @@ class Window(Gtk.Window):
         for rect in self.list_rect_progress_bar:
             rect.color = rect.on_color if rect.caption in self.app.user.mem_chapters else rect.off_color
 
-    def _refresh_stats_label(self):  #
+    def _refresh_stats_label(self):
         self.label_stats.set_markup(
             f"<big><b>Chapters:</b> {self.app.user.n_mem_chapters} ({round(self.app.user.n_mem_chapters / self.app.book.n_chapters * 100, 1)}%)</big>\n"
             f"<big><b>Verses:</b> {self.app.user.n_mem_verses} ({round(self.app.user.n_mem_verses / self.app.book.n_verses * 100, 1)}%)</big>\n"
