@@ -117,12 +117,10 @@ class Window(Gtk.Window):
 
         # List Tab
         checkbutton_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        list_checkboxes = []
         for chapter in self.app.list_chapters:
             checkbutton = Gtk.CheckButton(label=f"{chapter.number}. ({chapter.name_latin}) {chapter.name_arabic}")
             if chapter.number in self.app.user.mem_chapters:
                 checkbutton.set_active(True)
-            list_checkboxes.append((checkbutton, chapter))
             checkbutton.connect("toggled", lambda btn, obj=chapter: self._on_toggle_checkbox(btn, obj))
             checkbutton_container.pack_start(checkbutton, False, False, 0)
         scrolled_window = Gtk.ScrolledWindow()
