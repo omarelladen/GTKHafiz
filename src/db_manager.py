@@ -10,20 +10,18 @@ class DBManager():
     def __init__(self, db_filename: str = ''):
         self._db_filename = db_filename
 
-    def load_db_books(self):
+    def load_db_book(self):
         if not os.path.isfile(self._db_filename):
             raise FileNotFoundError(f'Failed to find database "{self._db_filename}"')
         try:
             con = sqlite3.connect(self._db_filename)
             cur = con.cursor()
             
-            db_table_books = [a for a in cur.execute("SELECT * FROM books")]
-            list_books=[]
-            for b in db_table_books:
-                list_books.append(Book(b[1], b[2], b[3], b[4], b[5], b[6]))
+            book_data = cur.execute("SELECT * FROM books").fetchone()
+            book = Book(book_data[1], book_data[2], book_data[3], book_data[4], book_data[5], book_data[6])
         except con.DatabaseError:
             raise con.DatabaseError(f'Failed to load data from "{self._db_filename}"')
-        return list_books
+        return book
 
     def load_db_chapters(self):
         if not os.path.isfile(self._db_filename):
@@ -44,8 +42,6 @@ class DBManager():
         if not os.path.isfile(self._db_filename):
             raise FileNotFoundError(f'Failed to find database "{self._db_filename}"')
 
-
-        
         # Get the username from system
         try:
             username = os.getlogin()
@@ -75,27 +71,7 @@ class DBManager():
             raise con.DatabaseError(f'Failed to load data from "{self._db_filename}"')
 
         return self._user
-
-    # def load_db_data(self):
-    #     if not os.path.isfile(self._db_filename):
-    #         raise FileNotFoundError(f'Failed to find database "{self._db_filename}"')
-
-    #     try:
-    #         con = sqlite3.connect(self._db_filename)
-    #         cur = con.cursor()
-
-    #         list_books    = self._load_db_books(cur)
-    #         list_chapters = self._load_db_chapters(cur)
-    #         user          = self._load_db_user(cur)
-
-    #         con.commit()
-    #         con.close()
-    #     except con.DatabaseError:
-    #         raise con.DatabaseError(f'Failed to load data from "{self._db_filename}"')
-
-    #     return user, list_books, list_chapters
         
-
     def save_user_data(self):
         con = sqlite3.connect(self._db_filename)
         cur = con.cursor()

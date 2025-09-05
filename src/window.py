@@ -15,7 +15,7 @@ class Window(Gtk.Window):
     def __init__(self, 
         icon_file: str = '',
         bar_sizes_file: str = '',
-        app = None,
+        app = None
     ):
         super().__init__()
         

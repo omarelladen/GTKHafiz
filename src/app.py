@@ -14,12 +14,11 @@ class App():
         self.db_manager = DBManager(DB_FILENAME)
         
         # Load persistant data from db
-        self.user          = self.db_manager.load_db_user()
-        self.list_books    = self.db_manager.load_db_books()
+        self.user = self.db_manager.load_db_user()
+        self.book = self.db_manager.load_db_book()
         self.list_chapters = self.db_manager.load_db_chapters()
 
-        self.book = self.list_books[0]
-
+        # Flag to save data or not on db when the app is closed
         self.user_data_changed = False
 
         # Load GTK Window
