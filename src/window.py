@@ -171,7 +171,8 @@ class Window(Gtk.Window):
             self.popover_chapter.hide()
 
     def _on_click_progress_bar(self, widget, event):
-        if event.type == Gdk.EventType.BUTTON_PRESS and event.button == Gdk.BUTTON_PRIMARY:
+        if (event.type == Gdk.EventType.BUTTON_PRESS and
+            event.button == Gdk.BUTTON_PRIMARY):
             for rect in self.list_rect_progress_bar:
                 if (rect.x <= event.x <= rect.x + rect.width and
                     rect.y <= event.y <= rect.y + rect.height and
@@ -180,7 +181,8 @@ class Window(Gtk.Window):
                     break
 
     def _on_click_matrix(self, widget, event):
-        if event.type == Gdk.EventType.BUTTON_PRESS and event.button == Gdk.BUTTON_PRIMARY:
+        if (event.type == Gdk.EventType.BUTTON_PRESS and
+            event.button == Gdk.BUTTON_PRIMARY):
             e_x, e_y = event.x, event.y
             for rect in self.list_rect_matrix:
                 r_x = rect.x
