@@ -10,7 +10,6 @@ from user import User
 from book import Book
 from chapter import Chapter
 
-
 class Window(Gtk.Window):
     def __init__(self, 
         icon_file: str = '',
