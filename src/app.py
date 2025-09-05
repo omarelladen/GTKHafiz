@@ -8,7 +8,6 @@ from window import Window
 # Include config variables
 exec(open('config').read())
 
-
 class App():
     def __init__(self):
         self.db_manager = DBManager(DB_FILENAME)
