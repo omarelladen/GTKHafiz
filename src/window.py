@@ -10,24 +10,16 @@ from user import User
 from book import Book
 from chapter import Chapter
 
+
 class Window(Gtk.Window):
     def __init__(self, 
         icon_file: str = '',
         bar_sizes_file: str = '',
-        db_manager: DBManager = None,
-        user: User = None,
-        book: Book = None,
-        list_chapters: list[Chapter] = []
+        app = None,
     ):
         super().__init__()
-
-        # Data
-        self.db_manager = db_manager
-        self.user = user
-        self.book = book
-        self.list_chapters = list_chapters
-
-        self.user_data_changed = False
+        
+        self.app = app
 
         # Icon
         try:
@@ -130,9 +122,9 @@ class Window(Gtk.Window):
         # List Tab
         checkbutton_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         list_checkboxes = []
-        for chapter in self.list_chapters:
+        for chapter in self.app.list_chapters:
             checkbutton = Gtk.CheckButton(label=f"{chapter.number}. ({chapter.name_latin}) {chapter.name_arabic}")
-            if chapter.number in self.user.mem_chapters:
+            if chapter.number in self.app.user.mem_chapters:
                 checkbutton.set_active(True)
             list_checkboxes.append((checkbutton, chapter))
             checkbutton.connect("toggled", lambda btn, obj=chapter: self._on_toggle_checkbox(btn, obj))
@@ -168,8 +160,8 @@ class Window(Gtk.Window):
         outerbox.pack_start(stack, True, True, 0)
 
     def on_destroy(self, window):
-        if self.user_data_changed:
-            self.db_manager.save_user_data()
+        if self.app.user_data_changed:
+            self.app.db_manager.save_user_data()
         Gtk.main_quit()
 
     def _on_click_outside_popover(self, widget, event):
@@ -180,28 +172,26 @@ class Window(Gtk.Window):
             self.popover_chapter.hide()
 
     def _on_click_progress_bar(self, widget, event):
-        if event.type == Gdk.EventType.BUTTON_PRESS:
-            if event.button == Gdk.BUTTON_PRIMARY:
-                for rect in self.list_rect_progress_bar:
-                    if (rect.x <= event.x <= rect.x + rect.width and
-                        rect.y <= event.y <= rect.y + rect.height and
-                        isinstance(rect.caption, int)):
-                        self._show_chapter_popover(rect, widget, event)
-                        break
+        if event.type == Gdk.EventType.BUTTON_PRESS and event.button == Gdk.BUTTON_PRIMARY:
+            for rect in self.list_rect_progress_bar:
+                if (rect.x <= event.x <= rect.x + rect.width and
+                    rect.y <= event.y <= rect.y + rect.height and
+                    isinstance(rect.caption, int)):
+                    self._show_chapter_popover(rect, widget, event)
+                    break
 
     def _on_click_matrix(self, widget, event):
-        if event.type == Gdk.EventType.BUTTON_PRESS:
-            if event.button == Gdk.BUTTON_PRIMARY:
-                e_x, e_y = event.x, event.y
-                for rect in self.list_rect_matrix:
-                    r_x = rect.x
-                    r_y = rect.y
-                    r_w = rect.width
-                    r_h = rect.height
-                    if (r_x <= e_x <= r_x + r_w and
-                        r_y <= e_y <= r_y + r_h):
-                        self._show_chapter_popover(rect, widget, event)
-                        break
+        if event.type == Gdk.EventType.BUTTON_PRESS and event.button == Gdk.BUTTON_PRIMARY:
+            e_x, e_y = event.x, event.y
+            for rect in self.list_rect_matrix:
+                r_x = rect.x
+                r_y = rect.y
+                r_w = rect.width
+                r_h = rect.height
+                if (r_x <= e_x <= r_x + r_w and
+                    r_y <= e_y <= r_y + r_h):
+                    self._show_chapter_popover(rect, widget, event)
+                    break
 
     def _on_click_about(self, widget):
         about = Gtk.AboutDialog(transient_for=self, modal=True)
@@ -221,24 +211,24 @@ class Window(Gtk.Window):
         about.connect("response", lambda dialog, response: dialog.destroy())
         about.present()
 
-    def _on_toggle_checkbox(self, button, chapter):
+    def _on_toggle_checkbox(self, button, chapter):  #
         # Checkbox activation
         if button.get_active():
-            self.user.mem_chapters.append(chapter.number)
-            self.user.n_mem_chapters += 1
-            self.user.n_mem_verses   += chapter.n_verses
-            self.user.n_mem_words    += chapter.n_words
-            self.user.n_mem_letters  += chapter.n_letters
+            self.app.user.mem_chapters.append(chapter.number)
+            self.app.user.n_mem_chapters += 1
+            self.app.user.n_mem_verses   += chapter.n_verses
+            self.app.user.n_mem_words    += chapter.n_words
+            self.app.user.n_mem_letters  += chapter.n_letters
 
         # Checkbox deactivation
         else:
-            self.user.mem_chapters.remove(chapter.number)
-            self.user.n_mem_chapters -= 1
-            self.user.n_mem_verses   -= chapter.n_verses
-            self.user.n_mem_words    -= chapter.n_words
-            self.user.n_mem_letters  -= chapter.n_letters
+            self.app.user.mem_chapters.remove(chapter.number)
+            self.app.user.n_mem_chapters -= 1
+            self.app.user.n_mem_verses   -= chapter.n_verses
+            self.app.user.n_mem_words    -= chapter.n_words
+            self.app.user.n_mem_letters  -= chapter.n_letters
 
-        self.user_data_changed = True
+        self.app.user_data_changed = True
 
         # Refresh
         self._refresh_stats_label()
@@ -286,18 +276,16 @@ class Window(Gtk.Window):
     def _refresh_rectangles(self):
         # Refresh Matrix Rectangles
         for rect in self.list_rect_matrix:
-            rect.color = rect.on_color if rect.caption in self.user.mem_chapters else rect.off_color
+            rect.color = rect.on_color if rect.caption in self.app.user.mem_chapters else rect.off_color
     
         # Refresh Progress Bar Rectangles
         for rect in self.list_rect_progress_bar:
-            rect.color = rect.on_color if rect.caption in self.user.mem_chapters else rect.off_color
+            rect.color = rect.on_color if rect.caption in self.app.user.mem_chapters else rect.off_color
 
-        self.queue_draw()  # ensure Redraw
-
-    def _refresh_stats_label(self):
+    def _refresh_stats_label(self):  #
         self.label_stats.set_markup(
-            f"<big><b>Chapters:</b> {self.user.n_mem_chapters} ({round(self.user.n_mem_chapters / self.book.n_chapters * 100, 1)}%)</big>\n"
-            f"<big><b>Verses:</b> {self.user.n_mem_verses} ({round(self.user.n_mem_verses / self.book.n_verses * 100, 1)}%)</big>\n"
-            f"<big><b>Words:</b> {self.user.n_mem_words} ({round(self.user.n_mem_words / self.book.n_words * 100, 1)}%)</big>\n"
-            f"<big><b>Letters:</b> {self.user.n_mem_letters} ({round(self.user.n_mem_letters / self.book.n_letters * 100, 1)}%)</big>"
+            f"<big><b>Chapters:</b> {self.app.user.n_mem_chapters} ({round(self.app.user.n_mem_chapters / self.app.book.n_chapters * 100, 1)}%)</big>\n"
+            f"<big><b>Verses:</b> {self.app.user.n_mem_verses} ({round(self.app.user.n_mem_verses / self.app.book.n_verses * 100, 1)}%)</big>\n"
+            f"<big><b>Words:</b> {self.app.user.n_mem_words} ({round(self.app.user.n_mem_words / self.app.book.n_words * 100, 1)}%)</big>\n"
+            f"<big><b>Letters:</b> {self.app.user.n_mem_letters} ({round(self.app.user.n_mem_letters / self.app.book.n_letters * 100, 1)}%)</big>"
         )
