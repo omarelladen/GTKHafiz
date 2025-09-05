@@ -139,8 +139,8 @@ class Window(Gtk.Window):
         self.popover_chapter.add(self.label_chapter)
 
         self.is_popover_chapter_active = False
-        self.cursor_when_popover_chapter_x = None
-        self.cursor_when_popover_chapter_y = None
+        self.cursor_x_at_popover = None
+        self.cursor_y_at_popover = None
 
         # All clicks will be checked to be able to hide the chapter popovers
         self.connect("button-press-event", self._on_click_outside_popover)
@@ -160,8 +160,8 @@ class Window(Gtk.Window):
 
     def _on_click_outside_popover(self, widget, event):
         if (self.is_popover_chapter_active == True and
-            event.x != self.cursor_when_popover_chapter_x and
-            event.y != self.cursor_when_popover_chapter_y):
+            event.x != self.cursor_x_at_popover and
+            event.y != self.cursor_y_at_popover):
             self.is_popover_chapter_active = False
             self.popover_chapter.hide()
 
@@ -265,8 +265,8 @@ class Window(Gtk.Window):
         self.popover_chapter.show_all()
 
         # Set current popover location and state so that it is gets hiden only by clicking outside this point
-        self.cursor_when_popover_chapter_x = e_x
-        self.cursor_when_popover_chapter_y = e_y
+        self.cursor_x_at_popover = e_x
+        self.cursor_y_at_popover = e_y
         self.is_popover_chapter_active = True
 
     def _refresh_rectangles(self):
