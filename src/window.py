@@ -10,6 +10,47 @@ from user import User
 from book import Book
 from chapter import Chapter
 
+'''
+self.pixbuf
+
+win_default_l
+win_default_h
+outerbox
+popover_menu
+vbox
+bt_about
+headerbar
+bt_menu
+icon
+image
+stack
+pb_line_x0
+pb_line_y0
+pb_heigh
+pb_lines_dist
+pb_dist
+
+self.list_rect_progress_bar
+
+prev_juz
+drawingarea_progress_bar
+rects_per_col
+rects_per_line
+drawingarea_matrix
+self.list_rect_matrix
+checkbutton_container
+list_checkboxes = []
+scrolled_window
+
+self.label_stats
+self.popover_chapter
+self.label_chapter
+self.is_popover_chapter_active
+self.cursor_when_popover_chapter_x
+self.cursor_when_popover_chapter_y
+
+stackswitcher
+'''
 class Window(Gtk.Window):
     def __init__(self, 
         icon_file: str = '',
@@ -28,13 +69,10 @@ class Window(Gtk.Window):
             self.pixbuf = None
             print(f'Failed to load icon from "{icon_file}"')
 
-        # Window
-        win_default_l = 350
-        win_default_h = 400
-        self.set_border_width(6)
-        self.set_default_size(win_default_l, win_default_h)
+        # Window dimensions
         self.set_size_request(580, 550)
         self.set_resizable(False)
+        self.set_border_width(6)
 
         # Vertical Box
         outerbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
