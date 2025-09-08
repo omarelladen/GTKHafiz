@@ -5,10 +5,6 @@ import gi
 from gi.repository import Gtk, Gio, Gdk, GdkPixbuf
 
 from rectangle import Rectangle
-from db_manager import DBManager
-from user import User
-from book import Book
-from chapter import Chapter
 
 class Window(Gtk.Window):
     def __init__(self, 
@@ -117,9 +113,9 @@ class Window(Gtk.Window):
 
         # List Tab
         checkbutton_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        for chapter in self.app.list_chapters:
+        for chapter in self.app.book.list_chapters:
             checkbutton = Gtk.CheckButton(label=f"{chapter.number}. ({chapter.name_latin}) {chapter.name_arabic}")
-            if chapter.number in self.app.user.mem_chapters:
+            if chapter.number in self.app.user.list_mem_chapters:
                 checkbutton.set_active(True)
             checkbutton.connect("toggled", lambda btn, obj=chapter: self._on_toggle_checkbox(btn, obj))
             checkbutton_container.pack_start(checkbutton, False, False, 0)
@@ -152,11 +148,6 @@ class Window(Gtk.Window):
 
         outerbox.pack_start(stackswitcher, False, True, 0)
         outerbox.pack_start(stack, True, True, 0)
-
-    def on_destroy(self, window):
-        if self.app.user_data_changed:
-            self.app.db_manager.save_user_data()
-        Gtk.main_quit()
 
     def _on_click_outside_popover(self, widget, event):
         if (self.is_popover_chapter_active == True and
@@ -210,7 +201,7 @@ class Window(Gtk.Window):
     def _on_toggle_checkbox(self, button, chapter):
         # Checkbox activation
         if button.get_active():
-            self.app.user.mem_chapters.append(chapter.number)
+            self.app.user.list_mem_chapters.append(chapter.number)
             self.app.user.n_mem_chapters += 1
             self.app.user.n_mem_verses   += chapter.n_verses
             self.app.user.n_mem_words    += chapter.n_words
@@ -218,7 +209,7 @@ class Window(Gtk.Window):
 
         # Checkbox deactivation
         else:
-            self.app.user.mem_chapters.remove(chapter.number)
+            self.app.user.list_mem_chapters.remove(chapter.number)
             self.app.user.n_mem_chapters -= 1
             self.app.user.n_mem_verses   -= chapter.n_verses
             self.app.user.n_mem_words    -= chapter.n_words
@@ -272,11 +263,11 @@ class Window(Gtk.Window):
     def _refresh_rectangles(self):
         # Refresh Matrix Rectangles
         for rect in self.list_rect_matrix:
-            rect.color = rect.on_color if rect.caption in self.app.user.mem_chapters else rect.off_color
+            rect.color = rect.on_color if rect.caption in self.app.user.list_mem_chapters else rect.off_color
     
         # Refresh Progress Bar Rectangles
         for rect in self.list_rect_progress_bar:
-            rect.color = rect.on_color if rect.caption in self.app.user.mem_chapters else rect.off_color
+            rect.color = rect.on_color if rect.caption in self.app.user.list_mem_chapters else rect.off_color
 
     def _refresh_stats_label(self):
         self.label_stats.set_markup(
