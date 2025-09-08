@@ -5,7 +5,44 @@ import gi
 from gi.repository import Gtk, Gio, Gdk, GdkPixbuf
 
 from rectangle import Rectangle
+'''
+self.pixbuf
 
+outerbox
+popover_menu
+vbox
+bt_about
+headerbar
+bt_menu
+icon
+img_icon
+stack
+pb_line_x0
+pb_line_y0
+pb_heigh
+pb_lines_dist
+pb_dist
+
+self.list_rect_progress_bar
+
+prev_juz
+drawingarea_progress_bar
+rects_per_col
+rects_per_line
+drawingarea_matrix
+self.list_rect_matrix
+checkbutton_container
+scrolled_window
+
+self.label_stats
+self.popover_chapter
+self.label_chapter
+self.is_popover_chapter_active
+self.cursor_x_at_popover
+self.cursor_y_at_popover
+
+stackswitcher
+'''
 class Window(Gtk.Window):
     def __init__(self, 
         icon_file: str = '',
@@ -263,11 +300,11 @@ class Window(Gtk.Window):
     def _refresh_rectangles(self):
         # Refresh Matrix Rectangles
         for rect in self.list_rect_matrix:
-            rect.color = rect.on_color if rect.caption in self.app.user.list_mem_chapters else rect.off_color
+            rect.color = rect.color_on if rect.caption in self.app.user.list_mem_chapters else rect.color_off
     
         # Refresh Progress Bar Rectangles
         for rect in self.list_rect_progress_bar:
-            rect.color = rect.on_color if rect.caption in self.app.user.list_mem_chapters else rect.off_color
+            rect.color = rect.color_on if rect.caption in self.app.user.list_mem_chapters else rect.color_off
 
     def _refresh_stats_label(self):
         self.label_stats.set_markup(
