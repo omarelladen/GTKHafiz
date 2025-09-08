@@ -13,9 +13,9 @@ class App():
         self.db_manager = DBManager(DB_FILENAME)
         
         # Load persistant data from db
-        self.user = self.db_manager.load_db_user()
-        self.book = self.db_manager.load_db_book()
-        self.book.list_chapters = self.db_manager.load_db_chapters()
+        self.user = self.db_manager.load_user()
+        self.book = self.db_manager.load_book()
+        self.book.list_chapters = self.db_manager.load_chapters()
 
         # Flag to save data or not on db when the app is closed
         self.user_data_changed = False
@@ -27,7 +27,7 @@ class App():
     
     def _on_destroy(self, window):
         if self.user_data_changed:
-            self.db_manager.save_user_data()
+            self.db_manager.save_user_data(self.user)
         Gtk.main_quit()
 
     def run(self):
