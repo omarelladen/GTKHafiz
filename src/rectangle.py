@@ -8,8 +8,8 @@ class Rectangle(Gdk.Rectangle):
         width: int = 0,
         height: int = 0,
         caption: int = 0,
-        off_color: tuple[float, float, float] = (0.5, 0.5, 0.5),
-        on_color: tuple[float, float, float] = (0.0, 0.8, 0.0),
+        color_off: tuple[float, float, float] = (0.5, 0.5, 0.5),
+        color_on: tuple[float, float, float] = (0.0, 0.8, 0.0),
         color: tuple[float, float, float] = (0.0, 0.8, 0.0)
     ):
         self.x = x
@@ -18,6 +18,6 @@ class Rectangle(Gdk.Rectangle):
         self.height = height
 
         self.caption = caption
-        self.off_color = off_color
-        self.on_color = on_color
+        self.color_off = color_off
+        self.color_on = color_on
         self.color = color
