@@ -7,10 +7,10 @@ class User:
         n_mem_words: int = 0,
         n_mem_verses: int = 0,
         n_mem_letters: int = 0,
-        mem_chapters: list[Chapter] = [],
+        list_mem_chapters: list[Chapter] = [],
     ):
         self.username = username
-        self.mem_chapters = mem_chapters
+        self.list_mem_chapters = list_mem_chapters
         self.n_mem_chapters = n_mem_chapters
         self.n_mem_words = n_mem_words
         self.n_mem_verses = n_mem_verses

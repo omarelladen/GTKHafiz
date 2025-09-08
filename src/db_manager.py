@@ -1,6 +1,6 @@
 
-import sqlite3
 import os
+import sqlite3
 
 from user import User
 from chapter import Chapter
@@ -57,7 +57,7 @@ class DBManager():
                 self._user = User(user_data[0], user_data[1], user_data[2], user_data[3], user_data[4])
                 db_table_users_mem_chapters = [a for a in cur.execute("SELECT * FROM mem_chapters")]
                 for t in db_table_users_mem_chapters:
-                    self._user.mem_chapters.append(t[1])
+                    self._user.list_mem_chapters.append(t[1])
             else:  # create a new user in the db
                 self._user = User(username)
                 cur.execute("""
@@ -87,7 +87,7 @@ class DBManager():
             WHERE users_username = ?
         """, (self._user.username,))
 
-        for c in self._user.mem_chapters:
+        for c in self._user.list_mem_chapters:
             cur.execute("""
                 INSERT INTO mem_chapters
                 (users_username, chapters_number) VALUES (?, ?)
