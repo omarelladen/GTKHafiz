@@ -6,7 +6,7 @@ root_dir=$PWD
 
 
 echo "[Desktop Entry]
-Name=GTK Hafiz
+Name=GTKHafiz
 Comment=Track Qur'an memorization visually
 Exec=sh $root_dir/scripts/launcher.sh
 Type=Application
