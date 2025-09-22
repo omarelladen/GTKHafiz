@@ -1,6 +1,6 @@
 <img height="64" src="imgs/icon.png" align="left"/>
 
-# GTK Hafiz
+# GTKHafiz
 
 GTKHafiz is a simple GTK 3 based app to track Qur'an memorization visually.
 
