@@ -36,7 +36,7 @@ class Window(Gtk.Window):
         # Menu Popover
         popover_menu = Gtk.Popover()
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        bt_about = Gtk.ModelButton(label="About GTK Hafiz")
+        bt_about = Gtk.ModelButton(label="About GTKHafiz")
         bt_about.connect("clicked", self._on_click_about)
         vbox.pack_start(bt_about, False, True, 10)
         vbox.show_all()
