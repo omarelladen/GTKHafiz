@@ -46,7 +46,7 @@ class Window(Gtk.Window):
         # Header Bar
         headerbar = Gtk.HeaderBar()
         headerbar.set_show_close_button(True)
-        headerbar.props.title = "GTK Hafiz"
+        headerbar.props.title = "GTKHafiz"
         self.set_titlebar(headerbar)
 
         # Menu Button
@@ -183,7 +183,7 @@ class Window(Gtk.Window):
     def _on_click_about(self, widget):
         about = Gtk.AboutDialog(transient_for=self, modal=True)
 
-        about.set_program_name("GTK Hafiz")
+        about.set_program_name("GTKHafiz")
         about.set_version("0.3.0")
         about.set_comments("Track Qur'an memorization visually")
         about.set_website("https://github.com/omarelladen/GTK-Hafiz")
