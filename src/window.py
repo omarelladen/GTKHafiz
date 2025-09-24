@@ -1,6 +1,7 @@
 import os
 import csv
 
+import cairo
 import gi
 from gi.repository import Gtk, Gio, Gdk, GdkPixbuf
 
@@ -61,13 +62,14 @@ class Window(Gtk.Window):
         stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
 
         # Create Progress Bars Rectangles
-        pb_line_x0 = 14  # initial x
-        pb_line_y0 = 20  # initial y
-        pb_height = 10  # bar height
-        pb_lines_dist = pb_height + 2  # distance between lines
-        pb_dist = 1  # distance between 2 bars
+        self.pb_line_x0 = 20  # initial x
+        self.pb_line_y0 = 20  # initial y
+        self.pb_height = 10  # bar height
+        self.pb_lines_dist = self.pb_height + 2  # distance between lines
+        self.pb_dist = 1  # distance between 2 bars
+        
         self.list_rect_progress_bar = []
-        self.list_rect_progress_bar.append(Rectangle(0, 0 + pb_line_y0 + pb_lines_dist*0, 0, 0, "Juz'"))
+        # self.list_rect_progress_bar.append(Rectangle(0, 0 + self.pb_line_y0 + self.pb_lines_dist*0, 0, 0, "Juz'"))
         prev_juz = None
         with open(bar_sizes_file, mode='r') as file:
             reader = csv.reader(file)
@@ -76,15 +78,19 @@ class Window(Gtk.Window):
                 chapter = int(line[1])
                 length = float(line[3])
                 if juz != prev_juz:
-                    num_pos = 0 if juz >= 10 else pb_line_x0/4
-                    self.list_rect_progress_bar.append(Rectangle(num_pos, pb_height + pb_line_y0 + pb_lines_dist*(juz-1), 0, 0, f"Juz' {juz}"))  # gambiarra
-                    pb_offset = pb_line_x0
-                self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*(juz-1), length-pb_dist, pb_height, chapter))
-                pb_offset += length
+                    num_pos = 0 if juz >= 10 else self.pb_line_x0/4
+                    self.pb_offset = self.pb_line_x0
+                self.list_rect_progress_bar.append(Rectangle(self.pb_offset,
+                                                             self.pb_line_y0 + self.pb_lines_dist*(juz-1), 
+                                                             length-self.pb_dist,
+                                                             self.pb_height,
+                                                             chapter))
+                self.pb_offset += length
                 prev_juz = juz
 
         # Progress Bars Tab
         drawingarea_progress_bar = Gtk.DrawingArea()
+        drawingarea_progress_bar.connect("draw", self._on_draw_text)
         drawingarea_progress_bar.connect("draw", self._on_draw_progress_bar)
         drawingarea_progress_bar.connect("button-press-event", self._on_click_progress_bar)
         drawingarea_progress_bar.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
@@ -232,7 +238,21 @@ class Window(Gtk.Window):
             cr.rectangle(r_x, r_y, r_w, r_h)
             cr.fill()
 
-    def _on_draw_progress_bar(self, widget, cr):
+    def _on_draw_text(self, widget, cr: cairo.Context):
+        cr.set_source_rgb(1, 1, 1)
+        cr.set_font_size(10)
+
+        for juz in range(1, 30+1):
+            # Calculate position - offset for single-digit task numbers
+            num_pos = 0 if juz >= 10 else self.pb_line_x0 / 4
+            x_pos = num_pos
+            y_pos = self.pb_line_y0 + self.pb_lines_dist * (juz - 1) + self.pb_height - 2
+
+            # Draw the Juz' line label
+            cr.move_to(x_pos, y_pos)
+            cr.show_text(str(juz))
+
+    def _on_draw_progress_bar(self, widget, cr: cairo.Context):
         for rect in self.list_rect_progress_bar:
             cr.set_source_rgb(*rect.color)
             cr.rectangle(rect.x, rect.y, rect.width, rect.height)
