@@ -77,13 +77,13 @@ class Window(Gtk.Window):
                 length = float(line[3])
                 if juz != prev_juz:
                     num_pos = 0 if juz >= 10 else pb_line_x0/4
-                    self.list_rect_progress_bar.append(Rectangle(num_pos, pb_height + pb_line_y0 + pb_lines_dist*(juz-1), 0, 0, f"Juz' {juz}"))
+                    self.list_rect_progress_bar.append(Rectangle(num_pos, pb_height + pb_line_y0 + pb_lines_dist*(juz-1), 0, 0, f"Juz' {juz}"))  # gambiarra
                     pb_offset = pb_line_x0
                 self.list_rect_progress_bar.append(Rectangle(pb_offset, pb_line_y0 + pb_lines_dist*(juz-1), length-pb_dist, pb_height, chapter))
                 pb_offset += length
                 prev_juz = juz
 
-        # Progress Bar Tab
+        # Progress Bars Tab
         drawingarea_progress_bar = Gtk.DrawingArea()
         drawingarea_progress_bar.connect("draw", self._on_draw_progress_bar)
         drawingarea_progress_bar.connect("button-press-event", self._on_click_progress_bar)
