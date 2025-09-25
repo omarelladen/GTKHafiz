@@ -70,7 +70,7 @@ class Window(Gtk.Window):
         self.pb_dist = 1  # distance between 2 bars
         
         self.list_rect_progress_bar = []
-        # self.list_rect_progress_bar.append(Rectangle(0, 0 + self.pb_line_y0 + self.pb_lines_dist*0, 0, 0, "Juz'"))
+
         prev_juz = None
         with open(bar_sizes_file, mode='r') as file:
             reader = csv.reader(file)
