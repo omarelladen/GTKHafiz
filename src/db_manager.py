@@ -7,27 +7,27 @@ from chapter import Chapter
 from book import Book
 
 class DBManager():
-    def __init__(self, db_filename: str = ''):
-        self._db_filename = db_filename
+    def __init__(self, db_path: str = ''):
+        self._db_path = db_path
 
     def load_book(self):
-        if not os.path.isfile(self._db_filename):
-            raise FileNotFoundError(f'Failed to find database "{self._db_filename}"')
+        if not os.path.isfile(self._db_path):
+            raise FileNotFoundError(f'Failed to find database "{self._db_path}"')
         try:
-            con = sqlite3.connect(self._db_filename)
+            con = sqlite3.connect(self._db_path)
             cur = con.cursor()
             
             book_data = cur.execute("SELECT * FROM books").fetchone()
             book = Book(book_data[1], book_data[2], book_data[3], book_data[4], book_data[5], book_data[6])
         except con.DatabaseError:
-            raise con.DatabaseError(f'Failed to load data from "{self._db_filename}"')
+            raise con.DatabaseError(f'Failed to load data from "{self._db_path}"')
         return book
 
     def load_chapters(self):
-        if not os.path.isfile(self._db_filename):
-            raise FileNotFoundError(f'Failed to find database "{self._db_filename}"')
+        if not os.path.isfile(self._db_path):
+            raise FileNotFoundError(f'Failed to find database "{self._db_path}"')
         try:
-            con = sqlite3.connect(self._db_filename)
+            con = sqlite3.connect(self._db_path)
             cur = con.cursor()
 
             db_table_chapters = [a for a in cur.execute("SELECT * FROM chapters")]
@@ -35,12 +35,12 @@ class DBManager():
             for c in db_table_chapters:
                 list_chapters.append(Chapter(c[0], c[1], c[2], c[3], c[4], c[5]))
         except con.DatabaseError:
-            raise con.DatabaseError(f'Failed to load data from "{self._db_filename}"')
+            raise con.DatabaseError(f'Failed to load data from "{self._db_path}"')
         return list_chapters
 
     def load_user(self):
-        if not os.path.isfile(self._db_filename):
-            raise FileNotFoundError(f'Failed to find database "{self._db_filename}"')
+        if not os.path.isfile(self._db_path):
+            raise FileNotFoundError(f'Failed to find database "{self._db_path}"')
 
         # Get the username from system
         try:
@@ -49,7 +49,7 @@ class DBManager():
             username = "user"
 
         try:
-            con = sqlite3.connect(self._db_filename)
+            con = sqlite3.connect(self._db_path)
             cur = con.cursor()
 
             user_data = cur.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
@@ -68,12 +68,12 @@ class DBManager():
             con.commit()
             con.close()
         except con.DatabaseError:
-            raise con.DatabaseError(f'Failed to load data from "{self._db_filename}"')
+            raise con.DatabaseError(f'Failed to load data from "{self._db_path}"')
 
         return user
         
     def save_user_data(self, user):
-        con = sqlite3.connect(self._db_filename)
+        con = sqlite3.connect(self._db_path)
         cur = con.cursor()
 
         # Update memorized stats

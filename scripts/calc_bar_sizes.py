@@ -5,13 +5,13 @@ pb_line_width = 500  # total line length of juz'
 exec(open('config').read())
 
 n_lines = []
-with open(LINES_FILE, mode='r') as file:
+with open(LINES_PATH, mode='r') as file:
     reader = csv.reader(file)
     for line in reader:
         n_lines.append(line)
 
 lines = []
-with open(BAR_SIZES_FILE, mode='r') as file:
+with open(BAR_SIZES_PATH, mode='r') as file:
     reader = csv.reader(file)
     for line in reader:
         value = float(line[2]) * pb_line_width / float(n_lines[int(line[0])-1][1])
@@ -22,7 +22,7 @@ with open(BAR_SIZES_FILE, mode='r') as file:
 
         lines.append(line)
 
-with open(BAR_SIZES_FILE, mode='w', newline='') as file:
+with open(BAR_SIZES_PATH, mode='w', newline='') as file:
     writer = csv.writer(file)
     for line in lines:
         writer.writerow(line)
