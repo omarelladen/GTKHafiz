@@ -10,7 +10,7 @@ exec(open('config').read())
 
 class App():
     def __init__(self):
-        self.db_manager = DBManager(DB_FILENAME)
+        self.db_manager = DBManager(DB_PATH)
         
         # Load persistant data from db
         self.user = self.db_manager.load_user()
@@ -21,7 +21,7 @@ class App():
         self.user_data_changed = False
 
         # Load GTK Window
-        self.win = Window(ICON_FILE, BAR_SIZES_FILE, self)
+        self.win = Window(self, BAR_SIZES_PATH, ICON_PATH)
         self.win.connect("destroy", self._on_destroy)
         self.win.show_all()
     

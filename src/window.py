@@ -9,21 +9,22 @@ from rectangle import Rectangle
 
 class Window(Gtk.Window):
     def __init__(self, 
-        icon_file: str = '',
-        bar_sizes_file: str = '',
-        app = None
+        app,
+        bar_sizes_file,
+        icon_path = None,
     ):
         super().__init__()
         
         self.app = app
 
         # Icon
-        try:
-            self.pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(icon_file, 64, 64, True)
-            self.set_icon(self.pixbuf)
-        except:
-            self.pixbuf = None
-            print(f'Failed to load icon from "{icon_file}"')
+        if icon_path:
+            try:
+                self.pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(icon_path, 64, 64, True)
+                self.set_icon(self.pixbuf)
+            except:
+                self.pixbuf = None
+                print(f'Failed to load icon from "{icon_path}"')
 
         # Window dimensions
         self.set_size_request(580, 550)
