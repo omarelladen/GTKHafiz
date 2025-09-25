@@ -5,7 +5,7 @@ import cairo
 import gi
 from gi.repository import Gtk, Gio, Gdk, GdkPixbuf
 
-from rectangle import Rectangle
+from chapter_rectangle import ChapterRectangle
 
 class Window(Gtk.Window):
     def __init__(self, 
@@ -62,7 +62,7 @@ class Window(Gtk.Window):
         stack = Gtk.Stack()
         stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
 
-        # Create Progress Bars Rectangles
+        # Create Chapter Rectangles of progress bars
         self.pb_line_x0 = 20  # initial x
         self.pb_line_y0 = 20  # initial y
         self.pb_height = 10  # bar height
@@ -81,11 +81,11 @@ class Window(Gtk.Window):
                 if juz != prev_juz:
                     num_pos = 0 if juz >= 10 else self.pb_line_x0/4
                     self.pb_offset = self.pb_line_x0
-                self.list_rect_progress_bar.append(Rectangle(self.pb_offset,
-                                                             self.pb_line_y0 + self.pb_lines_dist*(juz-1), 
-                                                             length-self.pb_dist,
-                                                             self.pb_height,
-                                                             chapter))
+                self.list_rect_progress_bar.append(ChapterRectangle(self.pb_offset,
+                                                                    self.pb_line_y0 + self.pb_lines_dist*(juz-1), 
+                                                                    length-self.pb_dist,
+                                                                    self.pb_height,
+                                                                    chapter))
                 self.pb_offset += length
                 prev_juz = juz
 
@@ -106,17 +106,16 @@ class Window(Gtk.Window):
         drawingarea_matrix.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         stack.add_titled(drawingarea_matrix, "matrix", "Matrix")
 
-        # Create Matrix Rectangles
+        # Create Chapter Rectangles of matrix
         self.list_rect_matrix = []
         for i in range(rects_per_col):
             for j in range(rects_per_line):
                 x = 155 + (rects_per_line-1-j)*35  # from left to right
                 y = 15 + i*20
                 chapter_num = i*(rects_per_line) + j + 1
-                self.list_rect_matrix.append(Rectangle(x, y, 30, 10, chapter_num))
+                self.list_rect_matrix.append(ChapterRectangle(x, y, 30, 10, chapter_num))
 
-        # Create Rectangles for Progress Bar and Matrix
-        self._refresh_rectangles()
+        self._refresh_rectangles_colors()
 
         # List Tab
         checkbutton_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
@@ -226,7 +225,7 @@ class Window(Gtk.Window):
 
         # Refresh
         self._refresh_stats_label()
-        self._refresh_rectangles()
+        self._refresh_rectangles_colors()
 
     def _on_draw_matrix(self, widget, cr):
         for rect in self.list_rect_matrix:
@@ -281,12 +280,10 @@ class Window(Gtk.Window):
         self.cursor_y_at_popover = e_y
         self.is_popover_chapter_active = True
 
-    def _refresh_rectangles(self):
-        # Refresh Matrix Rectangles
+    def _refresh_rectangles_colors(self):
         for rect in self.list_rect_matrix:
             rect.color = rect.color_on if rect.caption in self.app.user.list_mem_chapters else rect.color_off
     
-        # Refresh Progress Bar Rectangles
         for rect in self.list_rect_progress_bar:
             rect.color = rect.color_on if rect.caption in self.app.user.list_mem_chapters else rect.color_off
 
