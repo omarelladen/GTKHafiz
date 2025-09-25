@@ -2,13 +2,13 @@ from chapter import Chapter
 
 class Book:
     def __init__(self,
-        name_arabic: str = '',
-        name_latin: str = '',
-        n_chapters: int = 0,
-        n_verses: int = 0,
-        n_words: int = 0,
-        n_letters: int = 0,
-        list_chapters: list[Chapter] = []
+        name_arabic,
+        name_latin,
+        n_chapters,
+        n_verses,
+        n_words,
+        n_letters,
+        list_chapters: list[Chapter] = [],
     ):
         self.name_arabic = name_arabic
         self.name_latin = name_latin

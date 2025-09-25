@@ -2,7 +2,7 @@ from chapter import Chapter
 
 class User:
     def __init__(self,
-        username: str = '',
+        username,
         n_mem_chapters: int = 0,
         n_mem_words: int = 0,
         n_mem_verses: int = 0,
