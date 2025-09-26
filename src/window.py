@@ -72,8 +72,8 @@ class Window(Gtk.Window):
         self.list_rect_progress_bar = []
 
         prev_juz = None
-        with open(bar_sizes_file, mode='r') as file:
-            reader = csv.reader(file)
+        with open(bar_sizes_file, mode='r') as f:
+            reader = csv.reader(f)
             for line in reader:
                 juz = int(line[0])
                 chapter = int(line[1])
@@ -242,6 +242,9 @@ class Window(Gtk.Window):
         cr.set_source_rgb(1, 1, 1)
         cr.set_font_size(10)
 
+        cr.move_to(0, self.pb_line_y0 - 5)
+        cr.show_text("Juz'")
+        
         for juz in range(1, 30+1):
             # Calculate position - offset for single-digit task numbers
             num_pos = 0 if juz >= 10 else self.pb_line_x0 / 4
