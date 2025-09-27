@@ -156,6 +156,7 @@ class Window(Gtk.Window):
         outerbox.pack_start(stack, True, True, 0)
 
     def _on_click_outside_popover(self, widget, event):
+        # Hide only when clicking in a point that is not the one that opened the popover
         if (self.is_popover_chapter_active == True and
             event.x != self.cursor_x_at_popover and
             event.y != self.cursor_y_at_popover):
