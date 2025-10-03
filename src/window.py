@@ -60,11 +60,10 @@ class Window(Gtk.Window):
 
         # Stack
         stack = Gtk.Stack()
-        stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
 
         # Create Chapter Rectangles of progress bars
-        self.pb_line_x0 = 20  # initial x
-        self.pb_line_y0 = 20  # initial y
+        self.pb_x0 = 20  # initial x
+        self.pb_y0 = 20  # initial y
         self.pb_height = 10  # bar height
         self.pb_lines_dist = self.pb_height + 2  # distance between lines
         self.pb_dist = 1  # distance between 2 bars
@@ -79,10 +78,10 @@ class Window(Gtk.Window):
                 chapter = int(line[1])
                 length = float(line[3])
                 if juz != prev_juz:
-                    num_pos = 0 if juz >= 10 else self.pb_line_x0/4
-                    self.pb_offset = self.pb_line_x0
+                    num_pos = 0 if juz >= 10 else self.pb_x0/4
+                    self.pb_offset = self.pb_x0
                 self.list_rect_progress_bar.append(ChapterRectangle(self.pb_offset,
-                                                                    self.pb_line_y0 + self.pb_lines_dist*(juz-1), 
+                                                                    self.pb_y0 + self.pb_lines_dist*(juz-1), 
                                                                     length-self.pb_dist,
                                                                     self.pb_height,
                                                                     chapter))
@@ -243,14 +242,14 @@ class Window(Gtk.Window):
         cr.set_source_rgb(1, 1, 1)
         cr.set_font_size(10)
 
-        cr.move_to(0, self.pb_line_y0 - 5)
+        cr.move_to(0, self.pb_y0 - 5)
         cr.show_text("Juz'")
         
         for juz in range(1, 30+1):
             # Calculate position - offset for single-digit task numbers
-            num_pos = 0 if juz >= 10 else self.pb_line_x0 / 4
+            num_pos = 0 if juz >= 10 else self.pb_x0 / 4
             x_pos = num_pos
-            y_pos = self.pb_line_y0 + self.pb_lines_dist * (juz - 1) + self.pb_height - 2
+            y_pos = self.pb_y0 + self.pb_lines_dist * (juz-1) + self.pb_height - 2
 
             # Draw the Juz' line label
             cr.move_to(x_pos, y_pos)
@@ -287,7 +286,6 @@ class Window(Gtk.Window):
     def _refresh_rectangles_colors(self):
         for rect in self.list_rect_matrix:
             rect.color = rect.color_on if rect.caption in self.app.user.list_mem_chapters else rect.color_off
-    
         for rect in self.list_rect_progress_bar:
             rect.color = rect.color_on if rect.caption in self.app.user.list_mem_chapters else rect.color_off
 
