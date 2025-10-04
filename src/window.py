@@ -26,6 +26,15 @@ class Window(Gtk.Window):
                 self.pixbuf = None
                 print(f'Failed to load icon from "{icon_path}"')
 
+        # Shortcuts
+        self.accel_group = Gtk.AccelGroup()
+        self.add_accel_group(self.accel_group)
+
+        key, mod = Gtk.accelerator_parse("<Control>q")
+        self.accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, self._on_ctrl_q)
+        
+        key, mod = Gtk.accelerator_parse("<Control>s")
+        self.accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, self._on_ctrl_s)
         # Window dimensions
         self.set_size_request(580, 550)
         self.set_resizable(False)
@@ -38,9 +47,9 @@ class Window(Gtk.Window):
         # Menu Popover
         popover_menu = Gtk.Popover()
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        bt_about = Gtk.ModelButton(label="About GTKHafiz")
-        bt_about.connect("clicked", self._on_click_about)
-        vbox.pack_start(bt_about, False, True, 10)
+        bt = Gtk.ModelButton(label="About GTKHafiz")
+        bt.connect("clicked", self._on_click_about)
+        vbox.pack_start(bt, False, True, 10)
         vbox.show_all()
         popover_menu.add(vbox)
         popover_menu.set_position(Gtk.PositionType.BOTTOM)
@@ -52,11 +61,19 @@ class Window(Gtk.Window):
         self.set_titlebar(headerbar)
 
         # Menu Button
-        bt_menu = Gtk.MenuButton(popover=popover_menu)
+        bt = Gtk.MenuButton(popover=popover_menu)
         icon = Gio.ThemedIcon(name="open-menu-symbolic")
         img_icon = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.BUTTON)
-        bt_menu.add(img_icon)
-        headerbar.pack_end(bt_menu)
+        bt.add(img_icon)
+        headerbar.pack_end(bt)
+
+        # Save button
+        bt = Gtk.Button()
+        icon = Gio.ThemedIcon(name='document-save-symbolic')
+        img_icon = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.BUTTON)
+        bt.add(img_icon)
+        bt.connect("clicked", self._on_click_save)
+        headerbar.pack_end(bt)
 
         # Stack
         stack = Gtk.Stack()
@@ -132,7 +149,7 @@ class Window(Gtk.Window):
         # Stats Tab
         self.label_stats = Gtk.Label()
         self._refresh_stats_label()
-        stack.add_titled(self.label_stats, "stats", "Statistics")
+        stack.add_titled(self.label_stats, "stats", "Stats")
 
         # Chapter Popover
         self.popover_chapter = Gtk.Popover()
@@ -153,6 +170,46 @@ class Window(Gtk.Window):
 
         outerbox.pack_start(stackswitcher, False, True, 0)
         outerbox.pack_start(stack, True, True, 0)
+
+    def _on_ctrl_q(self, accel_group, window, key, modifier):
+        self.app.quit()
+        
+    def _on_ctrl_s(self, accel_group, window, key, modifier):
+        self._open_save_dialog()
+
+    def _on_click_save(self, widget):
+        self._open_save_dialog()
+        
+    def _open_save_dialog(self):
+        dialog = Gtk.FileChooserDialog(title="Download bars", parent=self, action=Gtk.FileChooserAction.SAVE)
+        dialog.set_do_overwrite_confirmation(True)
+        dialog.set_current_folder(os.path.expanduser("~"))
+        dialog.set_current_name("bars.png")
+        dialog.add_buttons(
+            Gtk.STOCK_CANCEL,
+            Gtk.ResponseType.CANCEL,
+            Gtk.STOCK_SAVE,
+            Gtk.ResponseType.OK,
+        )
+
+        self._add_file_filters(dialog)
+        
+        response = dialog.run()
+        if response == Gtk.ResponseType.OK:
+            self._save_pb_to_png(dialog.get_filename())
+
+        dialog.destroy()
+
+    def _add_file_filters(self, dialog):
+        file_filter = Gtk.FileFilter()
+        file_filter.set_name("PNG image")
+        file_filter.add_mime_type("image/png")
+        dialog.add_filter(file_filter)
+
+        file_filter = Gtk.FileFilter()
+        file_filter.set_name("Any files")
+        file_filter.add_pattern("*")
+        dialog.add_filter(file_filter)
 
     def _on_click_outside_popover(self, widget, event):
         # Hide only when clicking in a point that is not the one that opened the popover
@@ -188,9 +245,8 @@ class Window(Gtk.Window):
 
     def _on_click_about(self, widget):
         about = Gtk.AboutDialog(transient_for=self, modal=True)
-
         about.set_program_name("GTKHafiz")
-        about.set_version("0.3.0")
+        about.set_version("0.4.0")
         about.set_comments("Track Qur'an memorization visually")
         about.set_website("https://github.com/omarelladen/GTK-Hafiz")
         about.set_website_label("Repository")
@@ -296,3 +352,32 @@ class Window(Gtk.Window):
             f"<big><b>Words:</b> {self.app.user.n_mem_words} ({round(self.app.user.n_mem_words / self.app.book.n_words * 100, 1)}%)</big>\n"
             f"<big><b>Letters:</b> {self.app.user.n_mem_letters} ({round(self.app.user.n_mem_letters / self.app.book.n_letters * 100, 1)}%)</big>"
         )
+
+    def _save_pb_to_png(self, filename):
+        max_x = max(rect.x + rect.width  for rect in self.list_rect_progress_bar)
+        max_y = max(rect.y + rect.height for rect in self.list_rect_progress_bar)
+
+        # Add padding
+        surface_width  = int(max_x + self.pb_x0)
+        surface_height = int(max_y + self.pb_y0)
+
+        # Create a Cairo surface
+        surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, surface_width, surface_height)
+        cr = cairo.Context(surface)
+
+        # Set background
+        cr.set_source_rgb(1, 1, 1)
+        cr.paint()
+
+        # Draw all rectangles
+        for rect in self.list_rect_progress_bar:
+            cr.set_source_rgb(*rect.color)
+            cr.rectangle(rect.x, rect.y, rect.width, rect.height)
+            cr.fill()
+
+        # Save to PNG
+        try:
+            surface.write_to_png(filename)
+            surface.finish()
+        except Exception as e:
+            print(f"Failed to save bars image at {filename}: {e}")

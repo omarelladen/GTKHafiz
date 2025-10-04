@@ -26,9 +26,12 @@ class App():
         self.win.show_all()
     
     def _on_destroy(self, window):
+        self.quit()
+
+    def quit(self):
         if self.user_data_changed:
             self.db_manager.save_user_data(self.user)
         Gtk.main_quit()
-
+        
     def run(self):
         Gtk.main()
