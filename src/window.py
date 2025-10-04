@@ -181,7 +181,7 @@ class Window(Gtk.Window):
         self._open_save_dialog()
         
     def _open_save_dialog(self):
-        dialog = Gtk.FileChooserDialog(title="Download bars", parent=self, action=Gtk.FileChooserAction.SAVE)
+        dialog = Gtk.FileChooserDialog(title="Save image", parent=self, action=Gtk.FileChooserAction.SAVE)
         dialog.set_do_overwrite_confirmation(True)
         dialog.set_current_folder(os.path.expanduser("~"))
         dialog.set_current_name("bars.png")
