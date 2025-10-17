@@ -69,7 +69,7 @@ class Window(Gtk.Window):
 
         # Save button
         bt = Gtk.Button()
-        icon = Gio.ThemedIcon(name='document-save-symbolic')
+        icon = Gio.ThemedIcon(name="document-save-symbolic")
         img_icon = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.BUTTON)
         bt.add(img_icon)
         bt.connect("clicked", self._on_click_save)
@@ -88,7 +88,7 @@ class Window(Gtk.Window):
         self.list_rect_progress_bar = []
 
         prev_juz = None
-        with open(bar_sizes_file, mode='r') as f:
+        with open(bar_sizes_file, mode="r") as f:
             reader = csv.reader(f)
             for line in reader:
                 juz = int(line[0])

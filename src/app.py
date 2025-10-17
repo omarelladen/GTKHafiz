@@ -6,7 +6,7 @@ from db_manager import DBManager
 from window import Window
 
 # Include config variables
-exec(open('config').read())
+exec(open("config").read())
 
 class App():
     def __init__(self):

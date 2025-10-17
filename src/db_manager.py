@@ -7,7 +7,7 @@ from chapter import Chapter
 from book import Book
 
 class DBManager():
-    def __init__(self, db_path: str = ''):
+    def __init__(self, db_path = ""):
         self._db_path = db_path
 
     def load_book(self):
