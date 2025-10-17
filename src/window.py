@@ -295,7 +295,7 @@ class Window(Gtk.Window):
             cr.fill()
 
     def _on_draw_text(self, widget, cr: cairo.Context):
-        cr.set_source_rgb(1, 1, 1)
+        cr.set_source_rgb(0.7, 0.7, 0.7)
         cr.set_font_size(10)
 
         cr.move_to(0, self.pb_y0 - 5)
