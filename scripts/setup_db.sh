@@ -3,7 +3,11 @@
 # Include config variables
 . "$PWD"/config
 
-sqlite3 db.sqlite3 <<EOF
+if [ -f "$ORIG_DB_FILE" ]; then
+    rm "$ORIG_DB_FILE"
+fi
+
+sqlite3 "$ORIG_DB_FILE" <<EOF
 CREATE TABLE IF NOT EXISTS
 books
 (
