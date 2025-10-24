@@ -4,9 +4,6 @@
 . "$PWD"/config
 
 
-./scripts/uninstall.sh
-
-
 mkdir -pv "$BIN_DIR" "$DATA_DIR" "$ICONS_DIR" "$PYTHON_PKG_DIR" "$DESKTOP_DIR" "/home/$SUDO_USER/$DB_DIR"
 
 cp -v "$ORIG_SRC_DIR"/* "$PYTHON_PKG_DIR"
