@@ -39,7 +39,7 @@ sudo scripts/install.sh
 ```
 After the installation you can open the app with the apps menu of your desktop environment or run:
 ```sh
-gtkscheduling
+gtkhafiz
 ```
 
 ## Uninstall app
