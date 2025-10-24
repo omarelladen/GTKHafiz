@@ -33,33 +33,18 @@ sudo apt install python3-gi-cairo
 
 If you wish to configure on other operating systems, including Windows, follow the instructions on the [PyGObject website](https://pygobject.gnome.org/getting_started.html), making sure to replace 'GTK4' with 'GTK3' when instaling packages.
 
-## Add desktop entry:
-To launch the app directly from the desktop environment, there is a Shell script which after executed will add a desktop entry to ~/.local/share/applications/gtk-hafiz.desktop and also setup the scripts/launcher.sh that will be called to start the app.
-
-To add the entry:
+## Install app
 ```sh
-sh scripts/setup_desktop_entry.sh
+sudo scripts/install.sh
+```
+After the installation you can open the app with the apps menu of your desktop environment or run:
+```sh
+gtkscheduling
 ```
 
-You can also directly run:
+## Uninstall app
 ```sh
-sh scripts/launcher.sh
-```
-or:
-```sh
-python3 src/main.py
-```
-
-## Reset the database:
-The database setup is done executing a Shell script that recreates the database and inserts the necessary CSV files from data/ using the sqlite3 CLI.
-
-To install the sqlite3 CLI on Debian-based distributions:
-```sh
-sudo apt install sqlite3
-```
-Run the Shell Script:
-```sh
-sh scripts/setup_db.sh
+sudo scripts/uninstall.sh
 ```
 
 ## Credits

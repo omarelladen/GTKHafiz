@@ -11,7 +11,7 @@ with open(LINES_PATH, mode='r') as file:
         n_lines.append(line)
 
 lines = []
-with open(BAR_SIZES_PATH, mode='r') as file:
+with open(ORIG_BAR_SIZES_PATH, mode='r') as file:
     reader = csv.reader(file)
     for line in reader:
         value = float(line[2]) * pb_line_width / float(n_lines[int(line[0])-1][1])
@@ -22,7 +22,7 @@ with open(BAR_SIZES_PATH, mode='r') as file:
 
         lines.append(line)
 
-with open(BAR_SIZES_PATH, mode='w', newline='') as file:
+with open(ORIG_BAR_SIZES_PATH, mode='w', newline='') as file:
     writer = csv.writer(file)
     for line in lines:
         writer.writerow(line)

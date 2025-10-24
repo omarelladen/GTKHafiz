@@ -2,9 +2,9 @@
 import os
 import sqlite3
 
-from user import User
-from chapter import Chapter
-from book import Book
+from .user import User
+from .chapter import Chapter
+from .book import Book
 
 class DBManager():
     def __init__(self, db_path = ""):

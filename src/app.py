@@ -1,16 +1,18 @@
+import os
+
 import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
-from db_manager import DBManager
-from window import Window
+from .db_manager import DBManager
+from .window import Window
 
 # Include config variables
-exec(open("config").read())
+exec(open("/usr/local/share/gtkhafiz/config").read())
 
 class App():
     def __init__(self):
-        self.db_manager = DBManager(DB_PATH)
+        self.db_manager = DBManager(f"/home/{os.getlogin()}/{DB_FILE}")
         
         # Load persistant data from db
         self.user = self.db_manager.load_user()
@@ -21,7 +23,19 @@ class App():
         self.user_data_changed = False
 
         # Load GTK Window
-        self.win = Window(self, BAR_SIZES_PATH, ICON_PATH)
+        self.win = Window(self,
+                         BAR_SIZES_FILE,
+                         APP_NAME,
+                         APP_DESCRIPTION,
+                         APP_VERSION,
+                         WEBSITE_URL,
+                         WEBSITE_LABEL,
+                         AUTHORS,
+                         COPYRIGHT,
+                         APP_ICON_FILE,
+                         MENU_ICON,
+                         SAVE_ICON
+        )
         self.win.connect("destroy", self._on_destroy)
         self.win.show_all()
     

@@ -1,6 +1,34 @@
-DB_PATH="data/db.sqlite3";
-BOOKS_PATH="data/books.csv";
-CHAPTERS_PATH="data/chapters.csv";
-ICON_PATH="imgs/icon.png";
-BAR_SIZES_PATH="data/bar_sizes.csv";
-LINES_PATH="data/lines.csv";
+APP_NAME="GTKHafiz";
+APP_NAME_LOWER="gtkhafiz"
+APP_DESCRIPTION="Track Qur'an memorization visually";
+APP_VERSION="0.4.0";
+WEBSITE_URL="https://github.com/omarelladen/GTKHafiz";
+WEBSITE_LABEL="Repository";
+AUTHORS="Omar El Laden https://github.com/omarelladen";
+COPYRIGHT="Copyright © 2025 Omar El Laden";
+
+APP_ICON_FILE="/usr/local/share/gtkhafiz/icons/icon.png";
+
+MENU_ICON="open-menu-symbolic";
+SAVE_ICON="document-save-symbolic";
+
+ORIG_SRC_DIR="src";
+ORIG_ICONS_DIR="data/icons";
+ORIG_DB_FILE="data/db.sqlite3"
+ORIG_BAR_SIZES_PATH="data/csv/bar_sizes.csv";
+
+BIN_DIR="/usr/local/bin";
+BIN_FILE="/usr/local/bin/gtkhafiz";
+DESKTOP_DIR="/usr/local/share/applications";
+DESKTOP_FILE="/usr/local/share/applications/gtkhafiz.desktop";
+DATA_DIR="/usr/local/share/gtkhafiz";
+ICONS_DIR="/usr/local/share/gtkhafiz/icons";
+PYTHON_PKG_DIR="/usr/local/share/gtkhafiz/gtkhafiz";
+
+DB_DIR=".local/share/gtkhafiz"
+DB_FILE=".local/share/gtkhafiz/db.sqlite3";
+BAR_SIZES_FILE="/usr/local/share/gtkhafiz/bar_sizes.csv";
+BOOKS_PATH="data/csv/books.csv";
+CHAPTERS_PATH="data/csv/chapters.csv";
+ICON_PATH="imgs/icons/icon.png";
+LINES_PATH="data/csv/lines.csv";

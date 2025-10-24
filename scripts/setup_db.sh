@@ -3,11 +3,7 @@
 # Include config variables
 . "$PWD"/config
 
-if [ -f "$DB_FILENAME" ]; then
-    rm "$DB_FILENAME"
-fi
-
-sqlite3 "$DB_FILENAME" <<EOF
+sqlite3 db.sqlite3 <<EOF
 CREATE TABLE IF NOT EXISTS
 books
 (
