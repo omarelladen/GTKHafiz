@@ -35,6 +35,7 @@ If you wish to configure on other operating systems, including Windows, follow t
 
 ## Install app
 ```sh
+cd GTKHafiz
 sudo scripts/install.sh
 ```
 After the installation you can open the app with the apps menu of your desktop environment or run:
@@ -44,6 +45,7 @@ gtkhafiz
 
 ## Uninstall app
 ```sh
+cd GTKHafiz
 sudo scripts/uninstall.sh
 ```
 
