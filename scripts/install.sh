@@ -13,7 +13,7 @@ cp -v "$ORIG_SRC_DIR"/* "$PYTHON_PKG_DIR"
 cp -v "$ORIG_ICONS_DIR"/* "$ICONS_DIR"
 cp -v config "$DATA_DIR"
 cp -v "$ORIG_DB_FILE" "/home/$SUDO_USER/$DB_FILE"
-cp -v "$ORIG_BAR_SIZES_PATH" "$DATA_DIR"
+cp -v "$ORIG_BAR_SIZES_FILE" "$DATA_DIR"
 
 chmod -v a+wx  "/home/$SUDO_USER/$DB_DIR"
 chmod -v a+wx "/home/$SUDO_USER/$DB_FILE"
