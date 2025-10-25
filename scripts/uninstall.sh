@@ -4,7 +4,8 @@
 . "$PWD"/config
 
 
-expand_home() {
+expand_home()
+{
 	_PATH="$1"
 
 	case "$_PATH" in
