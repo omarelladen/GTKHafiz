@@ -13,8 +13,10 @@ def main():
             print("")
             print("Help Options:")
             print("  -h, --help                 Show help options")
+            print("")
             print("Application Options:")
             print("  -v, --version              Print version information and exit")
+            print("")
             sys.exit(0)
         elif "--version" in sys.argv or "-v" in sys.argv:
             print(f"{app.name} {app.version}")
