@@ -14,7 +14,7 @@ SAVE_ICON="document-save-symbolic";
 
 ORIG_SRC_DIR="src";
 ORIG_ICONS_DIR="data/icons";
-ORIG_DB_FILE="data/db.sqlite3"
+ORIG_DB_FILE="data/db.sqlite3";
 ORIG_BAR_SIZES_FILE="data/csv/bar_sizes.csv";
 
 BIN_DIR="/usr/local/bin";
@@ -25,7 +25,7 @@ DATA_DIR="/usr/local/share/gtkhafiz";
 ICONS_DIR="/usr/local/share/gtkhafiz/icons";
 PYTHON_PKG_DIR="/usr/local/share/gtkhafiz/gtkhafiz";
 
-DB_DIR="~/.local/share/gtkhafiz"
+DB_DIR="~/.local/share/gtkhafiz";
 DB_FILE="~/.local/share/gtkhafiz/db.sqlite3";
 BAR_SIZES_FILE="/usr/local/share/gtkhafiz/bar_sizes.csv";
 BOOKS_FILE="data/csv/books.csv";
