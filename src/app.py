@@ -12,6 +12,15 @@ exec(open("/usr/local/share/gtkhafiz/config").read())
 
 class App():
     def __init__(self):
+        self.name = APP_NAME
+        self.name_lower = APP_NAME_LOWER
+        self.description = APP_DESCRIPTION
+        self.version = APP_VERSION
+        self.website_url = WEBSITE_URL
+        self.website_label = WEBSITE_LABEL
+        self.authors = AUTHORS.split(",")
+        self.copyright = COPYRIGHT
+        
         self.db_manager = DBManager(os.path.expanduser(DB_FILE))
         
         # Load persistant data from db
@@ -25,13 +34,6 @@ class App():
         # Load GTK Window
         self.win = Window(self,
                          BAR_SIZES_FILE,
-                         APP_NAME,
-                         APP_DESCRIPTION,
-                         APP_VERSION,
-                         WEBSITE_URL,
-                         WEBSITE_LABEL,
-                         AUTHORS,
-                         COPYRIGHT,
                          APP_ICON_FILE,
                          MENU_ICON,
                          SAVE_ICON
