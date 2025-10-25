@@ -12,7 +12,7 @@ exec(open("/usr/local/share/gtkhafiz/config").read())
 
 class App():
     def __init__(self):
-        self.db_manager = DBManager(f"/home/{os.getlogin()}/{DB_FILE}")
+        self.db_manager = DBManager(os.path.expanduser(DB_FILE))
         
         # Load persistant data from db
         self.user = self.db_manager.load_user()

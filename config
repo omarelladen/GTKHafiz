@@ -25,8 +25,8 @@ DATA_DIR="/usr/local/share/gtkhafiz";
 ICONS_DIR="/usr/local/share/gtkhafiz/icons";
 PYTHON_PKG_DIR="/usr/local/share/gtkhafiz/gtkhafiz";
 
-DB_DIR=".local/share/gtkhafiz"
-DB_FILE=".local/share/gtkhafiz/db.sqlite3";
+DB_DIR="~/.local/share/gtkhafiz"
+DB_FILE="~/.local/share/gtkhafiz/db.sqlite3";
 BAR_SIZES_FILE="/usr/local/share/gtkhafiz/bar_sizes.csv";
 BOOKS_FILE="data/csv/books.csv";
 CHAPTERS_FILE="data/csv/chapters.csv";

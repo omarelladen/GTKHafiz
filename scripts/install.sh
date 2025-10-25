@@ -4,16 +4,31 @@
 . "$PWD"/config
 
 
-mkdir -pv "$BIN_DIR" "$DATA_DIR" "$ICONS_DIR" "$PYTHON_PKG_DIR" "$DESKTOP_DIR" "/home/$SUDO_USER/$DB_DIR"
+expand_home() {
+	_PATH="$1"
+
+	case "$_PATH" in
+		"~"|"~"/*)
+			_PATH="/home/${SUDO_USER:-$USER}${_PATH#\~}" ;;
+	esac
+
+	echo "$_PATH"
+}
+
+DB_DIR=$(expand_home "$DB_DIR")
+DB_FILE=$(expand_home "$DB_FILE")
+
+
+mkdir -pv "$BIN_DIR" "$DATA_DIR" "$ICONS_DIR" "$PYTHON_PKG_DIR" "$DESKTOP_DIR" "$DB_DIR"
 
 cp -v "$ORIG_SRC_DIR"/* "$PYTHON_PKG_DIR"
 cp -v "$ORIG_ICONS_DIR"/* "$ICONS_DIR"
 cp -v config "$DATA_DIR"
-cp -v "$ORIG_DB_FILE" "/home/$SUDO_USER/$DB_FILE"
+cp -v "$ORIG_DB_FILE" "$DB_FILE"
 cp -v "$ORIG_BAR_SIZES_FILE" "$DATA_DIR"
 
-chmod -v a+wx  "/home/$SUDO_USER/$DB_DIR"
-chmod -v a+wx "/home/$SUDO_USER/$DB_FILE"
+chmod -v a+wx  "$DB_DIR"
+chmod -v a+wx "$DB_FILE"
 
 echo "# This directory is a Python package." > "$PYTHON_PKG_DIR"/__init__.py
 
