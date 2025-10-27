@@ -21,7 +21,9 @@ def main():
         elif "--version" in sys.argv or "-v" in sys.argv:
             print(f"{app.name} {app.version}")
             sys.exit(0)
+
         app.run()
+
     except Exception as e:
         print(f"Error starting application: {e}")
 

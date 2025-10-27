@@ -8,7 +8,7 @@ from gi.repository import Gtk, Gio, Gdk, GdkPixbuf
 from .chapter_rectangle import ChapterRectangle
 
 class Window(Gtk.Window):
-    def __init__(self, 
+    def __init__(self,
         app,
         bar_sizes_path,
         app_icon_path = None,
@@ -16,7 +16,7 @@ class Window(Gtk.Window):
         save_icon = None,
     ):
         super().__init__()
-        
+
         self.app = app
 
         self.app_icon_path = app_icon_path
@@ -38,7 +38,7 @@ class Window(Gtk.Window):
 
         key, mod = Gtk.accelerator_parse("<Control>q")
         self.accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, self._on_ctrl_q)
-        
+
         key, mod = Gtk.accelerator_parse("<Control>s")
         self.accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, self._on_ctrl_s)
         # Window dimensions
@@ -90,7 +90,7 @@ class Window(Gtk.Window):
         self.pb_height = 10  # bar height
         self.pb_lines_dist = self.pb_height + 2  # distance between lines
         self.pb_dist = 1  # distance between 2 bars
-        
+
         self.list_rect_progress_bar = []
 
         prev_juz = None
@@ -179,13 +179,13 @@ class Window(Gtk.Window):
 
     def _on_ctrl_q(self, accel_group, window, key, modifier):
         self.app.quit()
-        
+
     def _on_ctrl_s(self, accel_group, window, key, modifier):
         self._open_save_dialog()
 
     def _on_click_save(self, widget):
         self._open_save_dialog()
-        
+
     def _open_save_dialog(self):
         dialog = Gtk.FileChooserDialog(title="Save image", parent=self, action=Gtk.FileChooserAction.SAVE)
         dialog.set_do_overwrite_confirmation(True)
@@ -199,7 +199,7 @@ class Window(Gtk.Window):
         )
 
         self._add_file_filters(dialog)
-        
+
         response = dialog.run()
         if response == Gtk.ResponseType.OK:
             self._save_pb_to_png(dialog.get_filename())
@@ -306,7 +306,7 @@ class Window(Gtk.Window):
 
         cr.move_to(0, self.pb_y0 - 5)
         cr.show_text("Juz'")
-        
+
         for juz in range(1, 30+1):
             # Calculate position - offset for single-digit task numbers
             num_pos = 0 if juz >= 10 else self.pb_x0 / 4

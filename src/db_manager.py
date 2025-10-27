@@ -16,7 +16,7 @@ class DBManager():
         try:
             con = sqlite3.connect(self._db_path)
             cur = con.cursor()
-            
+
             book_data = cur.execute("SELECT * FROM books").fetchone()
             book = Book(book_data[1], book_data[2], book_data[3], book_data[4], book_data[5], book_data[6])
         except con.DatabaseError:
@@ -71,7 +71,7 @@ class DBManager():
             raise con.DatabaseError(f'Failed to load data from "{self._db_path}"')
 
         return user
-        
+
     def save_user_data(self, user):
         con = sqlite3.connect(self._db_path)
         cur = con.cursor()

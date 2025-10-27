@@ -20,9 +20,9 @@ class App():
         self.website_label = WEBSITE_LABEL
         self.authors = AUTHORS.split(",")
         self.copyright = COPYRIGHT
-        
+
         self.db_manager = DBManager(os.path.expanduser(DB_FILE))
-        
+
         # Load persistant data from db
         self.user = self.db_manager.load_user()
         self.book = self.db_manager.load_book()
@@ -40,7 +40,7 @@ class App():
         )
         self.win.connect("destroy", self._on_destroy)
         self.win.show_all()
-    
+
     def _on_destroy(self, window):
         self.quit()
 
@@ -48,6 +48,6 @@ class App():
         if self.user_data_changed:
             self.db_manager.save_user_data(self.user)
         Gtk.main_quit()
-        
+
     def run(self):
         Gtk.main()
