@@ -28,8 +28,7 @@ cp -v config "$DATA_DIR"
 cp -v "$ORIG_DB_FILE" "$DB_FILE"
 cp -v "$ORIG_BAR_SIZES_FILE" "$DATA_DIR"
 
-chmod -v a+wx  "$DB_DIR"
-chmod -v a+wx "$DB_FILE"
+chown -R "$SUDO_USER":"$SUDO_USER" "$DB_DIR"
 
 echo "# This directory is a Python package." > "$PYTHON_PKG_DIR"/__init__.py
 
@@ -53,4 +52,4 @@ if __name__ == '__main__':
     main()
 " > "$BIN_FILE"
 
-chmod -v a+x "$BIN_FILE"
+chmod -v +x "$BIN_FILE"
