@@ -32,11 +32,12 @@ class App():
         self.user_data_changed = False
 
         # Load GTK Window
-        self.win = Window(self,
-                         BAR_SIZES_FILE,
-                         APP_ICON_FILE,
-                         MENU_ICON,
-                         SAVE_ICON
+        self.win = Window(
+            self,
+            BAR_SIZES_FILE,
+            APP_ICON_FILE,
+            MENU_ICON,
+            SAVE_ICON
         )
         self.win.connect("destroy", self._on_destroy)
         self.win.show_all()
