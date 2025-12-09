@@ -1,8 +1,8 @@
 import os
 import csv
-
 import cairo
 import gi
+
 from gi.repository import Gtk, Gio, Gdk, GdkPixbuf
 
 from .chapter_rectangle import ChapterRectangle
@@ -41,6 +41,7 @@ class Window(Gtk.Window):
 
         key, mod = Gtk.accelerator_parse("<Control>s")
         self.accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, self._on_ctrl_s)
+
         # Window dimensions
         self.set_size_request(580, 550)
         self.set_resizable(False)
@@ -113,17 +114,17 @@ class Window(Gtk.Window):
 
         # Progress Bars Tab
         drawingarea_progress_bar = Gtk.DrawingArea()
-        drawingarea_progress_bar.connect("draw", self._on_draw_text)
-        drawingarea_progress_bar.connect("draw", self._on_draw_progress_bar)
+        drawingarea_progress_bar.connect("draw", self._draw_juz_text)
+        drawingarea_progress_bar.connect("draw", self._draw_progress_bar)
         drawingarea_progress_bar.connect("button-press-event", self._on_click_progress_bar)
         drawingarea_progress_bar.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
-        stack.add_titled(drawingarea_progress_bar, "bars", "Bars")
+        stack.add_titled(drawingarea_progress_bar, "bars", "Progress Bars")
 
         # Matrix Tab
         rects_per_col = 19
         rects_per_line = 6
         drawingarea_matrix = Gtk.DrawingArea()
-        drawingarea_matrix.connect("draw", self._on_draw_matrix)
+        drawingarea_matrix.connect("draw", self._draw_matrix)
         drawingarea_matrix.connect("button-press-event", self._on_click_matrix)
         drawingarea_matrix.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         stack.add_titled(drawingarea_matrix, "matrix", "Matrix")
@@ -190,7 +191,7 @@ class Window(Gtk.Window):
         dialog = Gtk.FileChooserDialog(title="Save image", parent=self, action=Gtk.FileChooserAction.SAVE)
         dialog.set_do_overwrite_confirmation(True)
         dialog.set_current_folder(os.path.expanduser("~"))
-        dialog.set_current_name("bars.png")
+        dialog.set_current_name("progress.png")
         dialog.add_buttons(
             Gtk.STOCK_CANCEL,
             Gtk.ResponseType.CANCEL,
@@ -289,7 +290,7 @@ class Window(Gtk.Window):
         self._refresh_stats_label()
         self._refresh_rectangles_colors()
 
-    def _on_draw_matrix(self, widget, cr):
+    def _draw_matrix(self, widget, cr):
         for rect in self.list_rect_matrix:
             r_x = rect.x
             r_y = rect.y
@@ -300,7 +301,7 @@ class Window(Gtk.Window):
             cr.rectangle(r_x, r_y, r_w, r_h)
             cr.fill()
 
-    def _on_draw_text(self, widget, cr: cairo.Context):
+    def _draw_juz_text(self, widget, cr: cairo.Context):
         cr.set_source_rgb(0.7, 0.7, 0.7)
         cr.set_font_size(10)
 
@@ -317,7 +318,7 @@ class Window(Gtk.Window):
             cr.move_to(x_pos, y_pos)
             cr.show_text(str(juz))
 
-    def _on_draw_progress_bar(self, widget, cr: cairo.Context):
+    def _draw_progress_bar(self, widget, cr: cairo.Context):
         for rect in self.list_rect_progress_bar:
             cr.set_source_rgb(*rect.color)
             cr.rectangle(rect.x, rect.y, rect.width, rect.height)
@@ -375,15 +376,12 @@ class Window(Gtk.Window):
         cr.set_source_rgb(1, 1, 1)
         cr.paint()
 
-        # Draw all rectangles
-        for rect in self.list_rect_progress_bar:
-            cr.set_source_rgb(*rect.color)
-            cr.rectangle(rect.x, rect.y, rect.width, rect.height)
-            cr.fill()
+        self._draw_progress_bar(widget=None, cr=cr)
+        self._draw_juz_text(widget=None, cr=cr)
 
-        # Save to PNG
+        # Write the surface to a PNG file
         try:
             surface.write_to_png(filename)
             surface.finish()
         except Exception as e:
-            print(f"Failed to save bars image at {filename}: {e}")
+            print(f"Failed to save progress bars image at {filename}: {e}")
