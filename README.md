@@ -37,4 +37,3 @@ sudo scripts/uninstall.sh
 ## Credits
 - Data source: [Quran Analysis](https://qurananalysis.com/analysis/basic-statistics.php?lang=EN)
 - Inspiration: [ColorArabic](https://commons.wikimedia.org/wiki/File:ColorArabic.png)
-
