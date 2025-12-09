@@ -3,7 +3,7 @@ import csv
 import cairo
 import gi
 
-from gi.repository import Gtk, Gio, Gdk, GdkPixbuf
+from gi.repository import Gtk, Gio, Gdk, GdkPixbuf, Pango
 
 from .chapter_rectangle import ChapterRectangle
 
@@ -104,11 +104,15 @@ class Window(Gtk.Window):
                 if juz != prev_juz:
                     num_pos = 0 if juz >= 10 else self.pb_x0/4
                     self.pb_offset = self.pb_x0
-                self.list_rect_progress_bar.append(ChapterRectangle(self.pb_offset,
-                                                                    self.pb_y0 + self.pb_lines_dist*(juz-1), 
-                                                                    length-self.pb_dist,
-                                                                    self.pb_height,
-                                                                    chapter))
+                self.list_rect_progress_bar.append(
+                    ChapterRectangle(
+                        self.pb_offset,
+                        self.pb_y0 + self.pb_lines_dist*(juz-1), 
+                        length-self.pb_dist,
+                        self.pb_height,
+                        chapter
+                    )
+                )
                 self.pb_offset += length
                 prev_juz = juz
 
@@ -144,10 +148,12 @@ class Window(Gtk.Window):
         checkbutton_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         for chapter in self.app.book.list_chapters:
             checkbutton = Gtk.CheckButton(label=f"{chapter.number}. ({chapter.name_latin}) {chapter.name_arabic}")
+            checkbutton.modify_font(Pango.FontDescription("11"))
             if chapter.number in self.app.user.list_mem_chapters:
                 checkbutton.set_active(True)
             checkbutton.connect("toggled", lambda btn, obj=chapter: self._on_toggle_checkbox(btn, obj))
             checkbutton_container.pack_start(checkbutton, False, False, 0)
+
         scrolled_window = Gtk.ScrolledWindow()
         scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         scrolled_window.add(checkbutton_container)
@@ -354,10 +360,10 @@ class Window(Gtk.Window):
 
     def _refresh_stats_label(self):
         self.label_stats.set_markup(
-            f"<big><b>Chapters:</b> {self.app.user.n_mem_chapters} ({round(self.app.user.n_mem_chapters / self.app.book.n_chapters * 100, 1)}%)</big>\n"
-            f"<big><b>Verses:</b> {self.app.user.n_mem_verses} ({round(self.app.user.n_mem_verses / self.app.book.n_verses * 100, 1)}%)</big>\n"
-            f"<big><b>Words:</b> {self.app.user.n_mem_words} ({round(self.app.user.n_mem_words / self.app.book.n_words * 100, 1)}%)</big>\n"
-            f"<big><b>Letters:</b> {self.app.user.n_mem_letters} ({round(self.app.user.n_mem_letters / self.app.book.n_letters * 100, 1)}%)</big>"
+            f"<span font='13'><b>Chapters:</b> {self.app.user.n_mem_chapters} ({round(self.app.user.n_mem_chapters / self.app.book.n_chapters * 100, 1)}%)</span>\n"
+            f"<span font='13'><b>Verses:</b> {self.app.user.n_mem_verses} ({round(self.app.user.n_mem_verses / self.app.book.n_verses * 100, 1)}%)</span>\n"
+            f"<span font='13'><b>Words:</b> {self.app.user.n_mem_words} ({round(self.app.user.n_mem_words / self.app.book.n_words * 100, 1)}%)</span>\n"
+            f"<span font='13'><b>Letters:</b> {self.app.user.n_mem_letters} ({round(self.app.user.n_mem_letters / self.app.book.n_letters * 100, 1)}%)</span>"
         )
 
     def _save_pb_to_png(self, filename):
