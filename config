@@ -1,16 +1,13 @@
 APP_NAME="GTKHafiz";
 APP_NAME_LOWER="gtkhafiz"
 APP_DESCRIPTION="Track Qur'an memorization visually";
-APP_VERSION="0.4.0";
+APP_VERSION="0.5.0";
 WEBSITE_URL="https://github.com/omarelladen/GTKHafiz";
 WEBSITE_LABEL="Repository";
 AUTHORS="Omar El Laden https://github.com/omarelladen";
 COPYRIGHT="Copyright © 2025 Omar El Laden";
 
 APP_ICON_FILE="/usr/local/share/gtkhafiz/icons/icon.png";
-
-MENU_ICON="open-menu-symbolic";
-SAVE_ICON="document-save-symbolic";
 
 ORIG_SRC_DIR="src";
 ORIG_ICONS_DIR="data/icons";

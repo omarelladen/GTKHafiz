@@ -11,36 +11,21 @@ class Window(Gtk.Window):
     def __init__(self,
         app,
         bar_sizes_path,
-        app_icon_path = None,
-        menu_icon = None,
-        save_icon = None,
+        app_icon_path = None
     ):
         super().__init__()
 
         self.app = app
 
-        self.app_icon_path = app_icon_path
-        self.menu_icon = menu_icon
-        self.save_icon = save_icon
-
         # Icon
-        if self.app_icon_path:
-            try:
-                self.pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(self.app_icon_path, 64, 64, True)
-                self.set_icon(self.pixbuf)
-            except:
-                self.pixbuf = None
-                print(f'Failed to load icon from "{self.app_icon_path}"')
+        self._set_icon_from_file(app_icon_path)
 
         # Shortcuts
-        self.accel_group = Gtk.AccelGroup()
-        self.add_accel_group(self.accel_group)
+        accel_group = Gtk.AccelGroup()
+        self.add_accel_group(accel_group)
 
-        key, mod = Gtk.accelerator_parse("<Control>q")
-        self.accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, self._on_ctrl_q)
-
-        key, mod = Gtk.accelerator_parse("<Control>s")
-        self.accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, self._on_ctrl_s)
+        self._create_shortcut(accel_group, "<Control>q", self._on_ctrl_q)
+        self._create_shortcut(accel_group, "<Control>s", self._on_ctrl_s)
 
         # Window dimensions
         self.set_size_request(580, 550)
@@ -69,17 +54,28 @@ class Window(Gtk.Window):
 
         # Menu Button
         bt = Gtk.MenuButton(popover=popover_menu)
-        icon = Gio.ThemedIcon(name=self.menu_icon)
+        icon = Gio.ThemedIcon(name="open-menu-symbolic")
         img_icon = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.BUTTON)
         bt.add(img_icon)
+        bt.set_tooltip_text("Main Menu")
         headerbar.pack_end(bt)
 
-        # Save button
+        # Save Button
         bt = Gtk.Button()
-        icon = Gio.ThemedIcon(name=self.save_icon)
+        icon = Gio.ThemedIcon(name="document-save-symbolic")
         img_icon = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.BUTTON)
         bt.add(img_icon)
+        bt.set_tooltip_text("Save Progress Bars")
         bt.connect("clicked", self._on_click_save)
+        headerbar.pack_end(bt)
+
+        # Color Chooser Button
+        bt = Gtk.Button()
+        icon = Gio.ThemedIcon(name="preferences-color-symbolic")
+        img_icon = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.BUTTON)
+        bt.add(img_icon)
+        bt.set_tooltip_text("Select Color")
+        bt.connect("clicked", self._on_click_color_chooser)
         headerbar.pack_end(bt)
 
         # Stack
@@ -92,29 +88,7 @@ class Window(Gtk.Window):
         self.pb_lines_dist = self.pb_height + 2  # distance between lines
         self.pb_dist = 1  # distance between 2 bars
 
-        self.list_rect_progress_bar = []
-
-        prev_juz = None
-        with open(bar_sizes_path, mode="r") as f:
-            reader = csv.reader(f)
-            for line in reader:
-                juz = int(line[0])
-                chapter = int(line[1])
-                length = float(line[3])
-                if juz != prev_juz:
-                    num_pos = 0 if juz >= 10 else self.pb_x0/4
-                    self.pb_offset = self.pb_x0
-                self.list_rect_progress_bar.append(
-                    ChapterRectangle(
-                        self.pb_offset,
-                        self.pb_y0 + self.pb_lines_dist*(juz-1), 
-                        length-self.pb_dist,
-                        self.pb_height,
-                        chapter
-                    )
-                )
-                self.pb_offset += length
-                prev_juz = juz
+        self.list_rect_progress_bar = self._create_pb_rects_from_file(bar_sizes_path)
 
         # Progress Bars Tab
         drawingarea_progress_bar = Gtk.DrawingArea()
@@ -125,8 +99,6 @@ class Window(Gtk.Window):
         stack.add_titled(drawingarea_progress_bar, "bars", "Progress Bars")
 
         # Matrix Tab
-        rects_per_col = 19
-        rects_per_line = 6
         drawingarea_matrix = Gtk.DrawingArea()
         drawingarea_matrix.connect("draw", self._draw_matrix)
         drawingarea_matrix.connect("button-press-event", self._on_click_matrix)
@@ -134,15 +106,9 @@ class Window(Gtk.Window):
         stack.add_titled(drawingarea_matrix, "matrix", "Matrix")
 
         # Create Chapter Rectangles of matrix
-        self.list_rect_matrix = []
-        for i in range(rects_per_col):
-            for j in range(rects_per_line):
-                x = 155 + (rects_per_line-1-j)*35  # from left to right
-                y = 15 + i*20
-                chapter_num = i*(rects_per_line) + j + 1
-                self.list_rect_matrix.append(ChapterRectangle(x, y, 30, 10, chapter_num))
+        self.list_rect_matrix = self._create_matrix_rects(6, 19)
 
-        self._refresh_rectangles_colors()
+        self._refresh_rects_colors()
 
         # List Tab
         checkbutton_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
@@ -151,7 +117,7 @@ class Window(Gtk.Window):
             checkbutton.modify_font(Pango.FontDescription("11"))
             if chapter.number in self.app.user.list_mem_chapters:
                 checkbutton.set_active(True)
-            checkbutton.connect("toggled", lambda btn, obj=chapter: self._on_toggle_checkbox(btn, obj))
+            checkbutton.connect("toggled", lambda bt, obj=chapter: self._on_toggle_checkbox(bt, obj))
             checkbutton_container.pack_start(checkbutton, False, False, 0)
 
         scrolled_window = Gtk.ScrolledWindow()
@@ -179,10 +145,90 @@ class Window(Gtk.Window):
         # Stack Switcher
         stackswitcher = Gtk.StackSwitcher()
         stackswitcher.set_stack(stack)
-        stackswitcher.set_halign(Gtk.Align.CENTER)  # horizontal
+        stackswitcher.set_halign(Gtk.Align.CENTER)
 
         outerbox.pack_start(stackswitcher, False, True, 0)
         outerbox.pack_start(stack, True, True, 0)
+
+    def _on_click_color_chooser(self, widget):
+        color_chooser = Gtk.ColorChooserDialog("Select rectangle color", self)
+        
+        color_chooser.set_rgba(Gdk.RGBA(0.0, 0.8, 0.0, 1.0))  # default color
+
+        response = color_chooser.run()
+
+        if response == Gtk.ResponseType.OK:
+            color = color_chooser.get_rgba()
+            self._paint_rects(color)
+
+        color_chooser.destroy()
+
+    def _paint_rects(self, color: Gdk.RGBA):
+        r = color.red
+        g = color.green
+        b = color.blue
+
+        for rect in self.list_rect_matrix:
+            rect.color_on = (r,g,b)
+        for rect in self.list_rect_progress_bar:
+            rect.color_on = (r,g,b)
+
+        self._refresh_rects_colors()
+
+    def _set_icon_from_file(self, icon_path):
+        if icon_path:
+            try:
+                self.pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(icon_path, 64, 64, True)
+                self.set_icon(self.pixbuf)
+            except:
+                self.pixbuf = None
+                print(f'Failed to load icon from "{self.app_icon_path}"')
+
+    def _create_pb_rects_from_file(self, bar_sizes_path):
+        list_rect_progress_bar = []
+        prev_juz = None
+        
+        with open(bar_sizes_path, mode="r") as f:
+            reader = csv.reader(f)
+            for line in reader:
+                juz         = int(line[0])
+                chapter_num = int(line[1])
+                length      = float(line[3])
+                
+                if juz != prev_juz:
+                    num_pos = 0 if juz >= 10 else self.pb_x0/4
+                    pb_offset = self.pb_x0
+
+                list_rect_progress_bar.append(
+                    ChapterRectangle(
+                        pb_offset,
+                        self.pb_y0 + self.pb_lines_dist*(juz-1), 
+                        length-self.pb_dist,
+                        self.pb_height,
+                        chapter_num
+                    )
+                )
+                
+                pb_offset += length
+                prev_juz = juz
+
+        return list_rect_progress_bar 
+                
+    def _create_matrix_rects(self, rects_per_line, rects_per_col):
+        list_rect_matrix = []
+
+        for i in range(rects_per_col):
+            for j in range(rects_per_line):
+                x = 155 + (rects_per_line-1-j)*35  # from left to right
+                y = 15 + i*20
+                chapter_num = i*(rects_per_line) + j + 1
+                list_rect_matrix.append(ChapterRectangle(x, y, 30, 10, chapter_num))
+
+        return list_rect_matrix
+
+    def _create_shortcut(self, accel_group, accelerator, callback):
+        key, mod = Gtk.accelerator_parse(accelerator)
+        accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, callback)
 
     def _on_ctrl_q(self, accel_group, window, key, modifier):
         self.app.quit()
@@ -194,7 +240,7 @@ class Window(Gtk.Window):
         self._open_save_dialog()
 
     def _open_save_dialog(self):
-        dialog = Gtk.FileChooserDialog(title="Save image", parent=self, action=Gtk.FileChooserAction.SAVE)
+        dialog = Gtk.FileChooserDialog(title="Save Progress Bars", parent=self, action=Gtk.FileChooserAction.SAVE)
         dialog.set_do_overwrite_confirmation(True)
         dialog.set_current_folder(os.path.expanduser("~"))
         dialog.set_current_name("progress.png")
@@ -228,23 +274,27 @@ class Window(Gtk.Window):
         # Hide only when clicking in a point that is not the one that opened the popover
         if (self.is_popover_chapter_active == True and
             event.x != self.cursor_x_at_popover and
-            event.y != self.cursor_y_at_popover):
+            event.y != self.cursor_y_at_popover
+        ):
             self.is_popover_chapter_active = False
             self.popover_chapter.hide()
 
     def _on_click_progress_bar(self, widget, event):
         if (event.type == Gdk.EventType.BUTTON_PRESS and
-            event.button == Gdk.BUTTON_PRIMARY):
+            event.button == Gdk.BUTTON_PRIMARY
+        ):
             for rect in self.list_rect_progress_bar:
                 if (rect.x <= event.x <= rect.x + rect.width and
                     rect.y <= event.y <= rect.y + rect.height and
-                    isinstance(rect.caption, int)):
+                    isinstance(rect.caption, int)
+                ):
                     self._show_chapter_popover(rect, widget, event)
                     break
 
     def _on_click_matrix(self, widget, event):
         if (event.type == Gdk.EventType.BUTTON_PRESS and
-            event.button == Gdk.BUTTON_PRIMARY):
+            event.button == Gdk.BUTTON_PRIMARY
+        ):
             e_x, e_y = event.x, event.y
             for rect in self.list_rect_matrix:
                 r_x = rect.x
@@ -252,7 +302,8 @@ class Window(Gtk.Window):
                 r_w = rect.width
                 r_h = rect.height
                 if (r_x <= e_x <= r_x + r_w and
-                    r_y <= e_y <= r_y + r_h):
+                    r_y <= e_y <= r_y + r_h
+                ):
                     self._show_chapter_popover(rect, widget, event)
                     break
 
@@ -274,27 +325,15 @@ class Window(Gtk.Window):
         about.present()
 
     def _on_toggle_checkbox(self, button, chapter):
-        # Checkbox activation
         if button.get_active():
-            self.app.user.list_mem_chapters.append(chapter.number)
-            self.app.user.n_mem_chapters += 1
-            self.app.user.n_mem_verses   += chapter.n_verses
-            self.app.user.n_mem_words    += chapter.n_words
-            self.app.user.n_mem_letters  += chapter.n_letters
-
-        # Checkbox deactivation
+            self.app.user.add_mem_chapter(chapter)
         else:
-            self.app.user.list_mem_chapters.remove(chapter.number)
-            self.app.user.n_mem_chapters -= 1
-            self.app.user.n_mem_verses   -= chapter.n_verses
-            self.app.user.n_mem_words    -= chapter.n_words
-            self.app.user.n_mem_letters  -= chapter.n_letters
+            self.app.user.rm_mem_chapter(chapter)
 
         self.app.user_data_changed = True
 
-        # Refresh
         self._refresh_stats_label()
-        self._refresh_rectangles_colors()
+        self._refresh_rects_colors()
 
     def _draw_matrix(self, widget, cr):
         for rect in self.list_rect_matrix:
@@ -352,11 +391,11 @@ class Window(Gtk.Window):
         self.cursor_y_at_popover = e_y
         self.is_popover_chapter_active = True
 
-    def _refresh_rectangles_colors(self):
+    def _refresh_rects_colors(self):
         for rect in self.list_rect_matrix:
-            rect.color = rect.color_on if rect.caption in self.app.user.list_mem_chapters else rect.color_off
+            rect.paint_on() if rect.caption in self.app.user.list_mem_chapters else rect.paint_off()
         for rect in self.list_rect_progress_bar:
-            rect.color = rect.color_on if rect.caption in self.app.user.list_mem_chapters else rect.color_off
+            rect.paint_on() if rect.caption in self.app.user.list_mem_chapters else rect.paint_off()
 
     def _refresh_stats_label(self):
         self.label_stats.set_markup(

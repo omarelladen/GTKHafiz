@@ -35,9 +35,7 @@ class App():
         self.win = Window(
             self,
             BAR_SIZES_FILE,
-            APP_ICON_FILE,
-            MENU_ICON,
-            SAVE_ICON
+            APP_ICON_FILE
         )
         self.win.connect("destroy", self._on_destroy)
         self.win.show_all()
