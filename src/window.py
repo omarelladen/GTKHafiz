@@ -24,8 +24,10 @@ class Window(Gtk.Window):
         accel_group = Gtk.AccelGroup()
         self.add_accel_group(accel_group)
 
-        self._create_shortcut(accel_group, "<Control>q", self._on_ctrl_q)
-        self._create_shortcut(accel_group, "<Control>s", self._on_ctrl_s)
+        self.list_shortcuts = []
+
+        self._add_shortcut(accel_group, "Quit",               "<control>Q", self._on_ctrl_q)
+        self._add_shortcut(accel_group, "Save Progress Bars", "<control>S", self._on_ctrl_s)
 
         # Window dimensions
         self.set_size_request(580, 550)
@@ -39,9 +41,15 @@ class Window(Gtk.Window):
         # Menu Popover
         popover_menu = Gtk.Popover()
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+
+        bt = Gtk.Button(label="Keyboard Shortcuts")
+        bt.connect("clicked", self._on_click_shortcuts)
+        vbox.pack_start(bt, False, True, 10)
+
         bt = Gtk.ModelButton(label=f"About {self.app.name}")
         bt.connect("clicked", self._on_click_about)
         vbox.pack_start(bt, False, True, 10)
+
         vbox.show_all()
         popover_menu.add(vbox)
         popover_menu.set_position(Gtk.PositionType.BOTTOM)
@@ -51,7 +59,7 @@ class Window(Gtk.Window):
         headerbar.set_show_close_button(True)
         headerbar.props.title = self.app.name
         self.set_titlebar(headerbar)
-
+ 
         # Menu Button
         bt = Gtk.MenuButton(popover=popover_menu)
         icon = Gio.ThemedIcon(name="open-menu-symbolic")
@@ -76,7 +84,7 @@ class Window(Gtk.Window):
         bt.add(img_icon)
         bt.set_tooltip_text("Select Color")
         bt.connect("clicked", self._on_click_color_chooser)
-        headerbar.pack_end(bt)
+        headerbar.pack_start(bt)
 
         # Stack
         stack = Gtk.Stack()
@@ -147,9 +155,22 @@ class Window(Gtk.Window):
         stackswitcher.set_stack(stack)
         stackswitcher.set_halign(Gtk.Align.CENTER)
 
-        outerbox.pack_start(stackswitcher, False, True, 0)
+        outerbox.pack_start(stackswitcher, False, False, 0)
         outerbox.pack_start(stack, True, True, 0)
 
+    def do_startup(self):
+        Gtk.Application.do_startup(self)
+
+        # Criando a ação "about"
+        action = Gio.SimpleAction(name="about")
+        action.connect("activate", self._on_click_about)
+        self.add_action(action)
+
+        # Criando a ação "quit"
+        action = Gio.SimpleAction(name="quit")
+        action.connect("activate", self.quit())
+        self.add_action(action)
+    
     def _on_click_color_chooser(self, widget):
         color_chooser = Gtk.ColorChooserDialog("Select rectangle color", self)
         
@@ -216,19 +237,19 @@ class Window(Gtk.Window):
                 
     def _create_matrix_rects(self, rects_per_line, rects_per_col):
         list_rect_matrix = []
-
         for i in range(rects_per_col):
             for j in range(rects_per_line):
                 x = 155 + (rects_per_line-1-j)*35  # from left to right
                 y = 15 + i*20
                 chapter_num = i*(rects_per_line) + j + 1
                 list_rect_matrix.append(ChapterRectangle(x, y, 30, 10, chapter_num))
-
         return list_rect_matrix
 
-    def _create_shortcut(self, accel_group, accelerator, callback):
+    def _add_shortcut(self, accel_group, label, accelerator, callback):
         key, mod = Gtk.accelerator_parse(accelerator)
         accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, callback)
+
+        self.list_shortcuts.append((label, accelerator.replace("<", "").replace(">", " + ").replace("control", "Ctrl")))
 
     def _on_ctrl_q(self, accel_group, window, key, modifier):
         self.app.quit()
@@ -306,6 +327,24 @@ class Window(Gtk.Window):
                 ):
                     self._show_chapter_popover(rect, widget, event)
                     break
+
+    def _on_click_shortcuts(self, button):
+        dialog = Gtk.Dialog("Shortcuts", self, Gtk.DialogFlags.MODAL)
+        dialog.add_button(Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE)
+
+        content_area = dialog.get_content_area()
+        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        
+        for action, shortcut in self.list_shortcuts:
+            label = Gtk.Label(label=f"  {shortcut}      {action}  ")
+            label.set_halign(Gtk.Align.START)
+            vbox.pack_start(label, False, True, 0)
+        
+        content_area.add(vbox)
+        dialog.show_all()
+
+        dialog.run()
+        dialog.destroy()
 
     def _on_click_about(self, widget):
         about = Gtk.AboutDialog(transient_for=self, modal=True)
