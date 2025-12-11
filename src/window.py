@@ -1,5 +1,4 @@
 import os
-import re
 import csv
 import cairo
 import gi
@@ -7,6 +6,8 @@ import gi
 from gi.repository import Gtk, Gio, Gdk, GdkPixbuf, Pango
 
 from .chapter_rectangle import ChapterRectangle
+from .color_utils import ColorUtils
+from .download_manager import DownloadManager
 
 class Window(Gtk.Window):
     def __init__(self,
@@ -18,16 +19,19 @@ class Window(Gtk.Window):
 
         self.app = app
 
-        # Icon
+        self.color_utils = ColorUtils()
+        self.download_manager = DownloadManager(self)
+
+
         self._set_icon_from_file(app_icon_path)
 
         # Rectangles color
         self.default_rect_color_hex = "#00CC00FF"
         rect_color_hex = self.app.preferences_manager.read_rect_color_from_file()
-        if not rect_color_hex or not self._valid_color_hex(rect_color_hex):
+        if not rect_color_hex or not self.color_utils.valid_color_hex(rect_color_hex):
             rect_color_hex = self.default_rect_color_hex
             self.app.preferences_manager.write_rect_color_to_file(rect_color_hex)
-        self.rect_color = self._hex_to_rgba(rect_color_hex)
+        self.rect_color = self.color_utils.hex_to_rgba(rect_color_hex)
 
 
         # Shortcuts
@@ -76,7 +80,7 @@ class Window(Gtk.Window):
         headerbar.props.title = self.app.name
         self.set_titlebar(headerbar)
 
- 
+
         # Menu Button
         bt = Gtk.MenuButton(popover=popover_menu)
         icon = Gio.ThemedIcon(name="open-menu-symbolic")
@@ -117,7 +121,7 @@ class Window(Gtk.Window):
 
 
         # Create Chapter Rectangles
-        self.list_rects_pb = self._create_pb_rects_from_file(bars_sizes_path)        
+        self.list_rects_pb = self._create_pb_rects_from_file(bars_sizes_path)
         self.list_rects_matrix = self._create_matrix_rects(6, 19)
 
         self._refresh_rects_colors()
@@ -182,51 +186,6 @@ class Window(Gtk.Window):
         outerbox.pack_start(stackswitcher, False, False, 0)
         outerbox.pack_start(stack, True, True, 0)
 
-    def _valid_color_hex(self, color_hex):
-        if not re.fullmatch(r"[0-9a-f]{6}|[0-9a-f]{8}", color_hex.strip().lstrip("#").lower()):
-            return False
-        return True
-
-    def _rgba_to_hex(self, color_rgba):
-        r = int(color_rgba.red   * 255)
-        g = int(color_rgba.green * 255)
-        b = int(color_rgba.blue  * 255)
-        a = int(color_rgba.alpha * 255)
-        return f"#{r:02X}{g:02X}{b:02X}{a:02X}"
-
-    def _hex_to_rgba(self, color_hex):       
-        _color_hex = color_hex.lstrip('#')
-        r = int(_color_hex[0:2], 16) / 255.0
-        g = int(_color_hex[2:4], 16) / 255.0
-        b = int(_color_hex[4:6], 16) / 255.0
-        a = int(_color_hex[6:8], 16) / 255.0 if len(color_hex) == 8 else 1.0
-        return Gdk.RGBA(r, g, b, a)
-
-    def _on_click_color_chooser(self, widget):
-        color_chooser = Gtk.ColorChooserDialog("Select rectangle color", self)
-        
-        color_chooser.set_rgba(self._hex_to_rgba(self.default_rect_color_hex))  # default color
-
-        response = color_chooser.run()
-        if response == Gtk.ResponseType.OK:
-            color = color_chooser.get_rgba()
-            self._paint_rects(color)
-            self.app.preferences_manager.write_rect_color_to_file(self._rgba_to_hex(color))
-
-        color_chooser.destroy()
-
-    def _paint_rects(self, color: Gdk.RGBA):
-        r = color.red
-        g = color.green
-        b = color.blue
-        a = color.alpha
-
-        for rect in self.list_rects_matrix:
-            rect.color_on = Gdk.RGBA(r,g,b,a)
-        for rect in self.list_rects_pb:
-            rect.color_on = Gdk.RGBA(r,g,b,a)
-
-        self._refresh_rects_colors()
 
     def _set_icon_from_file(self, icon_path):
         if icon_path:
@@ -237,97 +196,19 @@ class Window(Gtk.Window):
                 self.pixbuf = None
                 print(f'Failed to load icon from "{self.app_icon_path}"')
 
-    def _create_pb_rects_from_file(self, bars_sizes_path):
-        list_rects_pb = []
-        prev_juz = None
-
-        if not os.path.isfile(bars_sizes_path):
-            raise FileNotFoundError(f'Failed to find bars sizes file "{self.bars_sizes_path}"')
-        try:
-            with open(bars_sizes_path, mode="r") as f:
-                reader = csv.reader(f)
-                for line in reader:
-                    juz         = int(line[0])
-                    chapter_num = int(line[1])
-                    length      = float(line[3])
-                    
-                    if juz != prev_juz:
-                        num_pos = 0 if juz >= 10 else self.pb_x0/4
-                        pb_offset = self.pb_x0
-
-                    list_rects_pb.append(
-                        ChapterRectangle(
-                            pb_offset,
-                            self.pb_y0 + self.pb_lines_dist*(juz-1), 
-                            length-self.pb_dist,
-                            self.pb_height,
-                            chapter_num,
-                            self.rect_color
-                        )
-                    )
-                    
-                    pb_offset += length
-                    prev_juz = juz
-
-            return list_rects_pb 
-        except Exception as e:
-            print(f'Failed to load bars sizes files at "{self.preferences_path}": {e}')
-                
-    def _create_matrix_rects(self, rects_per_line, rects_per_col):
-        list_rects_matrix = []
-        for i in range(rects_per_col):
-            for j in range(rects_per_line):
-                x = 155 + (rects_per_line-1-j)*35  # from left to right
-                y = 15 + i*20
-                chapter_num = i*(rects_per_line) + j + 1
-                list_rects_matrix.append(ChapterRectangle(x, y, 30, 10, chapter_num, self.rect_color))
-        return list_rects_matrix
-
     def _add_shortcut(self, accel_group, action, accelerator, callback):
         key, mod = Gtk.accelerator_parse(accelerator)
         accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, callback)
 
         self.list_shortcuts.append((action, key, mod))
 
+
     def _on_ctrl_q(self, accel_group, window, key, modifier):
         self.app.quit()
 
     def _on_ctrl_s(self, accel_group, window, key, modifier):
-        self._open_save_dialog()
+        self.download_manager.open_save_dialog()
 
-    def _on_click_save(self, widget):
-        self._open_save_dialog()
-
-    def _open_save_dialog(self):
-        dialog = Gtk.FileChooserDialog(title="Save Progress Bars", parent=self, action=Gtk.FileChooserAction.SAVE)
-        dialog.set_do_overwrite_confirmation(True)
-        dialog.set_current_folder(os.path.expanduser("~"))
-        dialog.set_current_name("progress.png")
-        dialog.add_buttons(
-            Gtk.STOCK_CANCEL,
-            Gtk.ResponseType.CANCEL,
-            Gtk.STOCK_SAVE,
-            Gtk.ResponseType.OK,
-        )
-
-        self._add_file_filters(dialog)
-
-        response = dialog.run()
-        if response == Gtk.ResponseType.OK:
-            self._save_pb_to_png(dialog.get_filename())
-
-        dialog.destroy()
-
-    def _add_file_filters(self, dialog):
-        file_filter = Gtk.FileFilter()
-        file_filter.set_name("PNG image")
-        file_filter.add_mime_type("image/png")
-        dialog.add_filter(file_filter)
-
-        file_filter = Gtk.FileFilter()
-        file_filter.set_name("Any files")
-        file_filter.add_pattern("*")
-        dialog.add_filter(file_filter)
 
     def _on_click_outside_popover(self, widget, event):
         # Hide only when clicking in a point that is not the one that opened the popover
@@ -366,6 +247,34 @@ class Window(Gtk.Window):
                     self._show_chapter_popover(rect, widget, event)
                     break
 
+
+    def _on_toggle_checkbox(self, button, chapter):
+        if button.get_active():
+            self.app.user.add_mem_chapter(chapter)
+        else:
+            self.app.user.rm_mem_chapter(chapter)
+
+        self.app.user_data_changed = True
+
+        self._refresh_stats_label()
+        self._refresh_rects_colors()
+
+    def _on_click_color_chooser(self, widget):
+        color_chooser = Gtk.ColorChooserDialog("Select rectangle color", self)
+
+        color_chooser.set_rgba(self.color_utils.hex_to_rgba(self.default_rect_color_hex))  # default color
+
+        response = color_chooser.run()
+        if response == Gtk.ResponseType.OK:
+            color = color_chooser.get_rgba()
+            self._paint_rects(color)
+            self.app.preferences_manager.write_rect_color_to_file(self.color_utils.rgba_to_hex(color))
+
+        color_chooser.destroy()
+
+    def _on_click_save(self, widget):
+        self.download_manager.open_save_dialog()
+
     def _on_click_shortcuts(self, button):
         dialog = Gtk.Dialog("Shortcuts", self, Gtk.DialogFlags.MODAL)
 
@@ -374,13 +283,13 @@ class Window(Gtk.Window):
 
         content_area = dialog.get_content_area()
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        
+
         for action, key, mod in self.list_shortcuts:
             accel_label = Gtk.AccelLabel(label=action)
             accel_label.set_accel(key, mod)
 
             vbox.pack_start(accel_label, False, True, 0)
-        
+
         content_area.add(vbox)
         dialog.show_all()
 
@@ -404,16 +313,74 @@ class Window(Gtk.Window):
         about.connect("response", lambda dialog, response: dialog.destroy())
         about.present()
 
-    def _on_toggle_checkbox(self, button, chapter):
-        if button.get_active():
-            self.app.user.add_mem_chapter(chapter)
-        else:
-            self.app.user.rm_mem_chapter(chapter)
 
-        self.app.user_data_changed = True
+    def _create_pb_rects_from_file(self, bars_sizes_path):
+        list_rects_pb = []
+        prev_juz = None
 
-        self._refresh_stats_label()
-        self._refresh_rects_colors()
+        if not os.path.isfile(bars_sizes_path):
+            raise FileNotFoundError(f'Failed to find bars sizes file "{self.bars_sizes_path}"')
+        try:
+            with open(bars_sizes_path, mode="r") as f:
+                reader = csv.reader(f)
+                for line in reader:
+                    juz         = int(line[0])
+                    chapter_num = int(line[1])
+                    length      = float(line[3])
+
+                    if juz != prev_juz:
+                        num_pos = 0 if juz >= 10 else self.pb_x0/4
+                        pb_offset = self.pb_x0
+
+                    list_rects_pb.append(
+                        ChapterRectangle(
+                            pb_offset,
+                            self.pb_y0 + self.pb_lines_dist*(juz-1),
+                            length-self.pb_dist,
+                            self.pb_height,
+                            chapter_num,
+                            self.rect_color
+                        )
+                    )
+
+                    pb_offset += length
+                    prev_juz = juz
+
+            return list_rects_pb
+        except Exception as e:
+            print(f'Failed to load bars sizes files at "{self.preferences_path}": {e}')
+
+    def _create_matrix_rects(self, rects_per_line, rects_per_col):
+        list_rects_matrix = []
+        for i in range(rects_per_col):
+            for j in range(rects_per_line):
+                x = 155 + (rects_per_line-1-j)*35  # from left to right
+                y = 15 + i*20
+                chapter_num = i*(rects_per_line) + j + 1
+                list_rects_matrix.append(ChapterRectangle(x, y, 30, 10, chapter_num, self.rect_color))
+        return list_rects_matrix
+
+    def create_img(self):
+        max_x = max(rect.x + rect.width  for rect in self.list_rects_pb)
+        max_y = max(rect.y + rect.height for rect in self.list_rects_pb)
+
+        # Add padding
+        surface_width  = int(max_x + self.pb_x0)
+        surface_height = int(max_y + self.pb_y0)
+
+        # Create a Cairo surface
+        surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, surface_width, surface_height)
+        cr = cairo.Context(surface)
+
+        # Set background
+        cr.set_source_rgb(1, 1, 1)
+        cr.paint()
+
+        self._draw_progress_bars(widget=None, cr=cr)
+        self._draw_juz_text(widget=None, cr=cr)
+
+        return surface
+
 
     def _draw_matrix(self, widget, cr):
         for rect in self.list_rects_matrix:
@@ -466,6 +433,20 @@ class Window(Gtk.Window):
         self.cursor_y_at_popover = e_y
         self.is_popover_chapter_active = True
 
+
+    def _paint_rects(self, color: Gdk.RGBA):
+        r = color.red
+        g = color.green
+        b = color.blue
+        a = color.alpha
+
+        for rect in self.list_rects_matrix:
+            rect.color_on = Gdk.RGBA(r,g,b,a)
+        for rect in self.list_rects_pb:
+            rect.color_on = Gdk.RGBA(r,g,b,a)
+
+        self._refresh_rects_colors()
+
     def _refresh_rects_colors(self):
         for rect in self.list_rects_matrix:
             rect.paint_on() if rect.caption in self.app.user.list_mem_chapters else rect.paint_off()
@@ -479,29 +460,3 @@ class Window(Gtk.Window):
             f"<span font='13'><b>Words:</b> {self.app.user.n_mem_words} ({round(self.app.user.n_mem_words / self.app.book.n_words * 100, 1)}%)</span>\n"
             f"<span font='13'><b>Letters:</b> {self.app.user.n_mem_letters} ({round(self.app.user.n_mem_letters / self.app.book.n_letters * 100, 1)}%)</span>"
         )
-
-    def _save_pb_to_png(self, filename):
-        max_x = max(rect.x + rect.width  for rect in self.list_rects_pb)
-        max_y = max(rect.y + rect.height for rect in self.list_rects_pb)
-
-        # Add padding
-        surface_width  = int(max_x + self.pb_x0)
-        surface_height = int(max_y + self.pb_y0)
-
-        # Create a Cairo surface
-        surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, surface_width, surface_height)
-        cr = cairo.Context(surface)
-
-        # Set background
-        cr.set_source_rgb(1, 1, 1)
-        cr.paint()
-
-        self._draw_progress_bars(widget=None, cr=cr)
-        self._draw_juz_text(widget=None, cr=cr)
-
-        # Write the surface to a PNG file
-        try:
-            surface.write_to_png(filename)
-            surface.finish()
-        except Exception as e:
-            print(f"Failed to save image at {filename}: {e}")
