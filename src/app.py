@@ -7,6 +7,7 @@ from gi.repository import Gtk
 
 from .window import Window
 from .db_manager import DBManager
+from .preferences_manager import PreferencesManager
 
 # Include config variables
 exec(open("/usr/local/share/gtkhafiz/config").read())
@@ -34,6 +35,9 @@ class App():
 
         # Flag to save data or not on db when the app is closed
         self.user_data_changed = False
+
+        # Preferences Manager
+        self.preferences_manager = PreferencesManager(os.path.expanduser(PREFERENCES_FILE))
 
         # Load GTK Window
         self.win = Window(

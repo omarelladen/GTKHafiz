@@ -7,9 +7,9 @@ class ChapterRectangle(Gdk.Rectangle):
         y,
         width,
         height,
-        caption = None,
-        color_on:  tuple[float, float, float] = (0.0, 0.8, 0.0),
-        color_off: tuple[float, float, float] = (0.5, 0.5, 0.5),
+        caption,
+        color_on: Gdk.RGBA,
+        color_off = Gdk.RGBA(0.5, 0.5, 0.5, 1.0),
     ):
         self.x = x
         self.y = y
