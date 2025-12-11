@@ -245,11 +245,11 @@ class Window(Gtk.Window):
                 list_rect_matrix.append(ChapterRectangle(x, y, 30, 10, chapter_num))
         return list_rect_matrix
 
-    def _add_shortcut(self, accel_group, label, accelerator, callback):
+    def _add_shortcut(self, accel_group, action, accelerator, callback):
         key, mod = Gtk.accelerator_parse(accelerator)
         accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, callback)
 
-        self.list_shortcuts.append((label, accelerator.replace("<", "").replace(">", " + ").replace("control", "Ctrl")))
+        self.list_shortcuts.append((action, key, mod))
 
     def _on_ctrl_q(self, accel_group, window, key, modifier):
         self.app.quit()
@@ -330,15 +330,17 @@ class Window(Gtk.Window):
 
     def _on_click_shortcuts(self, button):
         dialog = Gtk.Dialog("Shortcuts", self, Gtk.DialogFlags.MODAL)
-        dialog.add_button(Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE)
+
+        dialog.set_default_size(200, 70)
+        dialog.set_resizable(False)
 
         content_area = dialog.get_content_area()
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         
-        for action, shortcut in self.list_shortcuts:
-            label = Gtk.Label(label=f"  {shortcut}      {action}  ")
-            label.set_halign(Gtk.Align.START)
-            vbox.pack_start(label, False, True, 0)
+        for action, key, mod in self.list_shortcuts:
+            accel_label = Gtk.AccelLabel(label=action)
+            accel_label.set_accel(key, mod)
+            vbox.pack_start(accel_label, False, True, 0)
         
         content_area.add(vbox)
         dialog.show_all()
