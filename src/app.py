@@ -1,17 +1,21 @@
 import os
+import sys
 
 import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
-from .db_manager import DBManager
 from .window import Window
+from .db_manager import DBManager
 
 # Include config variables
 exec(open("/usr/local/share/gtkhafiz/config").read())
 
 class App():
     def __init__(self):
+        self.args = sys.argv[1:]
+
+        # Metadata
         self.name = APP_NAME
         self.name_lower = APP_NAME_LOWER
         self.description = APP_DESCRIPTION
@@ -39,6 +43,27 @@ class App():
         )
         self.win.connect("destroy", self._on_destroy)
         self.win.show_all()
+
+    def parse_args(self):
+        if "--help" in self.args or "-h" in self.args:
+            self.show_help()
+            sys.exit(0)
+        elif "--version" in self.args or "-v" in self.args:
+            self.show_version()
+            sys.exit(0)
+
+    def show_help(self):
+        print("Usage:")
+        print(f"  {self.name_lower} [OPTION…]")
+        print("")
+        print("Help Options:")
+        print("  -h, --help                 Show help options")
+        print("")
+        print("Application Options:")
+        print("  -v, --version              Print version information and exit")
+
+    def show_version(self):
+        print(f"{self.name} {self.version}")
 
     def _on_destroy(self, window):
         self.quit()

@@ -17,8 +17,10 @@ class Window(Gtk.Window):
 
         self.app = app
 
+
         # Icon
         self._set_icon_from_file(app_icon_path)
+
 
         # Shortcuts
         accel_group = Gtk.AccelGroup()
@@ -29,23 +31,28 @@ class Window(Gtk.Window):
         self._add_shortcut(accel_group, "Quit",               "<control>Q", self._on_ctrl_q)
         self._add_shortcut(accel_group, "Save Progress Bars", "<control>S", self._on_ctrl_s)
 
+
         # Window dimensions
         self.set_size_request(580, 550)
         self.set_resizable(False)
         self.set_border_width(6)
 
+
         # Vertical Box
         outerbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         self.add(outerbox)
+
 
         # Menu Popover
         popover_menu = Gtk.Popover()
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
-        bt = Gtk.Button(label="Keyboard Shortcuts")
+        # Keyboard Shortcurts Button
+        bt = Gtk.ModelButton(label="Keyboard Shortcuts")
         bt.connect("clicked", self._on_click_shortcuts)
         vbox.pack_start(bt, False, True, 10)
 
+        # About Button
         bt = Gtk.ModelButton(label=f"About {self.app.name}")
         bt.connect("clicked", self._on_click_about)
         vbox.pack_start(bt, False, True, 10)
@@ -54,11 +61,13 @@ class Window(Gtk.Window):
         popover_menu.add(vbox)
         popover_menu.set_position(Gtk.PositionType.BOTTOM)
 
+
         # Header Bar
         headerbar = Gtk.HeaderBar()
         headerbar.set_show_close_button(True)
         headerbar.props.title = self.app.name
         self.set_titlebar(headerbar)
+
  
         # Menu Button
         bt = Gtk.MenuButton(popover=popover_menu)
@@ -86,8 +95,10 @@ class Window(Gtk.Window):
         bt.connect("clicked", self._on_click_color_chooser)
         headerbar.pack_start(bt)
 
+
         # Stack
         stack = Gtk.Stack()
+
 
         # Create Chapter Rectangles of progress bars
         self.pb_x0 = 20  # initial x
@@ -96,7 +107,12 @@ class Window(Gtk.Window):
         self.pb_lines_dist = self.pb_height + 2  # distance between lines
         self.pb_dist = 1  # distance between 2 bars
 
-        self.list_rect_progress_bar = self._create_pb_rects_from_file(bar_sizes_path)
+
+        # Create Chapter Rectangles
+        self.list_rect_progress_bar = self._create_pb_rects_from_file(bar_sizes_path)        
+        self.list_rect_matrix = self._create_matrix_rects(6, 19)
+
+        self._refresh_rects_colors()
 
         # Progress Bars Tab
         drawingarea_progress_bar = Gtk.DrawingArea()
@@ -113,10 +129,7 @@ class Window(Gtk.Window):
         drawingarea_matrix.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         stack.add_titled(drawingarea_matrix, "matrix", "Matrix")
 
-        # Create Chapter Rectangles of matrix
-        self.list_rect_matrix = self._create_matrix_rects(6, 19)
 
-        self._refresh_rects_colors()
 
         # List Tab
         checkbutton_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
@@ -133,22 +146,26 @@ class Window(Gtk.Window):
         scrolled_window.add(checkbutton_container)
         stack.add_titled(scrolled_window, "list", "List")
 
+
         # Stats Tab
         self.label_stats = Gtk.Label()
         self._refresh_stats_label()
         stack.add_titled(self.label_stats, "stats", "Stats")
 
-        # Chapter Popover
+
+        # Chapter Popover when clicking on a chapter rectangle
         self.popover_chapter = Gtk.Popover()
         self.label_chapter = Gtk.Label()
         self.popover_chapter.add(self.label_chapter)
 
+        # State attributes for managing popover clicks
         self.is_popover_chapter_active = False
         self.cursor_x_at_popover = None
         self.cursor_y_at_popover = None
 
-        # All clicks will be checked to be able to hide the chapter popovers
+        # Connect a click event to the whole window to detect clicks outside the popover
         self.connect("button-press-event", self._on_click_outside_popover)
+
 
         # Stack Switcher
         stackswitcher = Gtk.StackSwitcher()
@@ -157,6 +174,7 @@ class Window(Gtk.Window):
 
         outerbox.pack_start(stackswitcher, False, False, 0)
         outerbox.pack_start(stack, True, True, 0)
+
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
@@ -331,7 +349,7 @@ class Window(Gtk.Window):
     def _on_click_shortcuts(self, button):
         dialog = Gtk.Dialog("Shortcuts", self, Gtk.DialogFlags.MODAL)
 
-        dialog.set_default_size(200, 70)
+        dialog.set_default_size(300, 70)
         dialog.set_resizable(False)
 
         content_area = dialog.get_content_area()
@@ -340,6 +358,7 @@ class Window(Gtk.Window):
         for action, key, mod in self.list_shortcuts:
             accel_label = Gtk.AccelLabel(label=action)
             accel_label.set_accel(key, mod)
+
             vbox.pack_start(accel_label, False, True, 0)
         
         content_area.add(vbox)
