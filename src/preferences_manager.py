@@ -8,18 +8,17 @@ class PreferencesManager():
     def __init__(self,
         preferences_path = None,
     ):
-        super().__init__()
-
         self.preferences_path = os.path.expanduser(preferences_path)
+
+        self.preferences = {}
+        with open(self.preferences_path, 'r') as f:
+            exec(f.read(), self.preferences)        
 
     def read_rect_color_from_file(self):
         if os.path.isfile(self.preferences_path):
             try:
-                context = {}
-                with open(self.preferences_path, 'r') as f:
-                    exec(f.read(), context)
-
-                RECT_COLOR = context.get("RECT_COLOR")
+                
+                RECT_COLOR = self.preferences.get("RECT_COLOR")
                 if RECT_COLOR:
                     return RECT_COLOR.strip()
             except Exception as e:

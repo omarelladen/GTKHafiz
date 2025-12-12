@@ -4,6 +4,7 @@ def main():
     try:
         app = App()
         app.parse_args()
+        app.setup()
         app.run()
 
     except Exception as e:

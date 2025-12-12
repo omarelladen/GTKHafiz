@@ -7,7 +7,7 @@ class ColorUtils():
     def __init__(self):
         pass
 
-    def valid_color_hex(self, color_hex):
+    def is_valid_color_hex(self, color_hex):
         if not re.fullmatch(r"[0-9a-f]{6}|[0-9a-f]{8}", color_hex.strip().lstrip("#").lower()):
             return False
         return True

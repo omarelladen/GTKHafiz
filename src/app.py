@@ -9,41 +9,47 @@ from .window import Window
 from .db_manager import DBManager
 from .preferences_manager import PreferencesManager
 
-# Include config variables
-exec(open("/usr/local/share/gtkhafiz/config").read())
-
 class App():
     def __init__(self):
         self.args = sys.argv[1:]
 
+        # Config variables
+        self.configs = {}
+        with open("/usr/local/share/gtkhafiz/config", "r") as f:
+            exec(f.read(), self.configs)
+        
         # Metadata
-        self.name = APP_NAME
-        self.name_lower = APP_NAME_LOWER
-        self.description = APP_DESCRIPTION
-        self.version = APP_VERSION
-        self.website_url = WEBSITE_URL
-        self.website_label = WEBSITE_LABEL
-        self.authors = AUTHORS.split(",")
-        self.copyright = COPYRIGHT
+        self.name          = self.configs.get("APP_NAME")
+        self.name_lower    = self.configs.get("APP_NAME_LOWER")
+        self.description   = self.configs.get("APP_DESCRIPTION")
+        self.version       = self.configs.get("APP_VERSION")
+        self.website_url   = self.configs.get("WEBSITE_URL")
+        self.website_label = self.configs.get("WEBSITE_LABEL")
+        self.authors       = self.configs.get("AUTHORS").split(",")
+        self.copyright     = self.configs.get("COPYRIGHT")
 
-        self.db_manager = DBManager(os.path.expanduser(DB_FILE))
-
-        # Load persistant data from db
+    def setup(self):
+        # DB Manager
+        self.db_manager = DBManager(os.path.expanduser(self.configs.get("DB_FILE")))
         self.user = self.db_manager.load_user()
-        self.book = self.db_manager.load_book()
-        self.book.list_chapters = self.db_manager.load_chapters()
+        book = self.db_manager.load_book()
+        book.list_chapters = self.db_manager.load_chapters()
+
+        # Preferences Manager
+        preferences_manager = PreferencesManager(os.path.expanduser(self.configs.get("PREFERENCES_FILE")))
 
         # Flag to save data or not on db when the app is closed
         self.user_data_changed = False
 
-        # Preferences Manager
-        self.preferences_manager = PreferencesManager(os.path.expanduser(PREFERENCES_FILE))
 
-        # Load GTK Window
+        # Window
         self.win = Window(
             self,
-            BAR_SIZES_FILE,
-            APP_ICON_FILE
+            self.user,
+            book,
+            preferences_manager,
+            self.configs.get("BAR_SIZES_FILE"),
+            self.configs.get("APP_ICON_FILE")
         )
         self.win.connect("destroy", self._on_destroy)
         self.win.show_all()

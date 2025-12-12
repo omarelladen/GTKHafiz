@@ -12,12 +12,18 @@ from .download_manager import DownloadManager
 class Window(Gtk.Window):
     def __init__(self,
         app,
+        user,
+        book,
+        preferences_manager,
         bars_sizes_path,
         app_icon_path = None
     ):
         super().__init__()
 
         self.app = app
+        self.user = user
+        self.book = book
+        self.preferences_manager = preferences_manager
 
         self.color_utils = ColorUtils()
         self.download_manager = DownloadManager(self)
@@ -27,10 +33,10 @@ class Window(Gtk.Window):
 
         # Rectangles color
         self.default_rect_color_hex = "#00CC00FF"
-        rect_color_hex = self.app.preferences_manager.read_rect_color_from_file()
-        if not rect_color_hex or not self.color_utils.valid_color_hex(rect_color_hex):
+        rect_color_hex = self.preferences_manager.read_rect_color_from_file()
+        if not rect_color_hex or not self.color_utils.is_valid_color_hex(rect_color_hex):
             rect_color_hex = self.default_rect_color_hex
-            self.app.preferences_manager.write_rect_color_to_file(rect_color_hex)
+            self.preferences_manager.write_rect_color_to_file(rect_color_hex)
         self.rect_color = self.color_utils.hex_to_rgba(rect_color_hex)
 
 
@@ -108,7 +114,7 @@ class Window(Gtk.Window):
         headerbar.pack_start(bt)
 
 
-        # Stack
+        # Stack - holds multiple tabs and shows one at a time
         stack = Gtk.Stack()
 
 
@@ -144,10 +150,10 @@ class Window(Gtk.Window):
 
         # List Tab
         checkbutton_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        for chapter in self.app.book.list_chapters:
+        for chapter in self.book.list_chapters:
             checkbutton = Gtk.CheckButton(label=f"{chapter.number}. ({chapter.name_latin}) {chapter.name_arabic}")
             checkbutton.modify_font(Pango.FontDescription("11"))
-            if chapter.number in self.app.user.list_mem_chapters:
+            if chapter.number in self.user.list_mem_chapters:
                 checkbutton.set_active(True)
             checkbutton.connect("toggled", lambda bt, obj=chapter: self._on_toggle_checkbox(bt, obj))
             checkbutton_container.pack_start(checkbutton, False, False, 0)
@@ -178,7 +184,7 @@ class Window(Gtk.Window):
         self.connect("button-press-event", self._on_click_outside_popover)
 
 
-        # Stack Switcher
+        # Stack Switcher - creates the tab buttons to switch the stack
         stackswitcher = Gtk.StackSwitcher()
         stackswitcher.set_stack(stack)
         stackswitcher.set_halign(Gtk.Align.CENTER)
@@ -250,9 +256,9 @@ class Window(Gtk.Window):
 
     def _on_toggle_checkbox(self, button, chapter):
         if button.get_active():
-            self.app.user.add_mem_chapter(chapter)
+            self.user.add_mem_chapter(chapter)
         else:
-            self.app.user.rm_mem_chapter(chapter)
+            self.user.rm_mem_chapter(chapter)
 
         self.app.user_data_changed = True
 
@@ -268,7 +274,7 @@ class Window(Gtk.Window):
         if response == Gtk.ResponseType.OK:
             color = color_chooser.get_rgba()
             self._paint_rects(color)
-            self.app.preferences_manager.write_rect_color_to_file(self.color_utils.rgba_to_hex(color))
+            self.preferences_manager.write_rect_color_to_file(self.color_utils.rgba_to_hex(color))
 
         color_chooser.destroy()
 
@@ -360,27 +366,6 @@ class Window(Gtk.Window):
                 list_rects_matrix.append(ChapterRectangle(x, y, 30, 10, chapter_num, self.rect_color))
         return list_rects_matrix
 
-    def create_img(self):
-        max_x = max(rect.x + rect.width  for rect in self.list_rects_pb)
-        max_y = max(rect.y + rect.height for rect in self.list_rects_pb)
-
-        # Add padding
-        surface_width  = int(max_x + self.pb_x0)
-        surface_height = int(max_y + self.pb_y0)
-
-        # Create a Cairo surface
-        surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, surface_width, surface_height)
-        cr = cairo.Context(surface)
-
-        # Set background
-        cr.set_source_rgb(1, 1, 1)
-        cr.paint()
-
-        self._draw_progress_bars(widget=None, cr=cr)
-        self._draw_juz_text(widget=None, cr=cr)
-
-        return surface
-
 
     def _draw_matrix(self, widget, cr):
         for rect in self.list_rects_matrix:
@@ -416,6 +401,28 @@ class Window(Gtk.Window):
 
             cr.fill()
 
+    def create_img(self):
+        max_x = max(rect.x + rect.width  for rect in self.list_rects_pb)
+        max_y = max(rect.y + rect.height for rect in self.list_rects_pb)
+
+        # Add padding
+        surface_width  = int(max_x + self.pb_x0)
+        surface_height = int(max_y + self.pb_y0)
+
+        # Create a Cairo surface
+        surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, surface_width, surface_height)
+        cr = cairo.Context(surface)
+
+        # Set background
+        cr.set_source_rgb(1, 1, 1)
+        cr.paint()
+
+        self._draw_progress_bars(widget=None, cr=cr)
+        self._draw_juz_text(widget=None, cr=cr)
+
+        return surface
+
+
     def _show_chapter_popover(self, rect, widget, event):
         self.label_chapter.set_text(f"{rect.caption}")
 
@@ -449,14 +456,14 @@ class Window(Gtk.Window):
 
     def _refresh_rects_colors(self):
         for rect in self.list_rects_matrix:
-            rect.paint_on() if rect.caption in self.app.user.list_mem_chapters else rect.paint_off()
+            rect.paint_on() if rect.caption in self.user.list_mem_chapters else rect.paint_off()
         for rect in self.list_rects_pb:
-            rect.paint_on() if rect.caption in self.app.user.list_mem_chapters else rect.paint_off()
+            rect.paint_on() if rect.caption in self.user.list_mem_chapters else rect.paint_off()
 
     def _refresh_stats_label(self):
         self.label_stats.set_markup(
-            f"<span font='13'><b>Chapters:</b> {self.app.user.n_mem_chapters} ({round(self.app.user.n_mem_chapters / self.app.book.n_chapters * 100, 1)}%)</span>\n"
-            f"<span font='13'><b>Verses:</b> {self.app.user.n_mem_verses} ({round(self.app.user.n_mem_verses / self.app.book.n_verses * 100, 1)}%)</span>\n"
-            f"<span font='13'><b>Words:</b> {self.app.user.n_mem_words} ({round(self.app.user.n_mem_words / self.app.book.n_words * 100, 1)}%)</span>\n"
-            f"<span font='13'><b>Letters:</b> {self.app.user.n_mem_letters} ({round(self.app.user.n_mem_letters / self.app.book.n_letters * 100, 1)}%)</span>"
+            f"<span font='13'><b>Chapters:</b> {self.user.n_mem_chapters} ({round(self.user.n_mem_chapters / self.book.n_chapters * 100, 1)}%)</span>\n"
+            f"<span font='13'><b>Verses:</b> {self.user.n_mem_verses} ({round(self.user.n_mem_verses / self.book.n_verses * 100, 1)}%)</span>\n"
+            f"<span font='13'><b>Words:</b> {self.user.n_mem_words} ({round(self.user.n_mem_words / self.book.n_words * 100, 1)}%)</span>\n"
+            f"<span font='13'><b>Letters:</b> {self.user.n_mem_letters} ({round(self.user.n_mem_letters / self.book.n_letters * 100, 1)}%)</span>"
         )
