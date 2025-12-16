@@ -1,7 +1,6 @@
 import os
 import csv
 import cairo
-import gi
 
 from gi.repository import Gtk, Gio, Gdk, GdkPixbuf, Pango
 
@@ -29,7 +28,9 @@ class Window(Gtk.Window):
         self.download_manager = DownloadManager(self)
 
 
+        # Icon
         self._set_icon_from_file(app_icon_path)
+
 
         # Rectangles color
         self.default_rect_color_hex = "#00CC00FF"
@@ -132,6 +133,7 @@ class Window(Gtk.Window):
 
         self._refresh_rects_colors()
 
+
         # Progress Bars Tab
         drawingarea_pb = Gtk.DrawingArea()
         drawingarea_pb.connect("draw", self._draw_juz_text)
@@ -202,12 +204,12 @@ class Window(Gtk.Window):
                 self.pixbuf = None
                 print(f'Failed to load icon from "{self.app_icon_path}"')
 
+
     def _add_shortcut(self, accel_group, action, accelerator, callback):
         key, mod = Gtk.accelerator_parse(accelerator)
         accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, callback)
 
         self.list_shortcuts.append((action, key, mod))
-
 
     def _on_ctrl_q(self, accel_group, window, key, modifier):
         self.app.quit()
@@ -265,6 +267,7 @@ class Window(Gtk.Window):
         self._refresh_stats_label()
         self._refresh_rects_colors()
 
+
     def _on_click_color_chooser(self, widget):
         color_chooser = Gtk.ColorChooserDialog("Select rectangle color", self)
 
@@ -280,6 +283,7 @@ class Window(Gtk.Window):
 
     def _on_click_save(self, widget):
         self.download_manager.open_save_dialog()
+
 
     def _on_click_shortcuts(self, button):
         dialog = Gtk.Dialog("Shortcuts", self, Gtk.DialogFlags.MODAL)
@@ -325,7 +329,7 @@ class Window(Gtk.Window):
         prev_juz = None
 
         if not os.path.isfile(bars_sizes_path):
-            raise FileNotFoundError(f'Failed to find bars sizes file "{self.bars_sizes_path}"')
+            raise FileNotFoundError(f'Failed to find bars sizes file "{bars_sizes_path}"')
         try:
             with open(bars_sizes_path, mode="r") as f:
                 reader = csv.reader(f)
@@ -354,7 +358,7 @@ class Window(Gtk.Window):
 
             return list_rects_pb
         except Exception as e:
-            print(f'Failed to load bars sizes files at "{self.preferences_path}": {e}')
+            raise Exception(f'Failed to load bars sizes files at "{bars_sizes_path}": {e}')
 
     def _create_matrix_rects(self, rects_per_line, rects_per_col):
         list_rects_matrix = []
@@ -462,8 +466,8 @@ class Window(Gtk.Window):
 
     def _refresh_stats_label(self):
         self.label_stats.set_markup(
-            f"<span font='13'><b>Chapters:</b> {self.user.n_mem_chapters} ({round(self.user.n_mem_chapters / self.book.n_chapters * 100, 1)}%)</span>\n"
-            f"<span font='13'><b>Verses:</b> {self.user.n_mem_verses} ({round(self.user.n_mem_verses / self.book.n_verses * 100, 1)}%)</span>\n"
-            f"<span font='13'><b>Words:</b> {self.user.n_mem_words} ({round(self.user.n_mem_words / self.book.n_words * 100, 1)}%)</span>\n"
-            f"<span font='13'><b>Letters:</b> {self.user.n_mem_letters} ({round(self.user.n_mem_letters / self.book.n_letters * 100, 1)}%)</span>"
+            f"<span font='13'><b>Chapters:</b> {self.user.n_mem_chapters} ({round(self.user.n_mem_chapters / self.book.n_chapters * 100, 2)}%)</span>\n"
+            f"<span font='13'><b>Verses:</b> {self.user.n_mem_verses} ({round(self.user.n_mem_verses / self.book.n_verses * 100, 2)}%)</span>\n"
+            f"<span font='13'><b>Words:</b> {self.user.n_mem_words} ({round(self.user.n_mem_words / self.book.n_words * 100, 2)}%)</span>\n"
+            f"<span font='13'><b>Letters:</b> {self.user.n_mem_letters} ({round(self.user.n_mem_letters / self.book.n_letters * 100, 2)}%)</span>"
         )
