@@ -41,7 +41,6 @@ class App():
         # Flag to save data or not on db when the app is closed
         self.user_data_changed = False
 
-
         # Window
         self.win = Window(
             self,
