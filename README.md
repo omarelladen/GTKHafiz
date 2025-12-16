@@ -2,7 +2,7 @@
 
 # GTKHafiz
 
-GTKHafiz is a simple GTK 3 based app to track Qur'an memorization visually.
+GTKHafiz is a simple GTK 3 based app to track Quran memorization visually.
 
 <p align="center" width="100%">
 <img src="data/imgs/bars.png">
