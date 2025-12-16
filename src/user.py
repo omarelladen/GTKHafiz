@@ -17,15 +17,17 @@ class User:
         self.n_mem_letters = n_mem_letters
 
     def add_mem_chapter(self, chapter):
-        self.list_mem_chapters.append(chapter.number)
-        self.n_mem_chapters += 1
-        self.n_mem_verses   += chapter.n_verses
-        self.n_mem_words    += chapter.n_words
-        self.n_mem_letters  += chapter.n_letters
+        if not chapter.number in self.list_mem_chapters:
+            self.list_mem_chapters.append(chapter.number)
+            self.n_mem_chapters += 1
+            self.n_mem_verses   += chapter.n_verses
+            self.n_mem_words    += chapter.n_words
+            self.n_mem_letters  += chapter.n_letters
 
     def rm_mem_chapter(self, chapter):
-        self.list_mem_chapters.remove(chapter.number)
-        self.n_mem_chapters -= 1
-        self.n_mem_verses   -= chapter.n_verses
-        self.n_mem_words    -= chapter.n_words
-        self.n_mem_letters  -= chapter.n_letters
+        if chapter.number in self.list_mem_chapters:
+            self.list_mem_chapters.remove(chapter.number)
+            self.n_mem_chapters -= 1
+            self.n_mem_verses   -= chapter.n_verses
+            self.n_mem_words    -= chapter.n_words
+            self.n_mem_letters  -= chapter.n_letters

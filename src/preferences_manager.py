@@ -1,5 +1,4 @@
 import os
-import csv
 
 class PreferencesManager():
     def __init__(self,

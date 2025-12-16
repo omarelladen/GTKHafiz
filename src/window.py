@@ -7,6 +7,7 @@ from gi.repository import Gtk, Gio, Gdk, GdkPixbuf, Pango
 from .chapter_rectangle import ChapterRectangle
 from .color_utils import ColorUtils
 from .download_manager import DownloadManager
+from .import_manager import ImportManager
 
 class Window(Gtk.Window):
     def __init__(self,
@@ -26,7 +27,7 @@ class Window(Gtk.Window):
 
         self.color_utils = ColorUtils()
         self.download_manager = DownloadManager(self)
-
+        self.import_manager = ImportManager(self)
 
         # Icon
         self._set_icon_from_file(app_icon_path)
@@ -47,8 +48,8 @@ class Window(Gtk.Window):
 
         self.list_shortcuts = []
 
-        self._add_shortcut(accel_group, "Quit",               "<control>Q", self._on_ctrl_q)
-        self._add_shortcut(accel_group, "Save Progress Bars", "<control>S", self._on_ctrl_s)
+        self._add_shortcut(accel_group, "Quit",         "<control>Q", self._on_ctrl_q)
+        self._add_shortcut(accel_group, "Export Image", "<control>S", self._on_ctrl_s)
 
 
         # Window dimensions
@@ -66,15 +67,27 @@ class Window(Gtk.Window):
         popover_menu = Gtk.Popover()
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
+        padding = 2
+
+        # Import Button
+        bt = Gtk.ModelButton(label="Import Chapters)
+        bt.connect("clicked", self._on_click_import)
+        vbox.pack_start(bt, False, True, padding)
+
+        # Save Button
+        bt = Gtk.ModelButton(label="Export Image")
+        bt.connect("clicked", self._on_click_save)
+        vbox.pack_start(bt, False, True, padding)
+
         # Keyboard Shortcurts Button
         bt = Gtk.ModelButton(label="Keyboard Shortcuts")
         bt.connect("clicked", self._on_click_shortcuts)
-        vbox.pack_start(bt, False, True, 10)
+        vbox.pack_start(bt, False, True, padding)
 
         # About Button
         bt = Gtk.ModelButton(label=f"About {self.app.name}")
         bt.connect("clicked", self._on_click_about)
-        vbox.pack_start(bt, False, True, 10)
+        vbox.pack_start(bt, False, True, padding)
 
         vbox.show_all()
         popover_menu.add(vbox)
@@ -94,15 +107,6 @@ class Window(Gtk.Window):
         img_icon = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.BUTTON)
         bt.add(img_icon)
         bt.set_tooltip_text("Main Menu")
-        headerbar.pack_end(bt)
-
-        # Save Button
-        bt = Gtk.Button()
-        icon = Gio.ThemedIcon(name="document-save-symbolic")
-        img_icon = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.BUTTON)
-        bt.add(img_icon)
-        bt.set_tooltip_text("Save Progress Bars")
-        bt.connect("clicked", self._on_click_save)
         headerbar.pack_end(bt)
 
         # Color Chooser Button
@@ -149,12 +153,16 @@ class Window(Gtk.Window):
         drawingarea_matrix.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         stack.add_titled(drawingarea_matrix, "matrix", "Matrix")
 
-
         # List Tab
         checkbutton_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+
+        self.checkbuttons = {}
         for chapter in self.book.list_chapters:
             checkbutton = Gtk.CheckButton(label=f"{chapter.number}. ({chapter.name_latin}) {chapter.name_arabic}")
             checkbutton.modify_font(Pango.FontDescription("11"))
+
+            self.checkbuttons[chapter.number] = checkbutton
+
             if chapter.number in self.user.list_mem_chapters:
                 checkbutton.set_active(True)
             checkbutton.connect("toggled", lambda bt, obj=chapter: self._on_toggle_checkbox(bt, obj))
@@ -195,6 +203,12 @@ class Window(Gtk.Window):
         outerbox.pack_start(stack, True, True, 0)
 
 
+    def _refresh_visual_data(self):
+        self._refresh_stats_label()
+        self._refresh_rects_colors()
+
+        self.app.user_data_changed = True   
+
     def _set_icon_from_file(self, icon_path):
         if icon_path:
             try:
@@ -204,18 +218,20 @@ class Window(Gtk.Window):
                 self.pixbuf = None
                 print(f'Failed to load icon from "{self.app_icon_path}"')
 
-
     def _add_shortcut(self, accel_group, action, accelerator, callback):
         key, mod = Gtk.accelerator_parse(accelerator)
         accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, callback)
 
         self.list_shortcuts.append((action, key, mod))
 
+    def _open_save_dialog(self):
+        self.download_manager.open_save_dialog()
+
     def _on_ctrl_q(self, accel_group, window, key, modifier):
         self.app.quit()
 
     def _on_ctrl_s(self, accel_group, window, key, modifier):
-        self.download_manager.open_save_dialog()
+        self._open_save_dialog()
 
 
     def _on_click_outside_popover(self, widget, event):
@@ -262,10 +278,7 @@ class Window(Gtk.Window):
         else:
             self.user.rm_mem_chapter(chapter)
 
-        self.app.user_data_changed = True
-
-        self._refresh_stats_label()
-        self._refresh_rects_colors()
+        self._refresh_visual_data()
 
 
     def _on_click_color_chooser(self, widget):
@@ -282,8 +295,28 @@ class Window(Gtk.Window):
         color_chooser.destroy()
 
     def _on_click_save(self, widget):
-        self.download_manager.open_save_dialog()
+        self._open_save_dialog()
 
+    def _on_click_import(self, widget):
+        list_imported_chapters = self.import_manager.run_dialog()
+
+        if list_imported_chapters:
+
+            # Update User data
+            for chapter in self.book.list_chapters:
+                if chapter.number in list_imported_chapters:
+                    self.user.add_mem_chapter(chapter)
+                else:
+                    self.user.rm_mem_chapter(chapter)
+
+            # Mark Checklist
+            for chapter_number, checkbutton in self.checkbuttons.items():
+                if chapter_number in list_imported_chapters:
+                    checkbutton.set_active(True)
+                else:
+                    checkbutton.set_active(False)
+
+            self._refresh_visual_data()
 
     def _on_click_shortcuts(self, button):
         dialog = Gtk.Dialog("Shortcuts", self, Gtk.DialogFlags.MODAL)

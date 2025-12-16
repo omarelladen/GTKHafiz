@@ -1,14 +1,18 @@
 import os
-import cairo
 
-from gi.repository import Gtk, Gdk
+from gi.repository import Gtk
 
 class DownloadManager:
-    def __init__(self, window):
-        self.window = window
+    def __init__(self, parent):
+        self.parent = parent
 
     def open_save_dialog(self):
-        dialog = Gtk.FileChooserDialog(title="Save Progress Bars", parent=self.window, action=Gtk.FileChooserAction.SAVE)
+        dialog = Gtk.FileChooserDialog(
+            title="Save Progress Bars",
+            parent=self.parent,
+            transient_for=self.parent,
+            action=Gtk.FileChooserAction.SAVE
+        )
         dialog.set_do_overwrite_confirmation(True)
         dialog.set_current_folder(os.path.expanduser("~"))
         dialog.set_current_name("progress.png")
@@ -23,8 +27,9 @@ class DownloadManager:
 
         response = dialog.run()
         if response == Gtk.ResponseType.OK:
-            surface = self.window.create_img()
+            surface = self.parent.create_img()
             self._save_img_to_png(surface, dialog.get_filename())
+            print(dialog.get_filename())
 
         dialog.destroy()
 
