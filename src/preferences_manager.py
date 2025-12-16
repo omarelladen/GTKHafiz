@@ -1,24 +1,20 @@
 import os
 import csv
-import gi
-
-from gi.repository import Gdk
 
 class PreferencesManager():
     def __init__(self,
-        preferences_path = None,
+        preferences_path
     ):
         self.preferences_path = os.path.expanduser(preferences_path)
-
-        self.preferences = {}
-        with open(self.preferences_path, 'r') as f:
-            exec(f.read(), self.preferences)        
 
     def read_rect_color_from_file(self):
         if os.path.isfile(self.preferences_path):
             try:
-                
-                RECT_COLOR = self.preferences.get("RECT_COLOR")
+                preferences = {}
+                with open(self.preferences_path, 'r') as f:
+                    exec(f.read(), preferences)
+
+                RECT_COLOR = preferences.get("RECT_COLOR")
                 if RECT_COLOR:
                     return RECT_COLOR.strip()
             except Exception as e:
