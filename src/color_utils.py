@@ -1,16 +1,14 @@
 import re
-import gi
 
-from gi.repository import Gtk, Gio, Gdk
+from gi.repository import  Gdk
 
 class ColorUtils():
     def __init__(self):
         pass
 
     def is_valid_color_hex(self, color_hex):
-        if not re.fullmatch(r"[0-9a-f]{6}|[0-9a-f]{8}", color_hex.strip().lstrip("#").lower()):
-            return False
-        return True
+        _color_hex = color_hex.strip().lstrip("#").lower()
+        return True if re.fullmatch(r"[0-9a-f]{6}|[0-9a-f]{8}", _color_hex) else False        
 
     def rgba_to_hex(self, color_rgba):
         r = int(color_rgba.red   * 255)
