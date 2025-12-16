@@ -1,5 +1,6 @@
 import os
 import cairo
+
 from gi.repository import Gtk, Gdk
 
 class DownloadManager:
