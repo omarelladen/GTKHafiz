@@ -70,7 +70,7 @@ class Window(Gtk.Window):
         padding = 2
 
         # Import Button
-        bt = Gtk.ModelButton(label="Import Chapters)
+        bt = Gtk.ModelButton(label="Import Chapters")
         bt.connect("clicked", self._on_click_import)
         vbox.pack_start(bt, False, True, padding)
 
