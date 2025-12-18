@@ -22,16 +22,15 @@ DB_FILE=$(expand_home "$DB_FILE")
 PREFERENCES_DIR=$(expand_home "$PREFERENCES_DIR")
 PREFERENCES_FILE=$(expand_home "$PREFERENCES_FILE")
 
-mkdir -pv "$BIN_DIR" "$DATA_DIR" "$ICONS_DIR" "$PYTHON_PKG_DIR" "$DESKTOP_DIR" "$DB_DIR" "$PREFERENCES_DIR"
+mkdir -pv "$BIN_DIR" "$DATA_DIR" "$ICONS_DIR" "$PYTHON_PKG_DIR" "$DESKTOP_DIR"
+sudo -u "$SUDO_USER" mkdir -pv "$DB_DIR" "$PREFERENCES_DIR"
 
 cp -v "$ORIG_SRC_DIR"/* "$PYTHON_PKG_DIR"
 cp -v "$ORIG_ICONS_DIR"/* "$ICONS_DIR"
 cp -v config "$DATA_DIR"
-cp -v "$ORIG_DB_FILE" "$DB_FILE"
+sudo -u "$SUDO_USER" cp -v "$ORIG_DB_FILE" "$DB_FILE"
 cp -v "$ORIG_BAR_SIZES_FILE" "$DATA_DIR"
-cp -v "$ORIG_PREFERENCES_FILE" "$PREFERENCES_FILE"
-
-chown -R "$SUDO_USER":"$SUDO_USER" "$DB_DIR" "$PREFERENCES_DIR"
+sudo -u "$SUDO_USER" cp -v "$ORIG_PREFERENCES_FILE" "$PREFERENCES_FILE"
 
 echo "# This directory is a Python package." > "$PYTHON_PKG_DIR"/__init__.py
 
