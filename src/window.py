@@ -43,13 +43,13 @@ class Window(Gtk.Window):
 
 
         # Shortcuts
-        accel_group = Gtk.AccelGroup()
-        self.add_accel_group(accel_group)
+        accelgroup = Gtk.AccelGroup()
+        self.add_accel_group(accelgroup)
 
         self.list_shortcuts = []
 
-        self._add_shortcut(accel_group, "Quit",         "<control>Q", self._on_ctrl_q)
-        self._add_shortcut(accel_group, "Export Image", "<control>S", self._on_ctrl_s)
+        self._add_shortcut(accelgroup, "Quit",         "<control>Q", self._on_ctrl_q)
+        self._add_shortcut(accelgroup, "Export Image", "<control>S", self._on_ctrl_s)
 
 
         # Window dimensions
@@ -58,39 +58,50 @@ class Window(Gtk.Window):
         self.set_border_width(6)
 
 
-        # Vertical Box
-        outerbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        self.add(outerbox)
+        # Main Vertical Box
+        box_main = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        self.add(box_main)
 
+        # Stack - holds multiple pages and shows one at a time
+        stack = Gtk.Stack()
 
+        # Stack Switcher - creates the page buttons to switch the stack
+        stackswitcher = Gtk.StackSwitcher()
+        stackswitcher.set_stack(stack)
+        stackswitcher.set_halign(Gtk.Align.CENTER)
+
+        box_main.pack_start(stackswitcher, False, False, 0)
+        box_main.pack_start(stack, True, True, 0)
+
+        
         # Menu Popover
         popover_menu = Gtk.Popover()
-        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        box_menu = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
         padding_menu = 2
 
         # Import Button
         bt = Gtk.ModelButton(label="Import Chapters")
         bt.connect("clicked", self._on_click_import)
-        vbox.pack_start(bt, False, True, padding_menu)
+        box_menu.pack_start(bt, False, True, padding_menu)
 
         # Save Button
         bt = Gtk.ModelButton(label="Export Image")
         bt.connect("clicked", self._on_click_save)
-        vbox.pack_start(bt, False, True, padding_menu)
+        box_menu.pack_start(bt, False, True, padding_menu)
 
         # Keyboard Shortcurts Button
         bt = Gtk.ModelButton(label="Keyboard Shortcuts")
         bt.connect("clicked", self._on_click_shortcuts)
-        vbox.pack_start(bt, False, True, padding_menu)
+        box_menu.pack_start(bt, False, True, padding_menu)
 
         # About Button
         bt = Gtk.ModelButton(label=f"About {self.app.name}")
         bt.connect("clicked", self._on_click_about)
-        vbox.pack_start(bt, False, True, padding_menu)
+        box_menu.pack_start(bt, False, True, padding_menu)
 
-        vbox.show_all()
-        popover_menu.add(vbox)
+        box_menu.show_all()
+        popover_menu.add(box_menu)
         popover_menu.set_position(Gtk.PositionType.BOTTOM)
 
 
@@ -118,11 +129,7 @@ class Window(Gtk.Window):
         bt.connect("clicked", self._on_click_color_chooser)
         headerbar.pack_start(bt)
 
-
-        # Stack - holds multiple tabs and shows one at a time
-        stack = Gtk.Stack()
-
-
+        
         # Create Chapter Rectangles of progress bars
         self.pb_x0 = 20  # initial x
         self.pb_y0 = 20  # initial y
@@ -138,7 +145,7 @@ class Window(Gtk.Window):
         self._refresh_rects_colors()
 
 
-        # Progress Bars Tab
+        # Progress Bars Page
         drawingarea_pb = Gtk.DrawingArea()
         drawingarea_pb.connect("draw", self._draw_juz_text)
         drawingarea_pb.connect("draw", self._draw_progress_bars)
@@ -146,15 +153,15 @@ class Window(Gtk.Window):
         drawingarea_pb.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         stack.add_titled(drawingarea_pb, "bars", "Progress Bars")
 
-        # Matrix Tab
+        # Matrix Page
         drawingarea_matrix = Gtk.DrawingArea()
         drawingarea_matrix.connect("draw", self._draw_matrix)
         drawingarea_matrix.connect("button-press-event", self._on_click_matrix)
         drawingarea_matrix.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         stack.add_titled(drawingarea_matrix, "matrix", "Matrix")
 
-        # List Tab
-        checkbutton_container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        # List Page
+        box_checkbutton = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
         self.checkbuttons = {}
         for chapter in self.book.list_chapters:
@@ -166,15 +173,15 @@ class Window(Gtk.Window):
             if chapter.number in self.user.list_mem_chapters:
                 checkbutton.set_active(True)
             checkbutton.connect("toggled", lambda bt, obj=chapter: self._on_toggle_checkbox(bt, obj))
-            checkbutton_container.pack_start(checkbutton, False, False, 0)
+            box_checkbutton.pack_start(checkbutton, False, False, 0)
 
-        scrolled_window = Gtk.ScrolledWindow()
-        scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
-        scrolled_window.add(checkbutton_container)
-        stack.add_titled(scrolled_window, "list", "List")
+        scrolledwindow = Gtk.ScrolledWindow()
+        scrolledwindow.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        scrolledwindow.add(box_checkbutton)
+        stack.add_titled(scrolledwindow, "list", "List")
 
 
-        # Stats Tab
+        # Stats Page
         self.label_stats = Gtk.Label()
         self._refresh_stats_label()
         stack.add_titled(self.label_stats, "stats", "Stats")
@@ -194,15 +201,6 @@ class Window(Gtk.Window):
         self.connect("button-press-event", self._on_click_outside_popover)
 
 
-        # Stack Switcher - creates the tab buttons to switch the stack
-        stackswitcher = Gtk.StackSwitcher()
-        stackswitcher.set_stack(stack)
-        stackswitcher.set_halign(Gtk.Align.CENTER)
-
-        outerbox.pack_start(stackswitcher, False, False, 0)
-        outerbox.pack_start(stack, True, True, 0)
-
-
     def _refresh_visual_data(self):
         self._refresh_stats_label()
         self._refresh_rects_colors()
@@ -218,19 +216,19 @@ class Window(Gtk.Window):
                 self.pixbuf = None
                 print(f'Failed to load icon from "{self.app_icon_path}"')
 
-    def _add_shortcut(self, accel_group, action, accelerator, callback):
+    def _add_shortcut(self, accelgroup, action, accelerator, callback):
         key, mod = Gtk.accelerator_parse(accelerator)
-        accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, callback)
+        accelgroup.connect(key, mod, Gtk.AccelFlags.VISIBLE, callback)
 
         self.list_shortcuts.append((action, key, mod))
 
     def _open_save_dialog(self):
         self.download_manager.open_save_dialog()
 
-    def _on_ctrl_q(self, accel_group, window, key, modifier):
+    def _on_ctrl_q(self, accelgroup, window, key, modifier):
         self.app.quit()
 
-    def _on_ctrl_s(self, accel_group, window, key, modifier):
+    def _on_ctrl_s(self, accelgroup, window, key, modifier):
         self._open_save_dialog()
 
 
@@ -282,17 +280,17 @@ class Window(Gtk.Window):
 
 
     def _on_click_color_chooser(self, widget):
-        color_chooser = Gtk.ColorChooserDialog("Select rectangle color", self)
+        color_chooser_dialog = Gtk.ColorChooserDialog("Select Rectangle Color", self)
 
-        color_chooser.set_rgba(self.color_utils.hex_to_rgba(self.default_rect_color_hex))  # default color
+        color_chooser_dialog.set_rgba(self.color_utils.hex_to_rgba(self.default_rect_color_hex))  # default color
 
-        response = color_chooser.run()
+        response = color_chooser_dialog.run()
         if response == Gtk.ResponseType.OK:
-            color = color_chooser.get_rgba()
+            color = color_chooser_dialog.get_rgba()
             self._paint_rects(color)
             self.preferences_manager.write_rect_color_to_file(self.color_utils.rgba_to_hex(color))
 
-        color_chooser.destroy()
+        color_chooser_dialog.destroy()
 
     def _on_click_save(self, widget):
         self._open_save_dialog()
@@ -325,36 +323,36 @@ class Window(Gtk.Window):
         dialog.set_resizable(False)
 
         content_area = dialog.get_content_area()
-        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        box_shortcuts = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
         for action, key, mod in self.list_shortcuts:
-            accel_label = Gtk.AccelLabel(label=action)
-            accel_label.set_accel(key, mod)
+            accellabel = Gtk.AccelLabel(label=action)
+            accellabel.set_accel(key, mod)
 
-            vbox.pack_start(accel_label, False, True, 0)
+            box_shortcuts.pack_start(accellabel, False, True, 0)
 
-        content_area.add(vbox)
+        content_area.add(box_shortcuts)
         dialog.show_all()
 
         dialog.run()
         dialog.destroy()
 
     def _on_click_about(self, widget):
-        about = Gtk.AboutDialog(transient_for=self, modal=True)
-        about.set_program_name(self.app.name)
-        about.set_version(self.app.version)
-        about.set_comments(self.app.description)
-        about.set_website(self.app.website_url)
-        about.set_website_label(self.app.website_label)
-        about.set_authors(self.app.authors)
-        about.set_license_type(Gtk.License.GPL_3_0)
-        about.set_copyright(self.app.copyright)
+        about_dialog = Gtk.AboutDialog(transient_for=self, modal=True)
+        about_dialog.set_program_name(self.app.name)
+        about_dialog.set_version(self.app.version)
+        about_dialog.set_comments(self.app.description)
+        about_dialog.set_website(self.app.website_url)
+        about_dialog.set_website_label(self.app.website_label)
+        about_dialog.set_authors(self.app.authors)
+        about_dialog.set_license_type(Gtk.License.GPL_3_0)
+        about_dialog.set_copyright(self.app.copyright)
 
         if self.pixbuf:
-            about.set_logo(self.pixbuf)
+            about_dialog.set_logo(self.pixbuf)
 
-        about.connect("response", lambda dialog, response: dialog.destroy())
-        about.present()
+        about_dialog.connect("response", lambda dialog, response: dialog.destroy())
+        about_dialog.present()
 
 
     def _create_pb_rects_from_file(self, bars_sizes_path):

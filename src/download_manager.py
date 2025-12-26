@@ -34,15 +34,15 @@ class DownloadManager:
         dialog.destroy()
 
     def _add_file_filters(self, dialog):
-        file_filter = Gtk.FileFilter()
-        file_filter.set_name("PNG image")
-        file_filter.add_mime_type("image/png")
-        dialog.add_filter(file_filter)
+        filefilter = Gtk.FileFilter()
+        filefilter.set_name("PNG image")
+        filefilter.add_mime_type("image/png")
+        dialog.add_filter(filefilter)
 
-        file_filter = Gtk.FileFilter()
-        file_filter.set_name("Any files")
-        file_filter.add_pattern("*")
-        dialog.add_filter(file_filter)
+        filefilter = Gtk.FileFilter()
+        filefilter.set_name("Any files")
+        filefilter.add_pattern("*")
+        dialog.add_filter(filefilter)
 
     def _save_img_to_png(self, surface, filename):
         # Write the surface to a PNG file
