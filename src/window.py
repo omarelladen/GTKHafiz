@@ -75,7 +75,7 @@ class Window(Gtk.Window):
 
         
         # Menu Popover
-        popover_menu = Gtk.Popover()
+        popover_menu = Gtk.PopoverMenu()
         box_menu = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
         padding_menu = 2
