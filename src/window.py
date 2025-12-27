@@ -163,7 +163,7 @@ class Window(Gtk.Window):
         stack.add_titled(drawingarea_matrix, "matrix", "Matrix")
 
         # List Page
-        box_checkbutton = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        box_checkbutton = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
         self.checkbuttons = {}
         for chapter in self.book.list_chapters:
