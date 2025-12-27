@@ -36,7 +36,9 @@ class Window(Gtk.Window):
         # Rectangles color
         self.default_rect_color_hex = "#00CC00FF"
         rect_color_hex = self.preferences_manager.read_rect_color_from_file()
-        if not rect_color_hex or not self.color_utils.is_valid_color_hex(rect_color_hex):
+        if (not rect_color_hex or
+            not self.color_utils.is_valid_color_hex(rect_color_hex)
+        ):
             rect_color_hex = self.default_rect_color_hex
             self.preferences_manager.write_rect_color_to_file(rect_color_hex)
         self.rect_color = self.color_utils.hex_to_rgba(rect_color_hex)
@@ -48,8 +50,8 @@ class Window(Gtk.Window):
 
         self.list_shortcuts = []
 
-        self._add_shortcut(accelgroup, "Quit",         "<control>Q", self._on_ctrl_q)
-        self._add_shortcut(accelgroup, "Export Image", "<control>S", self._on_ctrl_s)
+        self._add_shortcut(accelgroup, "Quit",         "<ctrl>Q", self._on_ctrl_q)
+        self._add_shortcut(accelgroup, "Export Image", "<ctrl>S", self._on_ctrl_s)
 
 
         # Window dimensions
@@ -165,18 +167,28 @@ class Window(Gtk.Window):
 
         self.checkbuttons = {}
         for chapter in self.book.list_chapters:
-            checkbutton = Gtk.CheckButton(label=f"{chapter.number}. ({chapter.name_latin}) {chapter.name_arabic}")
+            checkbutton = Gtk.CheckButton(
+                label=f"{chapter.number}. "
+                      f"({chapter.name_latin}) "
+                      f"{chapter.name_arabic}"
+            )
             checkbutton.modify_font(Pango.FontDescription("11"))
 
             self.checkbuttons[chapter.number] = checkbutton
 
             if chapter.number in self.user.list_mem_chapters:
                 checkbutton.set_active(True)
-            checkbutton.connect("toggled", lambda bt, obj=chapter: self._on_toggle_checkbox(bt, obj))
+            checkbutton.connect(
+                "toggled",
+                lambda bt, obj=chapter: self._on_toggle_checkbox(bt, obj)
+            )
             box_checkbutton.pack_start(checkbutton, False, False, 0)
 
         scrolledwindow = Gtk.ScrolledWindow()
-        scrolledwindow.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        scrolledwindow.set_policy(
+            Gtk.PolicyType.NEVER,
+            Gtk.PolicyType.AUTOMATIC
+        )
         scrolledwindow.add(box_checkbutton)
         stack.add_titled(scrolledwindow, "list", "List")
 
@@ -197,7 +209,8 @@ class Window(Gtk.Window):
         self.cursor_x_at_popover = None
         self.cursor_y_at_popover = None
 
-        # Connect a click event to the whole window to detect clicks outside the popover
+        # Connect a click event to the whole window
+        # to detect clicks outside the popover
         self.connect("button-press-event", self._on_click_outside_popover)
 
 
@@ -210,7 +223,9 @@ class Window(Gtk.Window):
     def _set_icon_from_file(self, icon_path):
         if icon_path:
             try:
-                self.pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(icon_path, 64, 64, True)
+                self.pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(
+                    icon_path, 64, 64, True
+                )
                 self.set_icon(self.pixbuf)
             except:
                 self.pixbuf = None
@@ -233,7 +248,8 @@ class Window(Gtk.Window):
 
 
     def _on_click_outside_popover(self, widget, event):
-        # Hide only when clicking in a point that is not the one that opened the popover
+        # Hide only when clicking in a point
+        # that is not the one that opened the popover
         if (self.is_popover_chapter_active == True and
             event.x != self.cursor_x_at_popover and
             event.y != self.cursor_y_at_popover
@@ -280,15 +296,22 @@ class Window(Gtk.Window):
 
 
     def _on_click_color_chooser(self, widget):
-        color_chooser_dialog = Gtk.ColorChooserDialog("Select Rectangle Color", self)
+        color_chooser_dialog = Gtk.ColorChooserDialog(
+            "Select Rectangle Color", self
+        )
 
-        color_chooser_dialog.set_rgba(self.color_utils.hex_to_rgba(self.default_rect_color_hex))  # default color
+        # Default color
+        color_chooser_dialog.set_rgba(
+            self.color_utils.hex_to_rgba(self.default_rect_color_hex)
+        )
 
         response = color_chooser_dialog.run()
         if response == Gtk.ResponseType.OK:
             color = color_chooser_dialog.get_rgba()
             self._paint_rects(color)
-            self.preferences_manager.write_rect_color_to_file(self.color_utils.rgba_to_hex(color))
+            self.preferences_manager.write_rect_color_to_file(
+                self.color_utils.rgba_to_hex(color)
+            )
 
         color_chooser_dialog.destroy()
 
@@ -351,7 +374,10 @@ class Window(Gtk.Window):
         if self.pixbuf:
             about_dialog.set_logo(self.pixbuf)
 
-        about_dialog.connect("response", lambda dialog, response: dialog.destroy())
+        about_dialog.connect(
+            "response",
+            lambda dialog, response: dialog.destroy()
+        )
         about_dialog.present()
 
 
@@ -360,7 +386,9 @@ class Window(Gtk.Window):
         prev_juz = None
 
         if not os.path.isfile(bars_sizes_path):
-            raise FileNotFoundError(f'Failed to find bars sizes file "{bars_sizes_path}"')
+            raise FileNotFoundError(
+                f'Failed to find bars sizes file "{bars_sizes_path}"'
+            )
         try:
             with open(bars_sizes_path, mode="r") as f:
                 reader = csv.reader(f)
@@ -389,7 +417,9 @@ class Window(Gtk.Window):
 
             return list_rects_pb
         except Exception as e:
-            raise Exception(f'Failed to load bars sizes files at "{bars_sizes_path}": {e}')
+            raise Exception(
+                f'Failed to load bars sizes files at "{bars_sizes_path}": {e}'
+            )
 
     def _create_matrix_rects(self, rects_per_line, rects_per_col):
         list_rects_matrix = []
@@ -398,13 +428,27 @@ class Window(Gtk.Window):
                 x = 155 + (rects_per_line-1-j)*35  # from left to right
                 y = 15 + i*20
                 chapter_num = i*(rects_per_line) + j + 1
-                list_rects_matrix.append(ChapterRectangle(x, y, 30, 10, chapter_num, self.rect_color))
+                list_rects_matrix.append(
+                    ChapterRectangle(
+                        x,
+                        y,
+                        30,
+                        10,
+                        chapter_num,
+                        self.rect_color
+                    )
+                )
         return list_rects_matrix
 
 
     def _draw_matrix(self, widget, cr):
         for rect in self.list_rects_matrix:
-            cr.set_source_rgba(rect.color.red, rect.color.green, rect.color.blue, rect.color.alpha)
+            cr.set_source_rgba(
+                rect.color.red,
+                rect.color.green,
+                rect.color.blue,
+                rect.color.alpha
+            )
             cr.rectangle(rect.x, rect.y, rect.width, rect.height)
             cr.fill()
 
@@ -419,7 +463,9 @@ class Window(Gtk.Window):
             # Calculate position - offset for single-digit task numbers
             num_pos = 0 if juz >= 10 else self.pb_x0 / 4
             x_pos = num_pos
-            y_pos = self.pb_y0 + self.pb_lines_dist * (juz-1) + self.pb_height - 2
+            y_pos = (self.pb_y0
+                     + self.pb_lines_dist * (juz-1)
+                     + self.pb_height - 2)
 
             # Draw the Juz' line label
             cr.move_to(x_pos, y_pos)
@@ -427,7 +473,12 @@ class Window(Gtk.Window):
 
     def _draw_progress_bars(self, widget, cr: cairo.Context):
         for rect in self.list_rects_pb:
-            cr.set_source_rgba(rect.color.red, rect.color.green, rect.color.blue, rect.color.alpha)
+            cr.set_source_rgba(
+                rect.color.red,
+                rect.color.green,
+                rect.color.blue,
+                rect.color.alpha
+            )
             cr.rectangle(rect.x, rect.y, rect.width, rect.height)
 
             # Juz' indication
@@ -445,7 +496,9 @@ class Window(Gtk.Window):
         surface_height = int(max_y + self.pb_y0)
 
         # Create a Cairo surface
-        surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, surface_width, surface_height)
+        surface = cairo.ImageSurface(
+            cairo.FORMAT_ARGB32, surface_width, surface_height
+        )
         cr = cairo.Context(surface)
 
         # Set background
@@ -470,7 +523,8 @@ class Window(Gtk.Window):
         self.popover_chapter.set_position(Gtk.PositionType.TOP)
         self.popover_chapter.show_all()
 
-        # Set current popover location and state so that it is gets hiden only by clicking outside this point
+        # Set current popover location and state
+        # so that it is gets hiden only by clicking outside this point
         self.cursor_x_at_popover = e_x
         self.cursor_y_at_popover = e_y
         self.is_popover_chapter_active = True
@@ -491,14 +545,32 @@ class Window(Gtk.Window):
 
     def _refresh_rects_colors(self):
         for rect in self.list_rects_matrix:
-            rect.paint_on() if rect.caption in self.user.list_mem_chapters else rect.paint_off()
+            if rect.caption in self.user.list_mem_chapters:
+                rect.paint_on()
+            else:
+                rect.paint_off()
+
         for rect in self.list_rects_pb:
-            rect.paint_on() if rect.caption in self.user.list_mem_chapters else rect.paint_off()
+            if rect.caption in self.user.list_mem_chapters:
+                rect.paint_on()
+            else:
+                rect.paint_off()
 
     def _refresh_stats_label(self):
+
+        pct_c = round(self.user.n_mem_chapters / self.book.n_chapters * 100, 2)
+        pct_v = round(self.user.n_mem_verses   / self.book.n_verses   * 100, 2)
+        pct_w = round(self.user.n_mem_words    / self.book.n_words    * 100, 2)
+        pct_l = round(self.user.n_mem_letters  / self.book.n_letters  * 100, 2)
+
+        stats_c = f"{self.user.n_mem_chapters}" + f" ({pct_c}%)"
+        stats_v = f"{self.user.n_mem_verses}"   + f" ({pct_v}%)"
+        stats_w = f"{self.user.n_mem_words}"    + f" ({pct_w}%)"
+        stats_l = f"{self.user.n_mem_letters}"  + f" ({pct_l}%)"
+
         self.label_stats.set_markup(
-            f"<span font='13'><b>Chapters:</b> {self.user.n_mem_chapters} ({round(self.user.n_mem_chapters / self.book.n_chapters * 100, 2)}%)</span>\n"
-            f"<span font='13'><b>Verses:</b> {self.user.n_mem_verses} ({round(self.user.n_mem_verses / self.book.n_verses * 100, 2)}%)</span>\n"
-            f"<span font='13'><b>Words:</b> {self.user.n_mem_words} ({round(self.user.n_mem_words / self.book.n_words * 100, 2)}%)</span>\n"
-            f"<span font='13'><b>Letters:</b> {self.user.n_mem_letters} ({round(self.user.n_mem_letters / self.book.n_letters * 100, 2)}%)</span>"
+            f"<span font='13'><b>Chapters: </b>{stats_c}</span>\n"
+            f"<span font='13'><b>Verses: </b>{stats_v}</span>\n"
+            f"<span font='13'><b>Words: </b>{stats_w}</span>\n"
+            f"<span font='13'><b>Letters: </b>{stats_l}</span>"
         )

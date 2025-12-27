@@ -42,7 +42,9 @@ class ImportManager():
                 interval_start = int(re_match1.group(1))
                 interval_end   = int(re_match1.group(2))
 
-                if interval_start == interval_end and interval_start in range(1, 114+1):
+                if (interval_start == interval_end and
+                    interval_start in range(1, 114+1)
+                ):
                     list_values.append(interval_start)
                 elif interval_start <= interval_end:
                     for i in range(interval_start, interval_end+1):

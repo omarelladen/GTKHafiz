@@ -17,7 +17,9 @@ class PreferencesManager():
                 if RECT_COLOR:
                     return RECT_COLOR.strip()
             except Exception as e:
-                print(f'Failed to load preferences from "{self.preferences_path}": {e}')
+                print('Failed to load preferences '
+                     f'from "{self.preferences_path}": {e}'
+                )
                 return None
         return None
 
@@ -26,4 +28,6 @@ class PreferencesManager():
             with open(self.preferences_path, 'w') as f:
                 f.write(f'RECT_COLOR="{color_hex}"')
         except Exception as e:
-            print(f'Failed to write preferences at "{self.preferences_path}": {e}')
+            print('Failed to write preferences '
+                 f'at "{self.preferences_path}": {e}'
+            )

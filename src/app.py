@@ -30,13 +30,17 @@ class App():
 
     def setup(self):
         # DB Manager
-        self.db_manager = DBManager(os.path.expanduser(self.configs.get("DB_FILE")))
+        self.db_manager = DBManager(
+            os.path.expanduser(self.configs.get("DB_FILE"))
+        )
         self.user = self.db_manager.load_user()
         book = self.db_manager.load_book()
         book.list_chapters = self.db_manager.load_chapters()
 
         # Preferences Manager
-        preferences_manager = PreferencesManager(os.path.expanduser(self.configs.get("PREFERENCES_FILE")))
+        preferences_manager = PreferencesManager(
+            os.path.expanduser(self.configs.get("PREFERENCES_FILE"))
+        )
 
         # Flag to save data or not on db when the app is closed
         self.user_data_changed = False
