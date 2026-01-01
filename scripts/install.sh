@@ -15,9 +15,11 @@ if command -v sudo >/dev/null 2>&1 \
 fi
 
 echo "USER=$USER"
+echo "USER_NAME=$(whoami)"
 echo "SUDO=$SUDO"
 echo "SUDO_U=$SUDO_U"
 echo "SUDO_USER=$SUDO_USER"
+echo "PATH=$PATH"
 
 scripts/uninstall.sh
 
