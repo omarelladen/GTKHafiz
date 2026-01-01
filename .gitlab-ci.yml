@@ -1,6 +1,5 @@
 stages:
   - test
-  - lint
 
 default:
   before_script:
@@ -19,6 +18,6 @@ test2-job:
     - gtkhafiz -v | grep GTKHafiz
 
 lint1-job:
-  stage: lint
+  stage: test
   script:
     - grep -Rn '[ ]$' src/ scripts/
