@@ -20,4 +20,9 @@ test2-job:
 lint1-job:
   stage: test
   script:
-    - grep -Rn '[ ]$' src/ scripts/
+    - |
+      grep -Rn '[ ]$' src/ scripts/
+      if [ $? -eq 0 ]; then
+          echo "Found trailing whitespaces!"
+          exit 1
+      fi
