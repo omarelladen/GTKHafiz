@@ -26,3 +26,4 @@ lint1-job:
           echo "Found trailing whitespaces!"
           exit 1
       fi
+      exit 0
