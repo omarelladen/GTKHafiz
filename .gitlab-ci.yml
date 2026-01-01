@@ -11,7 +11,18 @@ test1-job:
   stage: test
   script:
     - python3 --version
-test3-job:
+
+test2-job:
   stage: test
   script:
     - lscpu
+
+test3-job:
+  stage: test
+  script:
+    - cat /etc/os-release
+
+test4-job:
+  stage: test
+  script:
+    - lsb_release -a
