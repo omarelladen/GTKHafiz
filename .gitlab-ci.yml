@@ -11,3 +11,8 @@ test1-job:
   stage: test
   script:
     - sudo ls -a
+
+test3-job:
+  stage: test
+  script:
+    - lscpu
