@@ -6,20 +6,12 @@
 
 SUDO=
 SUDO_U=
-
 if command -v sudo >/dev/null 2>&1 \
    && [ "$(id -u 2>/dev/null)" = "0" ] \
    && [ -n "$SUDO_USER" ]; then
     SUDO=sudo
     SUDO_U="sudo -u $SUDO_USER"
 fi
-
-echo "USER=$USER"
-echo "USER_NAME=$(whoami)"
-echo "SUDO=$SUDO"
-echo "SUDO_U=$SUDO_U"
-echo "SUDO_USER=$SUDO_USER"
-echo "PATH=$PATH"
 
 scripts/uninstall.sh
 
