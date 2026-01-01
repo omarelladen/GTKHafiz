@@ -21,8 +21,7 @@ lint1-job:
   stage: test
   script:
     - |
-      if [ grep -Rn '[ ]$' src/ scripts/ -eq 0 ]; then
+      if grep -Rn '[ ]$' src/ scripts/ -eq 0; then
           echo "Found trailing whitespaces!"
           exit 1
       fi
-      exit 0
