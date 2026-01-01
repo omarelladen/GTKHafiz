@@ -29,6 +29,11 @@ class App():
         self.authors       = self.configs.get("AUTHORS").split(",")
         self.copyright     = self.configs.get("COPYRIGHT")
 
+        self.db_manager = None
+        self.user = None
+        self.win = None
+        self.user_data_changed = None
+
     def setup(self):
         # DB Manager
         self.db_manager = DBManager(
