@@ -10,8 +10,7 @@ test0-job:
 test1-job:
   stage: test
   script:
-    - sudo ls -a
-
+    - python3 --version
 test3-job:
   stage: test
   script:
