@@ -341,7 +341,7 @@ class Window(Gtk.Window):
 
             self._refresh_visual_data()
 
-    def _on_click_shortcuts(self, button):
+    def _on_click_shortcuts(self, widget):
         dialog = Gtk.Dialog("Shortcuts", self, Gtk.DialogFlags.MODAL)
 
         dialog.set_default_size(300, 70)
