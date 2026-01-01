@@ -20,9 +20,9 @@ test2-job:
 test3-job:
   stage: test
   script:
-    - gtkhafiz --version | grep version
+    - gtkhafiz --version | grep GTKHafiz
 
 test4-job:
   stage: test
   script:
-    - gtkhafiz -v | grep version
+    - gtkhafiz -v | grep GTKHafiz
