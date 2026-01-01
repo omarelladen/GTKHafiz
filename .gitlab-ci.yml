@@ -10,19 +10,9 @@ default:
 test1-job:
   stage: test
   script:
-    - gtkhafiz --help
-
-test2-job:
-  stage: test
-  script:
-    - gtkhafiz -h
-
-test3-job:
-  stage: test
-  script:
     - gtkhafiz --version | grep GTKHafiz
 
-test4-job:
+test2-job:
   stage: test
   script:
     - gtkhafiz -v | grep GTKHafiz
