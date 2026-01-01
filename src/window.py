@@ -398,7 +398,6 @@ class Window(Gtk.Window):
                     length      = float(line[3])
 
                     if juz != prev_juz:
-                        num_pos = 0 if juz >= 10 else self.pb_x0/4
                         pb_offset = self.pb_x0
 
                     list_rects_pb.append(
