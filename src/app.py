@@ -17,7 +17,7 @@ class App():
         self.configs = {}
         with open("/usr/local/share/gtkhafiz/config", "r") as f:
             exec(f.read(), self.configs)
-        
+
         # Metadata
         self.name          = self.configs.get("APP_NAME")
         self.name_lower    = self.configs.get("APP_NAME_LOWER")

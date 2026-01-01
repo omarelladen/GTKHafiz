@@ -75,7 +75,7 @@ class Window(Gtk.Window):
         box_main.pack_start(stackswitcher, False, False, 0)
         box_main.pack_start(stack, True, True, 0)
 
-        
+
         # Menu Popover
         popover_menu = Gtk.Popover()
         box_menu = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
@@ -131,7 +131,7 @@ class Window(Gtk.Window):
         bt.connect("clicked", self._on_click_color_chooser)
         headerbar.pack_start(bt)
 
-        
+
         # Create Chapter Rectangles of progress bars
         self.pb_x0 = 20  # initial x
         self.pb_y0 = 20  # initial y
@@ -218,7 +218,7 @@ class Window(Gtk.Window):
         self._refresh_stats_label()
         self._refresh_rects_colors()
 
-        self.app.user_data_changed = True   
+        self.app.user_data_changed = True
 
     def _set_icon_from_file(self, icon_path):
         if icon_path:

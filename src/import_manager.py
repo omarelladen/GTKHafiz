@@ -14,9 +14,9 @@ class ImportManager():
         list_values = []
 
         dialog = ImportDialog(self.window)
-            
+
         response = dialog.run()
-        
+
         if response == Gtk.ResponseType.OK:
             text      = dialog.get_text()
             file_path = dialog.get_filename()
