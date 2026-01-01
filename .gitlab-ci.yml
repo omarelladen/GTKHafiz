@@ -1,28 +1,17 @@
 stages:
   - test
 
+default:
+  before_script:
+    - apt-get update
+    - scripts/install.sh
+
 test0-job:
   stage: test
   script:
-    - whoami
-    - uname -a
+    - gtkhafiz --version | grep version
 
 test1-job:
   stage: test
   script:
-    - python3 --version
-
-test2-job:
-  stage: test
-  script:
-    - lscpu
-
-test3-job:
-  stage: test
-  script:
-    - cat /etc/os-release
-
-test4-job:
-  stage: test
-  script:
-    - lsb_release -a
+    - gtkhafiz -v | grep version
