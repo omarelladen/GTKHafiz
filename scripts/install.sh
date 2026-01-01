@@ -27,7 +27,8 @@ expand_home()
 
 	case "$_PATH" in
 		"~"|"~"/*)
-			_PATH="/home/${SUDO_USER:-$USER}${_PATH#\~}" ;;
+			USER_NAME=$(whoami)
+			_PATH="/home/${SUDO_USER:-$USER_NAME}${_PATH#\~}" ;;
 	esac
 
 	echo "$_PATH"
