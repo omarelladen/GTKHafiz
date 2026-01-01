@@ -1,0 +1,13 @@
+stages:
+  - test
+
+test0-job:
+  stage: test
+  script:
+    - whoami
+    - uname -a
+
+test1-job:
+  stage: test
+  script:
+    - sudo ls -a
