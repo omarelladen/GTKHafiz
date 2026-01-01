@@ -2,6 +2,7 @@ import os
 
 from gi.repository import Gtk
 
+
 class ImportDialog(Gtk.Dialog):
     def __init__(self, parent):
         super().__init__(

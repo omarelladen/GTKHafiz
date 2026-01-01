@@ -1,6 +1,7 @@
 
 class Chapter:
-    def __init__(self,
+    def __init__(
+        self,
         number,
         name_arabic,
         name_latin,

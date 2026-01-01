@@ -5,9 +5,10 @@ import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
-from .window import Window
 from .db_manager import DBManager
 from .preferences_manager import PreferencesManager
+from .window import Window
+
 
 class App():
     def __init__(self):

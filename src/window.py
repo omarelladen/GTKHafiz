@@ -9,14 +9,16 @@ from .color_utils import ColorUtils
 from .download_manager import DownloadManager
 from .import_manager import ImportManager
 
+
 class Window(Gtk.Window):
-    def __init__(self,
+    def __init__(
+        self,
         app,
         user,
         book,
         preferences_manager,
         bars_sizes_path,
-        app_icon_path = None
+        app_icon_path=None
     ):
         super().__init__()
 
@@ -250,7 +252,7 @@ class Window(Gtk.Window):
     def _on_click_outside_popover(self, widget, event):
         # Hide only when clicking in a point
         # that is not the one that opened the popover
-        if (self.is_popover_chapter_active == True and
+        if (self.is_popover_chapter_active and
             event.x != self.cursor_x_at_popover and
             event.y != self.cursor_y_at_popover
         ):
@@ -395,7 +397,7 @@ class Window(Gtk.Window):
                 for line in reader:
                     juz         = int(line[0])
                     chapter_num = int(line[1])
-                    length      = float(line[3])
+                    width       = float(line[3])
 
                     if juz != prev_juz:
                         pb_offset = self.pb_x0
@@ -404,14 +406,14 @@ class Window(Gtk.Window):
                         ChapterRectangle(
                             pb_offset,
                             self.pb_y0 + self.pb_lines_dist*(juz-1),
-                            length-self.pb_dist,
+                            width-self.pb_dist,
                             self.pb_height,
                             chapter_num,
                             self.rect_color
                         )
                     )
 
-                    pb_offset += length
+                    pb_offset += width
                     prev_juz = juz
 
             return list_rects_pb
@@ -462,9 +464,11 @@ class Window(Gtk.Window):
             # Calculate position - offset for single-digit task numbers
             num_pos = 0 if juz >= 10 else self.pb_x0 / 4
             x_pos = num_pos
-            y_pos = (self.pb_y0
-                     + self.pb_lines_dist * (juz-1)
-                     + self.pb_height - 2)
+            y_pos = (
+                self.pb_y0
+                + self.pb_lines_dist * (juz-1)
+                + self.pb_height - 2
+            )
 
             # Draw the Juz' line label
             cr.move_to(x_pos, y_pos)

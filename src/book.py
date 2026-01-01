@@ -1,7 +1,9 @@
 from .chapter import Chapter
 
+
 class Book:
-    def __init__(self,
+    def __init__(
+        self,
         name_arabic,
         name_latin,
         n_chapters,

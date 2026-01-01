@@ -1,12 +1,16 @@
 import os
 import sqlite3
 
-from .user import User
-from .chapter import Chapter
 from .book import Book
+from .chapter import Chapter
+from .user import User
+
 
 class DBManager():
-    def __init__(self, db_path = ""):
+    def __init__(
+        self,
+        db_path=""
+    ):
         self._db_path = db_path
 
     def load_book(self):
@@ -48,7 +52,7 @@ class DBManager():
                 db_table_chapters = [
                     a for a in cur.execute("SELECT * FROM chapters")
                 ]
-                list_chapters=[]
+                list_chapters = []
                 for c in db_table_chapters:
                     list_chapters.append(
                         Chapter(

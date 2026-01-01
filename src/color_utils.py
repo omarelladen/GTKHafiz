@@ -1,6 +1,7 @@
 import re
 
-from gi.repository import  Gdk
+from gi.repository import Gdk
+
 
 class ColorUtils():
     def __init__(self):

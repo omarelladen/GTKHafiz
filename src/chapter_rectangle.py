@@ -1,14 +1,16 @@
 from gi.repository import Gdk
 
+
 class ChapterRectangle(Gdk.Rectangle):
-    def __init__(self,
+    def __init__(
+        self,
         x,
         y,
         width,
         height,
         caption,
         color_on: Gdk.RGBA,
-        color_off = Gdk.RGBA(0.5, 0.5, 0.5, 1.0),
+        color_off=Gdk.RGBA(0.5, 0.5, 0.5, 1.0),
     ):
         self.x = x
         self.y = y

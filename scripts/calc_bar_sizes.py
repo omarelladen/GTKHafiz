@@ -1,5 +1,6 @@
 import csv
 
+
 pb_line_width = 500  # total line length of juz'
 
 exec(open('config').read())

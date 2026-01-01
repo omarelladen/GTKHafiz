@@ -2,6 +2,7 @@ import os
 
 from gi.repository import Gtk
 
+
 class DownloadManager:
     def __init__(self, parent):
         self.parent = parent

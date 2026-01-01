@@ -1,5 +1,6 @@
 import os
 
+
 class PreferencesManager():
     def __init__(self,
         preferences_path

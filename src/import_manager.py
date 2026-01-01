@@ -1,10 +1,10 @@
 import os
 import re
-import csv
 
 from gi.repository import Gtk
 
 from .import_dialog import ImportDialog
+
 
 class ImportManager():
     def __init__(self, window):
