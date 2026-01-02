@@ -49,11 +49,12 @@ class DBManager():
             with sqlite3.connect(self._db_path) as con:
                 cur = con.cursor()
 
-                db_table_chapters = [
-                    a for a in cur.execute("SELECT * FROM chapters")
-                ]
+                db_chapters = list(
+                    cur.execute("SELECT * FROM chapters")
+                )
+
                 list_chapters = []
-                for c in db_table_chapters:
+                for c in db_chapters:
                     list_chapters.append(
                         Chapter(
                             c[0],
@@ -99,10 +100,10 @@ class DBManager():
                         user_data[3],
                         user_data[4],
                     )
-                    db_table_users_mem_chapters = [
-                        a for a in cur.execute("SELECT * FROM mem_chapters")
-                    ]
-                    for t in db_table_users_mem_chapters:
+                    db_mem_chapters = list(
+                        cur.execute("SELECT * FROM mem_chapters")
+                    )
+                    for t in db_mem_chapters:
                         user.list_mem_chapters.append(t[1])
                 else:  # create a new user in the db
                     user = User(username)
