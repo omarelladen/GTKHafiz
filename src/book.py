@@ -1,5 +1,3 @@
-from .chapter import Chapter
-
 
 class Book:
     def __init__(
@@ -10,7 +8,7 @@ class Book:
         n_verses,
         n_words,
         n_letters,
-        list_chapters: list[Chapter] = [],
+        list_chapters=None,
     ):
         self.name_arabic = name_arabic
         self.name_latin = name_latin
@@ -18,4 +16,4 @@ class Book:
         self.n_verses = n_verses
         self.n_words = n_words
         self.n_letters = n_letters
-        self.list_chapters = list_chapters
+        self.list_chapters = list_chapters if list_chapters else []

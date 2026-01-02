@@ -1,5 +1,3 @@
-from .chapter import Chapter
-
 
 class User:
     def __init__(
@@ -9,14 +7,14 @@ class User:
         n_mem_words=0,
         n_mem_verses=0,
         n_mem_letters=0,
-        list_mem_chapters: list[Chapter] = [],
+        list_mem_chapters=None,
     ):
         self.username = username
-        self.list_mem_chapters = list_mem_chapters
         self.n_mem_chapters = n_mem_chapters
         self.n_mem_words = n_mem_words
         self.n_mem_verses = n_mem_verses
         self.n_mem_letters = n_mem_letters
+        self.list_mem_chapters = list_mem_chapters if list_mem_chapters else []
 
     def add_mem_chapter(self, chapter):
         if chapter.number not in self.list_mem_chapters:
