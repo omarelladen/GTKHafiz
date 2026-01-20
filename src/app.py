@@ -80,7 +80,7 @@ class App():
             "  -h, --help                 Show help options\n"
             "\n"
             "Application Options:\n"
-            "  -v, --version              Print version information and exit"
+            "  -v, --version              Print version information and exit\n"
         )
 
     def show_version(self):
