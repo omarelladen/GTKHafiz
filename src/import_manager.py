@@ -36,7 +36,7 @@ class ImportManager():
         list_values = []
         for interval in list_intevals:
             re_match1 = re.match(r"(\d+)-(\d+)", interval)
-            re_match2 = re.match(r"(\d+)", interval)
+            re_match2 = re.match(r"(\d+)",       interval)
 
             if re_match1:
                 interval_start = int(re_match1.group(1))
