@@ -436,7 +436,7 @@ class Window(Gtk.Window):
         return list_rects_matrix
 
 
-    def _draw_matrix(self, widget, cr):
+    def _draw_matrix(self, widget, cr: cairo.Context):
         for rect in self.list_rects_matrix:
             cr.set_source_rgba(
                 rect.color.red,
