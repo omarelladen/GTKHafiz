@@ -265,8 +265,7 @@ class Window(Gtk.Window):
         ):
             for rect in self.list_rects_pb:
                 if (rect.x <= event.x <= rect.x + rect.width and
-                    rect.y <= event.y <= rect.y + rect.height and
-                    isinstance(rect.caption, int)
+                    rect.y <= event.y <= rect.y + rect.height
                 ):
                     self._show_chapter_popover(rect, widget, event)
                     break
@@ -275,14 +274,9 @@ class Window(Gtk.Window):
         if (event.type == Gdk.EventType.BUTTON_PRESS and
             event.button == Gdk.BUTTON_PRIMARY
         ):
-            e_x, e_y = event.x, event.y
             for rect in self.list_rects_matrix:
-                r_x = rect.x
-                r_y = rect.y
-                r_w = rect.width
-                r_h = rect.height
-                if (r_x <= e_x <= r_x + r_w and
-                    r_y <= e_y <= r_y + r_h
+                if (rect.x <= event.x <= rect.x + rect.width and
+                    rect.y <= event.y <= rect.y + rect.height
                 ):
                     self._show_chapter_popover(rect, widget, event)
                     break
@@ -483,10 +477,6 @@ class Window(Gtk.Window):
                 rect.color.alpha
             )
             cr.rectangle(rect.x, rect.y, rect.width, rect.height)
-
-            # Juz' indication
-            if isinstance(rect.caption, str) and "Juz'" in rect.caption:
-                cr.show_text(rect.caption.replace("Juz' ", ""))
 
             cr.fill()
 
