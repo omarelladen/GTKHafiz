@@ -28,7 +28,9 @@ class Window(Gtk.Window):
         self.preferences_manager = preferences_manager
 
         self.color_utils = ColorUtils()
-        self.download_manager = DownloadManager(self)
+        self.download_manager = DownloadManager(
+            self, "Save Progress Bars", "progress"
+        )
         self.import_manager = ImportManager(self)
 
         # Icon

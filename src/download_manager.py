@@ -4,19 +4,21 @@ from gi.repository import Gtk
 
 
 class DownloadManager:
-    def __init__(self, parent):
+    def __init__(self, parent, title, default_name):
         self.parent = parent
+        self.title = title
+        self.default_name = default_name
 
     def open_save_dialog(self):
         dialog = Gtk.FileChooserDialog(
-            title="Save Progress Bars",
+            title=self.title,
             parent=self.parent,
             transient_for=self.parent,
             action=Gtk.FileChooserAction.SAVE
         )
         dialog.set_do_overwrite_confirmation(True)
         dialog.set_current_folder(os.path.expanduser("~"))
-        dialog.set_current_name("progress.png")
+        dialog.set_current_name(f"{self.default_name}.png")
         dialog.add_buttons(
             Gtk.STOCK_CANCEL,
             Gtk.ResponseType.CANCEL,
