@@ -32,7 +32,6 @@ class DownloadManager:
         if response == Gtk.ResponseType.OK:
             surface = self.parent.create_img()
             self._save_img_to_png(surface, dialog.get_filename())
-            print(dialog.get_filename())
 
         dialog.destroy()
 
