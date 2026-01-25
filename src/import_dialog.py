@@ -23,7 +23,7 @@ class ImportDialog(Gtk.Dialog):
 
         # File Chooser Button
         self.file_chooser_button = Gtk.FileChooserButton(
-            title="Import from file",
+            title="Import From File",
             action=Gtk.FileChooserAction.OPEN
         )
         self.file_chooser_button.set_current_folder(os.path.expanduser("~"))
