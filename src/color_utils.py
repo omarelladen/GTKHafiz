@@ -28,4 +28,4 @@ class ColorUtils():
         b = int(_color_hex[4:6], 16) / 255.0
         a = int(_color_hex[6:8], 16) / 255.0 if len(color_hex) == 8 else 1.0
 
-        return Gdk.RGBA(r, g, b, a)
+        return Gdk.RGBA(r,g,b,a)
