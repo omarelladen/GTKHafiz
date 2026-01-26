@@ -1,6 +1,6 @@
 APP_NAME="GTKHafiz";
 APP_NAME_LOWER="gtkhafiz"
-APP_DESCRIPTION="Track Qur'an memorization visually";
+APP_DESCRIPTION="Track Quran memorization visually";
 APP_VERSION="0.6.0";
 WEBSITE_URL="https://gitlab.com/omarelladen/GTKHafiz";
 WEBSITE_LABEL="Repository";
