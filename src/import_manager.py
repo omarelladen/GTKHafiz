@@ -7,13 +7,14 @@ from .import_dialog import ImportDialog
 
 
 class ImportManager():
-    def __init__(self, window):
+    def __init__(self, window, title):
         self.window = window
+        self.title = title
 
     def run_dialog(self):
         list_values = []
 
-        dialog = ImportDialog(self.window)
+        dialog = ImportDialog(self.window, self.title)
 
         response = dialog.run()
 

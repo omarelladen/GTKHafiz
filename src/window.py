@@ -31,7 +31,7 @@ class Window(Gtk.Window):
         self.download_manager = DownloadManager(
             self, "Save Progress Bars", "progress"
         )
-        self.import_manager = ImportManager(self)
+        self.import_manager = ImportManager(self, "Import Chapter Intervals")
 
         # Icon
         self._set_icon_from_file(app_icon_path)

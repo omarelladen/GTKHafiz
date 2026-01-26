@@ -4,9 +4,9 @@ from gi.repository import Gtk
 
 
 class ImportDialog(Gtk.Dialog):
-    def __init__(self, parent):
+    def __init__(self, parent, title):
         super().__init__(
-            title="Import Chapter Intervals",
+            title=title,
             parent=parent,
             transient_for=parent,
             modal=True
@@ -18,7 +18,7 @@ class ImportDialog(Gtk.Dialog):
         box.set_spacing(10)
 
         self.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
-        self.add_button(Gtk.STOCK_OK, Gtk.ResponseType.OK)
+        self.add_button(Gtk.STOCK_OK,     Gtk.ResponseType.OK)
 
 
         # File Chooser Button
