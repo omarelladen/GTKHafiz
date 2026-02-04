@@ -30,18 +30,15 @@ expand_home()
 
 DB_DIR=$(expand_home "$DB_DIR")
 DB_FILE=$(expand_home "$DB_FILE")
-PREFERENCES_DIR=$(expand_home "$PREFERENCES_DIR")
-PREFERENCES_FILE=$(expand_home "$PREFERENCES_FILE")
 
 mkdir -pv "$BIN_DIR" "$DATA_DIR" "$ICONS_DIR" "$PYTHON_PKG_DIR" "$DESKTOP_DIR"
-eval "$SUDO_U mkdir -pv \"$DB_DIR\" \"$PREFERENCES_DIR\""
+eval "$SUDO_U mkdir -pv \"$DB_DIR\""
 
 cp -v "$ORIG_SRC_DIR"/* "$PYTHON_PKG_DIR"
 cp -v "$ORIG_ICONS_DIR"/* "$ICONS_DIR"
 cp -v config "$DATA_DIR"
 eval "$SUDO_U cp -v \"$ORIG_DB_FILE\" \"$DB_FILE\""
 cp -v "$ORIG_BAR_SIZES_FILE" "$DATA_DIR"
-eval "$SUDO_U cp -v \"$ORIG_PREFERENCES_FILE\" \"$PREFERENCES_FILE\""
 cp -v "$ORIG_DESKTOP_FILE" "$DESKTOP_FILE"
 cp -v "$ORIG_BIN_FILE" "$BIN_FILE"
 

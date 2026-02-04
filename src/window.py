@@ -44,7 +44,6 @@ class Window(Gtk.Window):
             not self.color_utils.is_valid_color_hex(rect_color_hex)
         ):
             rect_color_hex = self.default_rect_color_hex
-            self.preferences_manager.write_rect_color_to_file(rect_color_hex)
         self.rect_color = self.color_utils.hex_to_rgba(rect_color_hex)
 
 

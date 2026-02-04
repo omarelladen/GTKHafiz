@@ -26,8 +26,10 @@ class PreferencesManager():
 
     def write_rect_color_to_file(self, color_hex):
         try:
+            dir_path = os.path.dirname(self.preferences_path)
+            os.makedirs(dir_path, exist_ok=True)
             with open(self.preferences_path, 'w') as f:
-                f.write(f'RECT_COLOR="{color_hex}"')
+                f.write(f'RECT_COLOR="{color_hex}"\n')
         except Exception as e:
             print('Failed to write preferences '
                  f'at "{self.preferences_path}": {e}'
