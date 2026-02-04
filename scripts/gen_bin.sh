@@ -13,5 +13,4 @@ from $APP_NAME_LOWER.main import main
 
 
 if __name__ == \"__main__\":
-    main()
-" > "$ORIG_BIN_FILE"
+    main()" > "$ORIG_BIN_FILE"
