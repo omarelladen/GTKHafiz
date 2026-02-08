@@ -37,7 +37,8 @@ class App():
     def setup(self):
         # DB Manager
         self.db_manager = DBManager(
-            os.path.expanduser(self.configs.get("DB_FILE"))
+            os.path.expanduser(self.configs.get("DB_FILE")),
+            self.configs.get("DB_SCRIPT")
         )
         self.user = self.db_manager.load_user()
         book = self.db_manager.load_book()
