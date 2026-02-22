@@ -2,7 +2,7 @@
 
 # Include config variables
 . "$PWD"/config
-
+. "$PWD"/scripts/expand_home.sh
 
 SUDO=
 SUDO_U=
@@ -14,19 +14,6 @@ if command -v sudo >/dev/null 2>&1 \
 fi
 
 scripts/uninstall.sh
-
-expand_home()
-{
-    _PATH="$1"
-
-    case "$_PATH" in
-        "~"|"~"/*)
-            USER_NAME=$(whoami)
-            _PATH="/home/${SUDO_USER:-$USER_NAME}${_PATH#\~}" ;;
-    esac
-
-    echo "$_PATH"
-}
 
 ICON_FILE=$(expand_home "$ICON_FILE")
 
