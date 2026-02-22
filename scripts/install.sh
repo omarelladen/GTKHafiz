@@ -28,16 +28,20 @@ expand_home()
     echo "$_PATH"
 }
 
-ICONS_DIR=$(expand_home "$ICONS_DIR")
+ICON_FILE=$(expand_home "$ICON_FILE")
+
+BIN_DIR=$(dirname "$BIN_FILE")
+ICON_DIR=$(dirname "$ICON_FILE")
+DESKTOP_DIR=$(dirname "$DESKTOP_FILE")
 
 mkdir -pv "$BIN_DIR" \
           "$DATA_DIR" \
-          "$ICONS_DIR" \
+          "$ICON_DIR" \
           "$PYTHON_PKG_DIR" \
           "$DESKTOP_DIR"
 
 cp -v "$ORIG_SRC_DIR"/* "$PYTHON_PKG_DIR"
-cp -v "$ORIG_ICONS_DIR"/* "$ICONS_DIR"
+cp -v "$ORIG_ICON_FILE" "$ICON_FILE"
 cp -v config "$DATA_DIR"
 cp -v "$ORIG_DB_SCRIPT" "$DB_SCRIPT"
 cp -v "$ORIG_BAR_SIZES_FILE" "$DATA_DIR"

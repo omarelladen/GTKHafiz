@@ -16,13 +16,16 @@ expand_home()
     echo "$_PATH"
 }
 
-DB_DIR=$(expand_home "$DB_DIR")
-PREFERENCES_DIR=$(expand_home "$PREFERENCES_DIR")
-APP_ICON_FILE=$(expand_home "$APP_ICON_FILE")
+DB_FILE=$(expand_home "$DB_FILE")
+PREFERENCES_FILE=$(expand_home "$PREFERENCES_FILE")
+ICON_FILE=$(expand_home "$ICON_FILE")
+
+DB_DIR=$(dirname "$DB_FILE")
+PREFERENCES_DIR=$(dirname "$PREFERENCES_FILE")
 
 rm -rfv "$BIN_FILE" \
         "$PYTHON_PKG_DIR" \
-        "$APP_ICON_FILE" \
+        "$ICON_FILE" \
         "$DATA_DIR" \
         "$DESKTOP_FILE" \
         "$DB_DIR" \
