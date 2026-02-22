@@ -14,11 +14,9 @@ PREFERENCES_FILE="~/.config/gtkhafiz/preferences";
 
 ORIG_SRC_DIR="src";
 ORIG_ICONS_DIR="data/icons";
-ORIG_DB_FILE="data/db.sqlite3";
 ORIG_BAR_SIZES_FILE="data/csv/bar_sizes.csv";
 ORIG_BOOKS_FILE="data/csv/books.csv";
 ORIG_CHAPTERS_FILE="data/csv/chapters.csv";
-ORIG_PREFERENCES_FILE="data/preferences";
 ORIG_DESKTOP_FILE="data/gtkhafiz.desktop";
 ORIG_DB_SCRIPT="scripts/setup_db.sh";
 ORIG_BIN_FILE="bin/gtkhafiz"
