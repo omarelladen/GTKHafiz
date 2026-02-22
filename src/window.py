@@ -232,7 +232,7 @@ class Window(Gtk.Window):
                 self.set_icon(self.pixbuf)
             except:
                 self.pixbuf = None
-                print(f'Failed to load icon from "{icon_path}"')
+                print(f"Failed to load icon from '{icon_path}'")
 
     def _add_shortcut(self, accelgroup, action, accelerator, callback):
         key, mod = Gtk.accelerator_parse(accelerator)

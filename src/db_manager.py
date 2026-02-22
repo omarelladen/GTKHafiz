@@ -23,12 +23,12 @@ class DBManager():
                 cwd=os.path.dirname(db_script)
             )
             if result.returncode != 0:
-                print(f'Error executing "{cmd}"')
+                print(f"Error executing '{cmd}'")
 
     def load_book(self):
         if not os.path.isfile(self._db_path):
             raise FileNotFoundError(
-                f'Failed to find database "{self._db_path}"'
+                f"Failed to find database '{self._db_path}'"
             )
 
         try:
@@ -183,4 +183,4 @@ class DBManager():
 
                 con.commit()
         except Exception as e:
-            print(f'Failed to write data at database "{self._db_path}": {e}')
+            print(f"Failed to write data at database '{self._db_path}': {e}")

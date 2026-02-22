@@ -75,6 +75,6 @@ class ImportManager():
                 return self._extract_values_list(lines[0])
 
             except Exception as e:
-                print(f'Failed to import from file "{file}": {e}')
+                print(f"Failed to import from file '{file}': {e}")
                 return None
         return None

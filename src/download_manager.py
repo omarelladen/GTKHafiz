@@ -52,4 +52,4 @@ class DownloadManager:
             surface.write_to_png(filename)
             surface.finish()
         except Exception as e:
-            print(f"Failed to save image at {filename}: {e}")
+            print(f"Failed to save image at '{filename}': {e}")
