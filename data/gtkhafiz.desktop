@@ -4,4 +4,5 @@ Comment=Track Quran memorization visually
 Exec=/usr/local/bin/gtkhafiz
 Type=Application
 Categories=Education
+Keywords=Quran;Arabic
 Icon=gtkhafiz

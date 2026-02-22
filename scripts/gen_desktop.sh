@@ -10,4 +10,5 @@ Comment=$APP_DESCRIPTION
 Exec=$BIN_FILE
 Type=Application
 Categories=Education
+Keywords=Quran;Arabic
 Icon=$APP_NAME_LOWER" > "$ORIG_DESKTOP_FILE"
