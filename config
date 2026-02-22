@@ -7,7 +7,7 @@ WEBSITE_LABEL="Repository";
 AUTHORS="Omar El Laden";
 COPYRIGHT="Copyright © 2025-2026 Omar El Laden";
 
-ICON_FILE="/usr/share/icons/hicolor/64x64/apps/gtkhafiz.png";
+ICON_FILE="~/.local/share/icons/hicolor/64x64/apps/gtkhafiz.png";
 
 PREFERENCES_FILE="~/.config/gtkhafiz/preferences";
 
