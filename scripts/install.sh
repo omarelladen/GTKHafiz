@@ -28,6 +28,8 @@ expand_home()
     echo "$_PATH"
 }
 
+ICONS_DIR=$(expand_home "$ICONS_DIR")
+
 mkdir -pv "$BIN_DIR" \
           "$DATA_DIR" \
           "$ICONS_DIR" \

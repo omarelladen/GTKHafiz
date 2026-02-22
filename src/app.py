@@ -59,7 +59,7 @@ class App():
             book,
             preferences_manager,
             self.configs.get("BAR_SIZES_FILE"),
-            self.configs.get("APP_ICON_FILE")
+            os.path.expanduser(self.configs.get("APP_ICON_FILE"))
         )
         self.win.connect("destroy", self._on_destroy)
         self.win.show_all()

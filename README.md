@@ -1,4 +1,4 @@
-<img height="64" src="data/icons/icon.png" align="left"/>
+<img height="64" src="data/icons/gtkhafiz.png" align="left"/>
 
 # GTKHafiz
 

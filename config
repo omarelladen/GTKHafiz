@@ -7,7 +7,7 @@ WEBSITE_LABEL="Repository";
 AUTHORS="Omar El Laden";
 COPYRIGHT="Copyright © 2025-2026 Omar El Laden";
 
-APP_ICON_FILE="/usr/local/share/gtkhafiz/icons/icon.png";
+APP_ICON_FILE="/usr/share/icons/hicolor/64x64/apps/gtkhafiz.png";
 
 PREFERENCES_DIR="~/.config/gtkhafiz";
 PREFERENCES_FILE="~/.config/gtkhafiz/preferences";
@@ -27,7 +27,7 @@ DESKTOP_DIR="/usr/local/share/applications";
 DESKTOP_FILE="/usr/local/share/applications/gtkhafiz.desktop";
 DB_SCRIPT="/usr/local/share/gtkhafiz/setup_db.sh";
 DATA_DIR="/usr/local/share/gtkhafiz";
-ICONS_DIR="/usr/local/share/gtkhafiz/icons";
+ICONS_DIR="/usr/share/icons/hicolor/64x64/apps";
 PYTHON_PKG_DIR="/usr/local/share/gtkhafiz/gtkhafiz";
 
 DB_DIR="~/.local/share/gtkhafiz";

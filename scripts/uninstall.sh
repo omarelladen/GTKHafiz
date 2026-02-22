@@ -18,10 +18,11 @@ expand_home()
 
 DB_DIR=$(expand_home "$DB_DIR")
 PREFERENCES_DIR=$(expand_home "$PREFERENCES_DIR")
+APP_ICON_FILE=$(expand_home "$APP_ICON_FILE")
 
 rm -rfv "$BIN_FILE" \
         "$PYTHON_PKG_DIR" \
-        "ICONS_DIR" \
+        "$APP_ICON_FILE" \
         "$DATA_DIR" \
         "$DESKTOP_FILE" \
         "$DB_DIR" \
