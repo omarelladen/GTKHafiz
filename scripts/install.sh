@@ -28,7 +28,11 @@ expand_home()
     echo "$_PATH"
 }
 
-mkdir -pv "$BIN_DIR" "$DATA_DIR" "$ICONS_DIR" "$PYTHON_PKG_DIR" "$DESKTOP_DIR"
+mkdir -pv "$BIN_DIR" \
+          "$DATA_DIR" \
+          "$ICONS_DIR" \
+          "$PYTHON_PKG_DIR" \
+          "$DESKTOP_DIR"
 
 cp -v "$ORIG_SRC_DIR"/* "$PYTHON_PKG_DIR"
 cp -v "$ORIG_ICONS_DIR"/* "$ICONS_DIR"

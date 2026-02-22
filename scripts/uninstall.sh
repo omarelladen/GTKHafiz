@@ -19,4 +19,10 @@ expand_home()
 DB_DIR=$(expand_home "$DB_DIR")
 PREFERENCES_DIR=$(expand_home "$PREFERENCES_DIR")
 
-rm -rfv "$BIN_FILE" "$PYTHON_PKG_DIR" "ICONS_DIR" "$DATA_DIR" "$DESKTOP_FILE" "$DB_DIR" "$PREFERENCES_DIR"
+rm -rfv "$BIN_FILE" \
+        "$PYTHON_PKG_DIR" \
+        "ICONS_DIR" \
+        "$DATA_DIR" \
+        "$DESKTOP_FILE" \
+        "$DB_DIR" \
+        "$PREFERENCES_DIR"
