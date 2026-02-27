@@ -18,10 +18,12 @@ ORIG_BOOKS_FILE="data/csv/books.csv";
 ORIG_CHAPTERS_FILE="data/csv/chapters.csv";
 ORIG_DESKTOP_FILE="data/gtkhafiz.desktop";
 ORIG_DB_SCRIPT="scripts/setup_db.sh";
-ORIG_BIN_FILE="bin/gtkhafiz"
+ORIG_BIN_FILE="bin/gtkhafiz";
+ORIG_MAN_FILE="data/man/gtkhafiz.1"
 
 BIN_FILE="/usr/local/bin/gtkhafiz";
 DESKTOP_FILE="/usr/local/share/applications/gtkhafiz.desktop";
+MAN_FILE="/usr/local/share/man/man1/gtkhafiz.1"
 DB_SCRIPT="/usr/local/share/gtkhafiz/setup_db.sh";
 DATA_DIR="/usr/local/share/gtkhafiz";
 PYTHON_PKG_DIR="/usr/local/share/gtkhafiz/gtkhafiz";
