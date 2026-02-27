@@ -32,7 +32,7 @@ class IntervalImporter():
         return list_values
 
     def _extract_values_list(self, line):
-        list_intevals = line.strip().split(",")
+        list_intevals = [i.strip() for i in line.split(",")]
 
         list_values = []
         for interval in list_intevals:
