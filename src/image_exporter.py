@@ -3,7 +3,7 @@ import os
 from gi.repository import Gtk
 
 
-class DownloadManager:
+class ImageExporter:
     def __init__(self, parent, title, default_name):
         self.parent = parent
         self.title = title
@@ -19,6 +19,7 @@ class DownloadManager:
         dialog.set_do_overwrite_confirmation(True)
         dialog.set_current_folder(os.path.expanduser("~"))
         dialog.set_current_name(f"{self.default_name}.png")
+
         dialog.add_buttons(
             Gtk.STOCK_CANCEL,
             Gtk.ResponseType.CANCEL,
@@ -37,12 +38,12 @@ class DownloadManager:
 
     def _add_file_filters(self, dialog):
         filefilter = Gtk.FileFilter()
-        filefilter.set_name("PNG image")
+        filefilter.set_name("PNG Images")
         filefilter.add_mime_type("image/png")
         dialog.add_filter(filefilter)
 
         filefilter = Gtk.FileFilter()
-        filefilter.set_name("Any files")
+        filefilter.set_name("Any Files")
         filefilter.add_pattern("*")
         dialog.add_filter(filefilter)
 

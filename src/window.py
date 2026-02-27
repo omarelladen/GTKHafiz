@@ -1,13 +1,14 @@
-import os
 import csv
-import cairo
+import os
 
+import cairo
 from gi.repository import Gtk, Gio, Gdk, GdkPixbuf, Pango
 
 from .chapter_rectangle import ChapterRectangle
 from .color_utils import ColorUtils
-from .download_manager import DownloadManager
-from .import_manager import ImportManager
+from .image_exporter import ImageExporter
+from .interval_exporter import IntervalExporter
+from .interval_importer import IntervalImporter
 
 
 class Window(Gtk.Window):
@@ -28,10 +29,14 @@ class Window(Gtk.Window):
         self.preferences_manager = preferences_manager
 
         self.color_utils = ColorUtils()
-        self.download_manager = DownloadManager(
-            self, "Save Progress Bars", "progress"
+        self.image_exporter = ImageExporter(
+            self, "Export Image", "progress"
         )
-        self.import_manager = ImportManager(self, "Import Chapter Intervals")
+        self.interval_exporter = IntervalExporter(
+            self, "Export Intervals", "chapters",
+            self.user.list_mem_chapters
+        )
+        self.interval_importer = IntervalImporter(self, "Import Intervals")
 
         # Icon
         self._set_icon_from_file(app_icon_path)
@@ -53,8 +58,8 @@ class Window(Gtk.Window):
 
         self.list_shortcuts = []
 
-        self._add_shortcut(accelgroup, "Quit",         "<ctrl>Q", self._on_ctrl_q)
-        self._add_shortcut(accelgroup, "Export Image", "<ctrl>S", self._on_ctrl_s)
+        self._add_shortcut(accelgroup, "Quit",            "<ctrl>Q", self._on_ctrl_q)
+        self._add_shortcut(accelgroup, "Import Chapters", "<ctrl>O", self._on_ctrl_o)
 
 
         # Window dimensions
@@ -85,23 +90,26 @@ class Window(Gtk.Window):
 
         padding_menu = 2
 
-        # Import Button
+
+        # Menu Popover Buttons
+
         bt = Gtk.ModelButton(label="Import Chapters")
-        bt.connect("clicked", self._on_click_import)
+        bt.connect("clicked", self._on_click_import_chapters)
         box_menu.pack_start(bt, False, True, padding_menu)
 
-        # Save Button
-        bt = Gtk.ModelButton(label="Export Image")
-        bt.connect("clicked", self._on_click_save)
+        bt = Gtk.ModelButton(label="Export Chapters")
+        bt.connect("clicked", self._on_click_export_chapters)
         box_menu.pack_start(bt, False, True, padding_menu)
 
-        # Keyboard Shortcurts Button
+        bt = Gtk.ModelButton(label="Export Progress Bars")
+        bt.connect("clicked", self._on_click_export_image)
+        box_menu.pack_start(bt, False, True, padding_menu)
+
         bt = Gtk.ModelButton(label="Keyboard Shortcuts")
         bt.connect("clicked", self._on_click_shortcuts)
         box_menu.pack_start(bt, False, True, padding_menu)
 
-        # About Button
-        bt = Gtk.ModelButton(label=f"About {self.app.name}")
+        bt = Gtk.ModelButton(label="About")
         bt.connect("clicked", self._on_click_about)
         box_menu.pack_start(bt, False, True, padding_menu)
 
@@ -156,7 +164,7 @@ class Window(Gtk.Window):
         drawingarea_pb.connect("draw", self._draw_progress_bars)
         drawingarea_pb.connect("button-press-event", self._on_click_progress_bar)
         drawingarea_pb.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
-        stack.add_titled(drawingarea_pb, "bars", "Progress Bars")
+        stack.add_titled(drawingarea_pb, "pb", "Progress Bars")
 
         # Matrix Page
         drawingarea_matrix = Gtk.DrawingArea()
@@ -240,15 +248,11 @@ class Window(Gtk.Window):
 
         self.list_shortcuts.append((action, key, mod))
 
-    def _open_save_dialog(self):
-        self.download_manager.open_save_dialog()
-
     def _on_ctrl_q(self, accelgroup, window, key, modifier):
         self.app.quit()
 
-    def _on_ctrl_s(self, accelgroup, window, key, modifier):
-        self._open_save_dialog()
-
+    def _on_ctrl_o(self, accelgroup, window, key, modifier):
+        self._on_click_import_chapters(None)
 
     def _on_click_outside_popover(self, widget, event):
         # Hide only when clicking in a point
@@ -312,11 +316,14 @@ class Window(Gtk.Window):
 
         color_chooser_dialog.destroy()
 
-    def _on_click_save(self, widget):
-        self._open_save_dialog()
+    def _on_click_export_image(self, widget):
+        self.image_exporter.open_save_dialog()
 
-    def _on_click_import(self, widget):
-        list_imported_chapters = self.import_manager.run_dialog()
+    def _on_click_export_chapters(self, widget):
+        self.interval_exporter.open_save_dialog()
+
+    def _on_click_import_chapters(self, widget):
+        list_imported_chapters = self.interval_importer.run_dialog()
 
         if list_imported_chapters:
 

@@ -6,7 +6,7 @@ from gi.repository import Gtk
 from .import_dialog import ImportDialog
 
 
-class ImportManager():
+class IntervalImporter():
     def __init__(self, window, title):
         self.window = window
         self.title = title
