@@ -11,7 +11,7 @@ ICON_FILE=$(expand_home "$ICON_FILE")
 DB_DIR=$(dirname "$DB_FILE")
 PREFERENCES_DIR=$(dirname "$PREFERENCES_FILE")
 
-rm -rfv "$BIN_FILE" \
+rm -vrf "$BIN_FILE" \
         "$MAN_FILE" \
         "$PYTHON_PKG_DIR" \
         "$ICON_FILE" \
