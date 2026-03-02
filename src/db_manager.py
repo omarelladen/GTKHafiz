@@ -11,16 +11,16 @@ class DBManager():
     def __init__(
         self,
         db_path,
-        db_script
+        db_script_path
     ):
         self._db_path = db_path
         if not os.path.isfile(self._db_path):
             os.makedirs(os.path.dirname(self._db_path), exist_ok=True)
 
-            cmd = ["sh", db_script, self._db_path]
+            cmd = [db_script_path, self._db_path]
             result = subprocess.run(
                 cmd,
-                cwd=os.path.dirname(db_script)
+                cwd=os.path.dirname(db_script_path)
             )
             if result.returncode != 0:
                 print(f"Error executing '{cmd}'")
