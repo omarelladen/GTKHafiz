@@ -9,29 +9,23 @@ CONFIG_FILENAME=config
 scripts/uninstall.sh
 
 
+OWNER="${SUDO_USER:-$(whoami)}"
+
 ICON_FILE=$(expand_home "$ICON_FILE")
 
-BIN_DIR=$(dirname "$BIN_FILE")
-MAN_DIR=$(dirname "$MAN_FILE")
-ICON_DIR=$(dirname "$ICON_FILE")
-DESKTOP_DIR=$(dirname "$DESKTOP_FILE")
+# Executables (rwxr-xr-x)
+install -vD -m 755 "$ORIG_BIN_FILE" "$BIN_FILE"
+install -vD -m 755 "$ORIG_DB_SCRIPT" "$DB_SCRIPT"
 
-mkdir -pv "$BIN_DIR" \
-          "$MAN_DIR" \
-          "$DATA_DIR" \
-          "$ICON_DIR" \
-          "$PYTHON_PKG_DIR" \
-          "$DESKTOP_DIR"
+# Normal files (rw-r--r--)
 
-cp -v "$ORIG_SRC_DIR"/* "$PYTHON_PKG_DIR"
-cp -v "$ORIG_ICON_FILE" "$ICON_FILE"
-cp -v "$CONFIG_FILENAME" "$DATA_DIR"
-cp -v "$ORIG_DB_SCRIPT" "$DB_SCRIPT"
-cp -v "$ORIG_BAR_SIZES_FILE" "$BAR_SIZES_FILE"
-cp -v "$ORIG_BOOKS_FILE" "$BOOKS_FILE"
-cp -v "$ORIG_CHAPTERS_FILE" "$CHAPTERS_FILE"
-cp -v "$ORIG_DESKTOP_FILE" "$DESKTOP_FILE"
-cp -v "$ORIG_BIN_FILE" "$BIN_FILE"
-cp -v "$ORIG_MAN_FILE" "$MAN_FILE"
+mkdir -vp "$PYTHON_PKG_DIR"
+install -v -m 644 "$ORIG_SRC_DIR"/* "$PYTHON_PKG_DIR"
 
-chmod -v +x "$BIN_FILE"
+install -vD -m 644 -o "$OWNER" "$ORIG_ICON_FILE" "$ICON_FILE"
+install -vD -m 644 "$CONFIG_FILENAME" "$DATA_DIR/$CONFIG_FILENAME"
+install -vD -m 644 "$ORIG_BAR_SIZES_FILE" "$BAR_SIZES_FILE"
+install -vD -m 644 "$ORIG_BOOKS_FILE" "$BOOKS_FILE"
+install -vD -m 644 "$ORIG_CHAPTERS_FILE" "$CHAPTERS_FILE"
+install -vD -m 644 "$ORIG_DESKTOP_FILE" "$DESKTOP_FILE"
+install -vD -m 644 "$ORIG_MAN_FILE" "$MAN_FILE"
