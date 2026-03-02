@@ -144,6 +144,10 @@ class DBManager():
         return user
 
     def save_user_data(self, user):
+        if not os.path.isfile(self._db_path):
+            print(f"Failed to find database '{self._db_path}'")
+            return
+
         try:
             with sqlite3.connect(self._db_path) as con:
                 cur = con.cursor()
