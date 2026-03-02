@@ -1,19 +1,13 @@
 #!/bin/sh
 
-# Include config variables
-. "$PWD"/config
-. "$PWD"/scripts/expand_home.sh
+CONFIG_FILENAME=config
 
-SUDO=
-SUDO_U=
-if command -v sudo >/dev/null 2>&1 \
-   && [ "$(id -u 2>/dev/null)" = "0" ] \
-   && [ -n "$SUDO_USER" ]; then
-    SUDO=sudo
-    SUDO_U="sudo -u $SUDO_USER"
-fi
+# Include config variables
+. ./"$CONFIG_FILENAME"
+. ./scripts/expand_home.sh
 
 scripts/uninstall.sh
+
 
 ICON_FILE=$(expand_home "$ICON_FILE")
 
@@ -31,9 +25,9 @@ mkdir -pv "$BIN_DIR" \
 
 cp -v "$ORIG_SRC_DIR"/* "$PYTHON_PKG_DIR"
 cp -v "$ORIG_ICON_FILE" "$ICON_FILE"
-cp -v config "$DATA_DIR"
+cp -v "$CONFIG_FILENAME" "$DATA_DIR"
 cp -v "$ORIG_DB_SCRIPT" "$DB_SCRIPT"
-cp -v "$ORIG_BAR_SIZES_FILE" "$DATA_DIR"
+cp -v "$ORIG_BAR_SIZES_FILE" "$BAR_SIZES_FILE"
 cp -v "$ORIG_BOOKS_FILE" "$BOOKS_FILE"
 cp -v "$ORIG_CHAPTERS_FILE" "$CHAPTERS_FILE"
 cp -v "$ORIG_DESKTOP_FILE" "$DESKTOP_FILE"
