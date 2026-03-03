@@ -183,7 +183,7 @@ class Window(Gtk.Window):
                       f"({chapter.name_latin}) "
                       f"{chapter.name_arabic}"
             )
-            checkbutton.modify_font(Pango.FontDescription("11"))
+            checkbutton.modify_font(Pango.FontDescription("12"))
 
             self.checkbuttons[chapter.number] = checkbutton
 
