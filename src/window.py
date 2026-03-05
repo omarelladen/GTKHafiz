@@ -30,7 +30,7 @@ class Window(Gtk.Window):
 
         self.color_utils = ColorUtils()
         self.image_exporter = ImageExporter(
-            self, "Export Image", "progress"
+            self, "Export Image"
         )
         self.interval_exporter = IntervalExporter(
             self, "Export Intervals", "chapters",
@@ -101,7 +101,7 @@ class Window(Gtk.Window):
         bt.connect("clicked", self._on_click_export_chapters)
         box_menu.pack_start(bt, False, True, padding_menu)
 
-        bt = Gtk.ModelButton(label="Export Progress Bars")
+        bt = Gtk.ModelButton(label="Export Image")
         bt.connect("clicked", self._on_click_export_image)
         box_menu.pack_start(bt, False, True, padding_menu)
 
@@ -193,7 +193,7 @@ class Window(Gtk.Window):
                 "toggled",
                 lambda bt, obj=chapter: self._on_toggle_checkbox(bt, obj)
             )
-            box_checkbutton.pack_start(checkbutton, False, False, 0)
+            box_checkbutton.pack_start(checkbutton, False, False, padding=0)
 
         scrolledwindow = Gtk.ScrolledWindow()
         scrolledwindow.set_policy(
@@ -488,7 +488,7 @@ class Window(Gtk.Window):
 
             cr.fill()
 
-    def create_img(self):
+    def _create_img_surface(self):
         max_x = max(rect.x + rect.width  for rect in self.list_rects_pb)
         max_y = max(rect.y + rect.height for rect in self.list_rects_pb)
 
@@ -506,11 +506,22 @@ class Window(Gtk.Window):
         cr.set_source_rgb(1, 1, 1)
         cr.paint()
 
+        return surface, cr
+
+    def create_img_pb(self):
+        surface, cr = self._create_img_surface()
+
         self._draw_progress_bars(widget=None, cr=cr)
         self._draw_juz_text(widget=None, cr=cr)
 
         return surface
 
+    def create_img_matrix(self):
+        surface, cr = self._create_img_surface()
+
+        self._draw_matrix(widget=None, cr=cr)
+
+        return surface
 
     def _show_chapter_popover(self, rect, widget, event):
         self.label_chapter.set_text(f"{rect.caption}")

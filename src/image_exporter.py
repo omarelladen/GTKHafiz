@@ -4,10 +4,11 @@ from gi.repository import Gtk
 
 
 class ImageExporter:
-    def __init__(self, parent, title, default_name):
+    def __init__(self, parent, title, default_name="progress"):
         self.parent = parent
         self.title = title
         self.default_name = default_name
+        self.funct_create_img = self.parent.create_img_pb
 
     def open_save_dialog(self):
         dialog = Gtk.FileChooserDialog(
@@ -27,14 +28,54 @@ class ImageExporter:
             Gtk.ResponseType.OK,
         )
 
+
+        box = dialog.get_content_area()
+
+        # Radio Buttons
+        hbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+
+        padding_bt = 1
+
+        bt = Gtk.RadioButton.new_with_label_from_widget(
+            None, "Progress Bars"
+        )
+        bt.connect(
+            "toggled",
+            self._on_bt_toggled,
+            dialog,
+            self.parent.create_img_pb,
+            "progress"
+        )
+        hbox.pack_start(bt, False, False, padding_bt)
+
+        bt = Gtk.RadioButton.new_from_widget(bt)
+        bt.set_label("Matrix")
+        bt.connect(
+            "toggled",
+            self._on_bt_toggled,
+            dialog,
+            self.parent.create_img_matrix,
+            "matrix"
+        )
+        hbox.pack_start(bt, False, False, padding_bt)
+
+        box.pack_start(hbox, False, False, 0)
+        dialog.show_all()
+
+
         self._add_file_filters(dialog)
 
         response = dialog.run()
         if response == Gtk.ResponseType.OK:
-            surface = self.parent.create_img()
+            surface = self.funct_create_img()
             self._save_img_to_png(surface, dialog.get_filename())
 
         dialog.destroy()
+
+    def _on_bt_toggled(self, button, dialog, funct, name):
+        if button.get_active():
+            self.funct_create_img = funct
+            dialog.set_current_name(f"{name}.png")
 
     def _add_file_filters(self, dialog):
         filefilter = Gtk.FileFilter()
