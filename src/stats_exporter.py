@@ -3,12 +3,11 @@ import os
 from gi.repository import Gtk
 
 
-class IntervalExporter:
-    def __init__(self, parent, title, list_values, default_filename):
+class StatsExporter:
+    def __init__(self, parent, title, default_filename="stats"):
         self.parent = parent
         self.title = title
         self.default_filename = default_filename
-        self.list_values = list_values
 
     def open_save_dialog(self):
         dialog = Gtk.FileChooserDialog(
@@ -20,7 +19,7 @@ class IntervalExporter:
 
         dialog.set_do_overwrite_confirmation(True)
         dialog.set_current_folder(os.path.expanduser("~"))
-        dialog.set_current_name(f"{self.default_filename}.txt")
+        dialog.set_current_name(f"{self.default_filename}.yaml")
 
         dialog.add_buttons(
             Gtk.STOCK_CANCEL,
@@ -31,10 +30,15 @@ class IntervalExporter:
 
         self._add_file_filters(dialog)
 
+        stats = self.parent.calc_stats()
+
         response = dialog.run()
         if response == Gtk.ResponseType.OK:
             self._save_string_to_file(
-                self._create_interval(),
+                f"Chapters: {stats[0]}\n"
+                f"Verses: {stats[1]}\n"
+                f"Words: {stats[2]}\n"
+                f"Letters: {stats[3]}\n",
                 dialog.get_filename()
             )
 
@@ -57,37 +61,3 @@ class IntervalExporter:
                 f.write(content)
         except Exception as e:
             print(f"Failed to save file at '{filename}': {e}")
-
-    def _create_interval(self):
-
-        if not self.list_values:
-            return ""
-
-        list_values_sorted = self.list_values
-        list_values_sorted.sort()
-
-        list_intervals = []
-        start = list_values_sorted[0]
-        end   = list_values_sorted[0]
-
-        for value in list_values_sorted[1:]:
-            if value == end + 1:
-                # Continue current interval
-                end = value
-            else:
-                # Close current interval
-                if start == end:
-                    list_intervals.append(str(start))
-                else:
-                    list_intervals.append(f"{start}-{end}")
-
-                # Start new interval
-                start = end = value
-
-        # Add last interval
-        if start == end:
-            list_intervals.append(str(start))
-        else:
-            list_intervals.append(f"{start}-{end}")
-
-        return ",".join(list_intervals)

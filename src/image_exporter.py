@@ -4,10 +4,10 @@ from gi.repository import Gtk
 
 
 class ImageExporter:
-    def __init__(self, parent, title, default_name="progress"):
+    def __init__(self, parent, title, default_filename="progress"):
         self.parent = parent
         self.title = title
-        self.default_name = default_name
+        self.default_filename = default_filename
         self.funct_create_img = self.parent.create_img_pb
 
     def open_save_dialog(self):
@@ -19,7 +19,7 @@ class ImageExporter:
         )
         dialog.set_do_overwrite_confirmation(True)
         dialog.set_current_folder(os.path.expanduser("~"))
-        dialog.set_current_name(f"{self.default_name}.png")
+        dialog.set_current_name(f"{self.default_filename}.png")
 
         dialog.add_buttons(
             Gtk.STOCK_CANCEL,

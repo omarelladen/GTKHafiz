@@ -9,6 +9,7 @@ from .color_utils import ColorUtils
 from .image_exporter import ImageExporter
 from .interval_exporter import IntervalExporter
 from .interval_importer import IntervalImporter
+from .stats_exporter import StatsExporter
 
 
 class Window(Gtk.Window):
@@ -33,10 +34,12 @@ class Window(Gtk.Window):
             self, "Export Image"
         )
         self.interval_exporter = IntervalExporter(
-            self, "Export Intervals", "chapters",
-            self.user.list_mem_chapters
+            self, "Export Intervals",
+            self.user.list_mem_chapters,
+            "chapters"
         )
         self.interval_importer = IntervalImporter(self, "Import Intervals")
+        self.stats_exporter = StatsExporter(self, "Export Stats")
 
         # Icon
         self._set_icon_from_file(app_icon_path)
@@ -99,6 +102,10 @@ class Window(Gtk.Window):
 
         bt = Gtk.ModelButton(label="Export Chapters")
         bt.connect("clicked", self._on_click_export_chapters)
+        box_menu.pack_start(bt, False, True, padding_menu)
+
+        bt = Gtk.ModelButton(label="Export Stats")
+        bt.connect("clicked", self._on_click_export_stats)
         box_menu.pack_start(bt, False, True, padding_menu)
 
         bt = Gtk.ModelButton(label="Export Image")
@@ -321,6 +328,9 @@ class Window(Gtk.Window):
 
     def _on_click_export_chapters(self, widget):
         self.interval_exporter.open_save_dialog()
+
+    def _on_click_export_stats(self, widget):
+        self.stats_exporter.open_save_dialog()
 
     def _on_click_import_chapters(self, widget):
         list_imported_chapters = self.interval_importer.run_dialog()
@@ -568,8 +578,7 @@ class Window(Gtk.Window):
             else:
                 rect.paint_off()
 
-    def _refresh_stats_label(self):
-
+    def calc_stats(self):
         pct_c = round(self.user.n_mem_chapters / self.book.n_chapters * 100, 2)
         pct_v = round(self.user.n_mem_verses   / self.book.n_verses   * 100, 2)
         pct_w = round(self.user.n_mem_words    / self.book.n_words    * 100, 2)
@@ -580,9 +589,17 @@ class Window(Gtk.Window):
         stats_w = f"{self.user.n_mem_words}"    + f" ({pct_w}%)"
         stats_l = f"{self.user.n_mem_letters}"  + f" ({pct_l}%)"
 
+        return (stats_c,
+                stats_v,
+                stats_w,
+                stats_l)
+
+    def _refresh_stats_label(self):
+        stats = self.calc_stats()
+
         self.label_stats.set_markup(
-            f"<span font='13'><b>Chapters: </b>{stats_c}</span>\n"
-            f"<span font='13'><b>Verses: </b>{stats_v}</span>\n"
-            f"<span font='13'><b>Words: </b>{stats_w}</span>\n"
-            f"<span font='13'><b>Letters: </b>{stats_l}</span>"
+            f"<span font='13'><b>Chapters: </b>{stats[0]}</span>\n"
+            f"<span font='13'><b>Verses: </b>{stats[1]}</span>\n"
+            f"<span font='13'><b>Words: </b>{stats[2]}</span>\n"
+            f"<span font='13'><b>Letters: </b>{stats[3]}</span>"
         )
