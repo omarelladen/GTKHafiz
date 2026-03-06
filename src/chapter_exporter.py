@@ -3,11 +3,12 @@ import os
 from gi.repository import Gtk
 
 
-class IntervalExporter:
-    def __init__(self, parent, title, list_values, default_filename):
+class ChapterExporter:
+    def __init__(self, parent, title, list_values, default_filename="intervals"):
         self.parent = parent
         self.title = title
         self.default_filename = default_filename
+        self.funct_get_string = self._create_interval
         self.list_values = list_values
 
     def open_save_dialog(self):
@@ -29,16 +30,57 @@ class IntervalExporter:
             Gtk.ResponseType.OK,
         )
 
+
+        box = dialog.get_content_area()
+
+        # Radio Buttons
+        hbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+
+        padding_bt = 1
+
+        bt = Gtk.RadioButton.new_with_label_from_widget(
+            None, "Intervals"
+        )
+        bt.connect(
+            "toggled",
+            self._on_bt_toggled,
+            dialog,
+            self._create_interval,
+            "intervals"
+        )
+        hbox.pack_start(bt, False, False, padding_bt)
+
+        bt = Gtk.RadioButton.new_from_widget(bt)
+        bt.set_label("List")
+        bt.connect(
+            "toggled",
+            self._on_bt_toggled,
+            dialog,
+            self._create_list,
+            "list"
+        )
+        hbox.pack_start(bt, False, False, padding_bt)
+
+        box.pack_start(hbox, False, False, 0)
+        dialog.show_all()
+
+
         self._add_file_filters(dialog)
 
         response = dialog.run()
         if response == Gtk.ResponseType.OK:
+            string = self.funct_get_string()
             self._save_string_to_file(
-                self._create_interval(),
+                string,
                 dialog.get_filename()
             )
 
         dialog.destroy()
+
+    def _on_bt_toggled(self, button, dialog, funct, name):
+        if button.get_active():
+            self.funct_get_string = funct
+            dialog.set_current_name(f"{name}.txt")
 
     def _add_file_filters(self, dialog):
         text_filter = Gtk.FileFilter()
@@ -53,13 +95,12 @@ class IntervalExporter:
 
     def _save_string_to_file(self, content, filename):
         try:
-            with open(filename, "w") as f:
+            with open(filename, "w", encoding="utf-8") as f:
                 f.write(content)
         except Exception as e:
             print(f"Failed to save file at '{filename}': {e}")
 
     def _create_interval(self):
-
         if not self.list_values:
             return ""
 
@@ -91,3 +132,10 @@ class IntervalExporter:
             list_intervals.append(f"{start}-{end}")
 
         return ",".join(list_intervals)
+
+    def _create_list(self):
+        string_chapters = ""
+        for chapter_number, checkbutton in self.parent.checkbuttons.items():
+            if checkbutton.get_active():
+                string_chapters += f"{checkbutton.get_label()}\n"
+        return string_chapters

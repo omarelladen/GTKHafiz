@@ -7,8 +7,8 @@ from gi.repository import Gtk, Gio, Gdk, GdkPixbuf, Pango
 from .chapter_rectangle import ChapterRectangle
 from .color_utils import ColorUtils
 from .image_exporter import ImageExporter
-from .interval_exporter import IntervalExporter
 from .interval_importer import IntervalImporter
+from .chapter_exporter import ChapterExporter
 from .stats_exporter import StatsExporter
 
 
@@ -33,13 +33,11 @@ class Window(Gtk.Window):
         self.image_exporter = ImageExporter(
             self, "Export Image"
         )
-        self.interval_exporter = IntervalExporter(
-            self, "Export Intervals",
-            self.user.list_mem_chapters,
-            "chapters"
-        )
         self.interval_importer = IntervalImporter(self, "Import Intervals")
         self.stats_exporter = StatsExporter(self, "Export Stats")
+        self.list_exporter = ChapterExporter(
+            self, "Export Chapters", self.user.list_mem_chapters
+        )
 
         # Icon
         self._set_icon_from_file(app_icon_path)
@@ -327,7 +325,7 @@ class Window(Gtk.Window):
         self.image_exporter.open_save_dialog()
 
     def _on_click_export_chapters(self, widget):
-        self.interval_exporter.open_save_dialog()
+        self.list_exporter.open_save_dialog()
 
     def _on_click_export_stats(self, widget):
         self.stats_exporter.open_save_dialog()
