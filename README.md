@@ -28,7 +28,7 @@ installed by default.
 
 To install all dependencies on Debian:
 ```sh
-sudo apt install gir1.2-gtk-3.0 python3-gi python3-gi-cairo
+sudo apt install gir1.2-gtk-3.0 python3-gi-cairo sqlite3
 ```
 
 ## Install the app on Linux
