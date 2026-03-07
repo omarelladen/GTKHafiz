@@ -1,7 +1,7 @@
 APP_NAME="GTKHafiz";
 APP_NAME_LOWER="gtkhafiz"
 APP_DESCRIPTION="Track Quran memorization visually";
-APP_VERSION="0.7.0";
+APP_VERSION="0.8.0";
 WEBSITE_URL="https://gitlab.com/omarelladen/GTKHafiz";
 WEBSITE_LABEL="Repository";
 AUTHORS="Omar El Laden";
@@ -21,18 +21,12 @@ ORIG_SRC_DIR="src";
 LINES_FILE="data/csv/lines.csv";
 
 
-DATA_DIR="/usr/local/share/gtkhafiz";
-PYTHON_PKG_DIR="/usr/local/share/gtkhafiz/gtkhafiz";
+ICON_FILE="share/icons/hicolor/64x64/apps/gtkhafiz.png";
+BAR_SIZES_FILE="share/gtkhafiz/bar_sizes.csv";
+DB_SCRIPT="share/gtkhafiz/setup_db.sh";
 
-BIN_FILE="/usr/local/bin/gtkhafiz";
-DESKTOP_FILE="/usr/local/share/applications/gtkhafiz.desktop";
-ICON_FILE="~/.local/share/icons/hicolor/64x64/apps/gtkhafiz.png";
-MAN_FILE="/usr/local/share/man/man1/gtkhafiz.1";
-
-BAR_SIZES_FILE="/usr/local/share/gtkhafiz/bar_sizes.csv";
-BOOKS_FILE="/usr/local/share/gtkhafiz/books.csv";
-CHAPTERS_FILE="/usr/local/share/gtkhafiz/chapters.csv";
-DB_SCRIPT="/usr/local/share/gtkhafiz/setup_db.sh";
+BOOKS_FILE="books.csv";
+CHAPTERS_FILE="chapters.csv";
 
 DB_FILE="~/.local/share/gtkhafiz/db.sqlite3";
 PREFERENCES_FILE="~/.config/gtkhafiz/preferences";

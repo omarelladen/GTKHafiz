@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Include config variables
-. "$PWD"/config
+. "$PWD"/configs
 
 
 db_file="$1"

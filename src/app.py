@@ -11,12 +11,14 @@ from .window import Window
 
 
 class App():
-    def __init__(self):
+    def __init__(self, prefix):
         self.args = sys.argv[1:]
+
+        self.prefix = prefix
 
         # Config variables
         self.configs = {}
-        with open("/usr/local/share/gtkhafiz/config", "r") as f:
+        with open(f"{self.prefix}/share/gtkhafiz/configs", "r") as f:
             exec(f.read(), self.configs)
 
         # Metadata
@@ -38,7 +40,7 @@ class App():
         # DB Manager
         self.db_manager = DBManager(
             os.path.expanduser(self.configs.get("DB_FILE")),
-            self.configs.get("DB_SCRIPT")
+            f"{self.prefix}/{self.configs.get('DB_SCRIPT')}"
         )
         self.user = self.db_manager.load_user()
         book = self.db_manager.load_book()
@@ -58,8 +60,8 @@ class App():
             self.user,
             book,
             preferences_manager,
-            self.configs.get("BAR_SIZES_FILE"),
-            os.path.expanduser(self.configs.get("ICON_FILE"))
+            f"{self.prefix}/{self.configs.get('BAR_SIZES_FILE')}",
+            f"{self.prefix}/{os.path.expanduser(self.configs.get('ICON_FILE'))}"
         )
         self.win.connect("destroy", self._on_destroy)
         self.win.show_all()

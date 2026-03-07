@@ -1,16 +1,16 @@
 #!/bin/sh
 
 # Include config variables
-. "$PWD"/config
+. "$PWD"/configs
 
 
 echo "#!/usr/bin/python3
 
-import sys
-sys.path.insert(0, \"$DATA_DIR\")
+import os
 
 from $APP_NAME_LOWER.main import main
 
 
 if __name__ == \"__main__\":
-    main()" > "$ORIG_BIN_FILE"
+    prefix = os.path.dirname(__file__).replace(\"/bin\", \"\")
+    main(prefix)" > "$ORIG_BIN_FILE"

@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 
-import sys
-sys.path.insert(0, "/usr/local/share/gtkhafiz")
+import os
 
 from gtkhafiz.main import main
 
 
 if __name__ == "__main__":
-    main()
+    prefix = os.path.dirname(__file__).replace("/bin", "")
+    main(prefix)

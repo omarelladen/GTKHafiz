@@ -1,9 +1,9 @@
 from .app import App
 
 
-def main():
+def main(prefix):
     try:
-        app = App()
+        app = App(prefix)
         app.parse_args()
         app.setup()
         app.run()

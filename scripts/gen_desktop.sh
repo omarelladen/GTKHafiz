@@ -1,13 +1,13 @@
 #!/bin/sh
 
 # Include config variables
-. "$PWD"/config
+. "$PWD"/configs
 
 
 echo "[Desktop Entry]
 Name=$APP_NAME
 Comment=$APP_DESCRIPTION
-Exec=$BIN_FILE
+Exec=$APP_NAME_LOWER
 Type=Application
 Categories=Education
 Keywords=Quran;Arabic
