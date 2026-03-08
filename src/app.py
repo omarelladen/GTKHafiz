@@ -54,6 +54,11 @@ class App():
         # Flag to save data or not on db when the app is closed
         self.user_data_changed = False
 
+
+        if not Gtk.init_check()[0]:
+            print("Failed to start GUI: cannot open display")
+            return False
+
         # Window
         self.win = Window(
             self,
@@ -65,6 +70,8 @@ class App():
         )
         self.win.connect("destroy", self._on_destroy)
         self.win.show_all()
+
+        return True
 
     def parse_args(self):
         if "--help" in self.args or "-h" in self.args:
