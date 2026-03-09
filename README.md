@@ -22,9 +22,9 @@ export data.
 </p>
 
 ## Requirements
-The dependencies usually come pre-installed on popular Linux distributions with
-desktop environments, however some do not come with the package python3-gi-cairo
-installed by default.
+Apart form sqlite3, The dependencies usually come pre-installed on popular Linux
+distributions with desktop environments, however some do not come with the package
+python3-gi-cairo installed by default.
 
 To install all dependencies on Debian:
 ```sh
