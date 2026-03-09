@@ -1,6 +1,6 @@
 #!/bin/sh
 
-RM_FILES=files.txt
+files_rm=files.txt
 
-sed -i 's|^usr/|/usr/|' "$RM_FILES"
-xargs rm -vrf < "$RM_FILES"
+sed -i 's|^usr/|/usr/|' "$files_rm"
+xargs rm -vrf < "$files_rm"

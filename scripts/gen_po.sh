@@ -1,10 +1,11 @@
 #!/bin/sh
 
-PO_DIR=po
-POT_FILE="$PO_DIR"/gtkhafiz.pot
+po_dir=po
+pot_file="$po_dir"/gtkhafiz.pot
+lang=pt_BR
 
-mkdir -p "$PO_DIR"
+mkdir -p "$po_dir"
 
-xgettext --from-code=UTF-8 src/*.py -o "$POT_FILE"
+xgettext --from-code=UTF-8 src/*.py -o "$pot_file"
 
-msginit -i "$POT_FILE" -l pt_BR -o "$PO_DIR"/pt_BR.po
+msginit -i "$pot_file" -l "$lang" -o "$po_dir"/"$lang".po
