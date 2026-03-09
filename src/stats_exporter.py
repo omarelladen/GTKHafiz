@@ -4,7 +4,12 @@ from gi.repository import Gtk
 
 
 class StatsExporter:
-    def __init__(self, parent, title, default_filename="stats"):
+    def __init__(
+            self,
+            parent,
+            title,
+            default_filename="stats"
+    ):
         self.parent = parent
         self.title = title
         self.default_filename = default_filename
@@ -30,15 +35,12 @@ class StatsExporter:
 
         self._add_file_filters(dialog)
 
-        stats = self.parent.calc_stats()
+        stats = self.parent.label_stats.get_text()
 
         response = dialog.run()
         if response == Gtk.ResponseType.OK:
             self._save_string_to_file(
-                f"Chapters: {stats[0]}\n"
-                f"Verses: {stats[1]}\n"
-                f"Words: {stats[2]}\n"
-                f"Letters: {stats[3]}\n",
+                stats,
                 dialog.get_filename()
             )
 
@@ -46,18 +48,22 @@ class StatsExporter:
 
     def _add_file_filters(self, dialog):
         text_filter = Gtk.FileFilter()
-        text_filter.set_name("Text Files")
+        text_filter.set_name(_("Text Files"))
         text_filter.add_mime_type("text/plain")
         dialog.add_filter(text_filter)
 
         any_filter = Gtk.FileFilter()
-        any_filter.set_name("Any Files")
+        any_filter.set_name(_("Any Files"))
         any_filter.add_pattern("*")
         dialog.add_filter(any_filter)
 
-    def _save_string_to_file(self, content, filename):
+    def _save_string_to_file(self, content, path):
         try:
-            with open(filename, "w") as f:
+            with open(path, "w") as f:
                 f.write(content)
         except Exception as e:
-            print(f"Failed to save file at '{filename}': {e}")
+            print(
+                _("Failed to save file at '{path}': {e}").format(
+                    path=path, e=e
+                )
+            )

@@ -23,12 +23,16 @@ class DBManager():
                 cwd=os.path.dirname(db_script_path)
             )
             if result.returncode != 0:
-                print(f"Error executing '{cmd}'")
+                raise Exception(
+                    _("Failed to execute command '{cmd}'").format(cmd=cmd)
+                )
 
     def load_book(self):
         if not os.path.isfile(self._db_path):
             raise FileNotFoundError(
-                f"Failed to find database '{self._db_path}'"
+                _("Failed to find file '{path}'").format(
+                    path=self._db_path
+                )
             )
 
         try:
@@ -46,7 +50,9 @@ class DBManager():
                 )
         except Exception as e:
             raise Exception(
-                f'Failed to load data from "{self._db_path}": {e}'
+                _("Failed to load data from file '{path}': {e}").format(
+                    path=self._db_path, e=e
+                )
             )
 
         return book
@@ -54,7 +60,9 @@ class DBManager():
     def load_chapters(self):
         if not os.path.isfile(self._db_path):
             raise FileNotFoundError(
-                f'Failed to find database "{self._db_path}"'
+                _("Failed to find file '{path}'").format(
+                    path=self._db_path
+                )
             )
 
         try:
@@ -79,7 +87,9 @@ class DBManager():
                     )
         except Exception as e:
             raise Exception(
-                f'Failed to load data from database "{self._db_path}": {e}'
+                _("Failed to load data from file '{path}': {e}").format(
+                    path=self._db_path, e=e
+                )
             )
 
         return list_chapters
@@ -87,7 +97,9 @@ class DBManager():
     def load_user(self):
         if not os.path.isfile(self._db_path):
             raise FileNotFoundError(
-                f'Failed to find database "{self._db_path}"'
+                _("Failed to find file '{path}'").format(
+                    path=self._db_path
+                )
             )
 
         # Get the username from system
@@ -138,14 +150,20 @@ class DBManager():
                 con.commit()
         except Exception as e:
             raise Exception(
-                f'Failed to load data from database "{self._db_path}": {e}'
+                _("Failed to load data from file '{path}': {e}").format(
+                    path=self._db_path, e=e
+                )
             )
 
         return user
 
     def save_user_data(self, user):
         if not os.path.isfile(self._db_path):
-            print(f"Failed to find database '{self._db_path}'")
+            print(
+                _("Failed to find file '{path}'").format(
+                    path=self._db_path
+                )
+            )
             return
 
         try:
@@ -187,4 +205,8 @@ class DBManager():
 
                 con.commit()
         except Exception as e:
-            print(f"Failed to write data at database '{self._db_path}': {e}")
+            print(
+                _("Failed to write data at file '{path}': {e}").format(
+                    path=self._db_path, e=e
+                )
+            )

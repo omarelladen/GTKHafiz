@@ -23,7 +23,7 @@ class ImportDialog(Gtk.Dialog):
 
         # File Chooser Button
         self.file_chooser_button = Gtk.FileChooserButton(
-            title="Import From File",
+            title=_("Import From File"),
             action=Gtk.FileChooserAction.OPEN
         )
         self.file_chooser_button.set_current_folder(os.path.expanduser("~"))
@@ -44,12 +44,12 @@ class ImportDialog(Gtk.Dialog):
 
     def _add_file_filters(self):
         filter_text = Gtk.FileFilter()
-        filter_text.set_name("Text files")
+        filter_text.set_name(_("Text Files"))
         filter_text.add_mime_type("text/plain")
         self.file_chooser_button.add_filter(filter_text)
 
         filter_any = Gtk.FileFilter()
-        filter_any.set_name("Any files")
+        filter_any.set_name(_("Any Files"))
         filter_any.add_pattern("*")
         self.file_chooser_button.add_filter(filter_any)
 

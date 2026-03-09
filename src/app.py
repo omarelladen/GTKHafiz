@@ -56,7 +56,7 @@ class App():
 
 
         if not Gtk.init_check()[0]:
-            print("Failed to start GUI: cannot open display")
+            print(_("Failed to start GUI: cannot open display"))
             return False
 
         # Window
@@ -82,16 +82,15 @@ class App():
             sys.exit(0)
 
     def show_help(self):
-        print(
-            "Usage:\n"
-           f"  {self.name_lower} [OPTION…]\n"
-            "\n"
-            "Help Options:\n"
-            "  -h, --help                 Show help options\n"
-            "\n"
-            "Application Options:\n"
-            "  -v, --version              Print version information and exit\n"
-        )
+        print(_("Usage:"), end="\n")
+        print(f"  {self.name_lower} ", end="")
+        print(_("[OPTION…]"), end="\n\n")
+        print(_("Help Options:"), end="\n")
+        print("  -h, --help                 ", end="")
+        print(_("Show help options"), end="\n\n")
+        print(_("Application Options:"), end="\n")
+        print("  -v, --version              ", end="")
+        print(_("Print version information and exit"), end="\n\n")
 
     def show_version(self):
         print(f"{self.name} {self.version}")

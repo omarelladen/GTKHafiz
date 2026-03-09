@@ -63,10 +63,10 @@ class IntervalImporter():
         list_values = list(set(list_values))  # drop duplicates
         return list_values
 
-    def _import_list_from_file(self, file):
-        if os.path.isfile(file):
+    def _import_list_from_file(self, path):
+        if os.path.isfile(path):
             try:
-                with open(file, 'r') as f:
+                with open(path, "r") as f:
                     lines = f.readlines()
 
                 if len(lines) < 1:
@@ -75,6 +75,10 @@ class IntervalImporter():
                 return self._extract_values_list(lines[0])
 
             except Exception as e:
-                print(f"Failed to import from file '{file}': {e}")
+                print(
+                    _("Failed to load data from file '{path}': {e}").format(
+                        path=path, e=e
+                    )
+                )
                 return None
         return None

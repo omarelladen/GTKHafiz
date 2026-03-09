@@ -31,12 +31,12 @@ class Window(Gtk.Window):
 
         self.color_utils = ColorUtils()
         self.image_exporter = ImageExporter(
-            self, "Export Image"
+            self, _("Export Image")
         )
-        self.interval_importer = IntervalImporter(self, "Import Intervals")
-        self.stats_exporter = StatsExporter(self, "Export Stats")
+        self.interval_importer = IntervalImporter(self, _("Import Intervals"))
+        self.stats_exporter = StatsExporter(self, _("Export Stats"))
         self.list_exporter = ChapterExporter(
-            self, "Export Chapters", self.user.list_mem_chapters
+            self, _("Export Chapters"), self.user.list_mem_chapters
         )
 
         # Icon
@@ -59,8 +59,12 @@ class Window(Gtk.Window):
 
         self.list_shortcuts = []
 
-        self._add_shortcut(accelgroup, "Quit",            "<ctrl>Q", self._on_ctrl_q)
-        self._add_shortcut(accelgroup, "Import Chapters", "<ctrl>O", self._on_ctrl_o)
+        self._add_shortcut(
+            accelgroup, _("Quit"),            "<ctrl>Q", self._on_ctrl_q
+        )
+        self._add_shortcut(
+            accelgroup, _("Import Chapters"), "<ctrl>O", self._on_ctrl_o
+        )
 
 
         # Window dimensions
@@ -89,34 +93,38 @@ class Window(Gtk.Window):
         popover_menu = Gtk.Popover()
         box_menu = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
-        padding_menu = 2
-
 
         # Menu Popover Buttons
 
-        bt = Gtk.ModelButton(label="Import Chapters")
-        bt.connect("clicked", self._on_click_import_chapters)
-        box_menu.pack_start(bt, False, True, padding_menu)
+        self._add_menu_bt(
+            box_menu,
+            _("Import Chapters"), self._on_click_import_chapters
+        )
 
-        bt = Gtk.ModelButton(label="Export Chapters")
-        bt.connect("clicked", self._on_click_export_chapters)
-        box_menu.pack_start(bt, False, True, padding_menu)
+        self._add_menu_bt(
+            box_menu,
+            _("Export Chapters"), self._on_click_export_chapters
+        )
 
-        bt = Gtk.ModelButton(label="Export Stats")
-        bt.connect("clicked", self._on_click_export_stats)
-        box_menu.pack_start(bt, False, True, padding_menu)
+        self._add_menu_bt(
+            box_menu,
+            _("Export Stats"), self._on_click_export_stats
+        )
 
-        bt = Gtk.ModelButton(label="Export Image")
-        bt.connect("clicked", self._on_click_export_image)
-        box_menu.pack_start(bt, False, True, padding_menu)
+        self._add_menu_bt(
+            box_menu,
+            _("Export Image"), self._on_click_export_image
+        )
 
-        bt = Gtk.ModelButton(label="Keyboard Shortcuts")
-        bt.connect("clicked", self._on_click_shortcuts)
-        box_menu.pack_start(bt, False, True, padding_menu)
+        self._add_menu_bt(
+            box_menu,
+            _("Keyboard Shortcuts"), self._on_click_shortcuts
+        )
 
-        bt = Gtk.ModelButton(label="About")
-        bt.connect("clicked", self._on_click_about)
-        box_menu.pack_start(bt, False, True, padding_menu)
+        self._add_menu_bt(
+            box_menu,
+            _("About"), self._on_click_about
+        )
 
         box_menu.show_all()
         popover_menu.add(box_menu)
@@ -135,7 +143,7 @@ class Window(Gtk.Window):
         icon = Gio.ThemedIcon(name="open-menu-symbolic")
         img_icon = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.BUTTON)
         bt.add(img_icon)
-        bt.set_tooltip_text("Main Menu")
+        bt.set_tooltip_text(_("Main Menu"))
         headerbar.pack_end(bt)
 
         # Color Chooser Button
@@ -143,7 +151,7 @@ class Window(Gtk.Window):
         icon = Gio.ThemedIcon(name="preferences-color-symbolic")
         img_icon = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.BUTTON)
         bt.add(img_icon)
-        bt.set_tooltip_text("Select Color")
+        bt.set_tooltip_text(_("Select Color"))
         bt.connect("clicked", self._on_click_color_chooser)
         headerbar.pack_start(bt)
 
@@ -169,14 +177,14 @@ class Window(Gtk.Window):
         drawingarea_pb.connect("draw", self._draw_progress_bars)
         drawingarea_pb.connect("button-press-event", self._on_click_progress_bar)
         drawingarea_pb.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
-        stack.add_titled(drawingarea_pb, "pb", "Progress Bars")
+        stack.add_titled(drawingarea_pb, "pb", _("Progress Bars"))
 
         # Matrix Page
         drawingarea_matrix = Gtk.DrawingArea()
         drawingarea_matrix.connect("draw", self._draw_matrix)
         drawingarea_matrix.connect("button-press-event", self._on_click_matrix)
         drawingarea_matrix.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
-        stack.add_titled(drawingarea_matrix, "matrix", "Matrix")
+        stack.add_titled(drawingarea_matrix, "matrix", _("Matrix"))
 
         # List Page
         box_checkbutton = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
@@ -206,13 +214,13 @@ class Window(Gtk.Window):
             Gtk.PolicyType.AUTOMATIC
         )
         scrolledwindow.add(box_checkbutton)
-        stack.add_titled(scrolledwindow, "list", "List")
+        stack.add_titled(scrolledwindow, "list", _("List"))
 
 
         # Stats Page
         self.label_stats = Gtk.Label()
         self._refresh_stats_label()
-        stack.add_titled(self.label_stats, "stats", "Stats")
+        stack.add_titled(self.label_stats, "stats", _("Stats"))
 
 
         # Chapter Popover when clicking on a chapter rectangle
@@ -230,6 +238,11 @@ class Window(Gtk.Window):
         self.connect("button-press-event", self._on_click_outside_popover)
 
 
+    def _add_menu_bt(self, box, label, funct, padding=2):
+        bt = Gtk.ModelButton(label=label)
+        bt.connect("clicked", funct)
+        box.pack_start(bt, False, True, padding)
+
     def _refresh_visual_data(self):
         self._refresh_stats_label()
         self._refresh_rects_colors()
@@ -245,7 +258,7 @@ class Window(Gtk.Window):
                 self.set_icon(self.pixbuf)
             except:
                 self.pixbuf = None
-                print(f"Failed to load icon from '{icon_path}'")
+                print(_("Failed to load file '{path}'")).format(path=icon_path)
 
     def _add_shortcut(self, accelgroup, action, accelerator, callback):
         key, mod = Gtk.accelerator_parse(accelerator)
@@ -303,7 +316,7 @@ class Window(Gtk.Window):
 
     def _on_click_color_chooser(self, widget):
         color_chooser_dialog = Gtk.ColorChooserDialog(
-            "Select Rectangle Color", self
+            _("Select Rectangle Color"), self
         )
 
         # Default color
@@ -352,7 +365,7 @@ class Window(Gtk.Window):
             self._refresh_visual_data()
 
     def _on_click_shortcuts(self, widget):
-        dialog = Gtk.Dialog("Shortcuts", self, Gtk.DialogFlags.MODAL)
+        dialog = Gtk.Dialog(_("Shortcuts"), self, Gtk.DialogFlags.MODAL)
 
         dialog.set_default_size(300, 70)
         dialog.set_resizable(False)
@@ -399,7 +412,9 @@ class Window(Gtk.Window):
 
         if not os.path.isfile(bars_sizes_path):
             raise FileNotFoundError(
-                f'Failed to find bars sizes file "{bars_sizes_path}"'
+                _("Failed to find file '{path}'").format(
+                    path=bars_sizes_path
+                )
             )
         try:
             with open(bars_sizes_path, mode="r") as f:
@@ -429,7 +444,9 @@ class Window(Gtk.Window):
             return list_rects_pb
         except Exception as e:
             raise Exception(
-                f'Failed to load bars sizes files at "{bars_sizes_path}": {e}'
+                _("Failed to load data from file '{path}': {e}").format(
+                    path=bars_sizes_path, e=e
+                )
             )
 
     def _create_matrix_rects(self, rects_per_line, rects_per_col):
@@ -576,7 +593,7 @@ class Window(Gtk.Window):
             else:
                 rect.paint_off()
 
-    def calc_stats(self):
+    def _calc_stats(self):
         pct_c = round(self.user.n_mem_chapters / self.book.n_chapters * 100, 2)
         pct_v = round(self.user.n_mem_verses   / self.book.n_verses   * 100, 2)
         pct_w = round(self.user.n_mem_words    / self.book.n_words    * 100, 2)
@@ -593,11 +610,11 @@ class Window(Gtk.Window):
                 stats_l)
 
     def _refresh_stats_label(self):
-        stats = self.calc_stats()
+        stats = self._calc_stats()
 
         self.label_stats.set_markup(
-            f"<span font='13'><b>Chapters: </b>{stats[0]}</span>\n"
-            f"<span font='13'><b>Verses: </b>{stats[1]}</span>\n"
-            f"<span font='13'><b>Words: </b>{stats[2]}</span>\n"
-            f"<span font='13'><b>Letters: </b>{stats[3]}</span>"
+            "<span font='13'><b>" + _("Chapters:") + f"</b> {stats[0]}</span>\n"
+            "<span font='13'><b>" + _("Verses:")   + f"</b> {stats[1]}</span>\n"
+            "<span font='13'><b>" + _("Words:")    + f"</b> {stats[2]}</span>\n"
+            "<span font='13'><b>" + _("Letters:")  + f"</b> {stats[3]}</span>\n"
         )

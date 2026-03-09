@@ -11,15 +11,17 @@ class PreferencesManager():
         if os.path.isfile(self.preferences_path):
             try:
                 preferences = {}
-                with open(self.preferences_path, 'r') as f:
+                with open(self.preferences_path, "r") as f:
                     exec(f.read(), preferences)
 
                 RECT_COLOR = preferences.get("RECT_COLOR")
                 if RECT_COLOR:
                     return RECT_COLOR.strip()
             except Exception as e:
-                print("Failed to load preferences "
-                     f"from '{self.preferences_path}': {e}"
+                print(
+                    _("Failed to load data from file '{path}': {e}").format(
+                        path=self.preferences_path, e=e
+                    )
                 )
                 return None
         return None
@@ -28,9 +30,11 @@ class PreferencesManager():
         try:
             dir_path = os.path.dirname(self.preferences_path)
             os.makedirs(dir_path, exist_ok=True)
-            with open(self.preferences_path, 'w') as f:
+            with open(self.preferences_path, "w") as f:
                 f.write(f'RECT_COLOR="{color_hex}"\n')
         except Exception as e:
-            print("Failed to write preferences "
-                 f"at '{self.preferences_path}': {e}"
+            print(
+                _("Failed to write data at file '{path}': {e}").format(
+                    path=self.preferences_path, e=e
+                )
             )

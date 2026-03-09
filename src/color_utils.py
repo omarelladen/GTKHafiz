@@ -21,7 +21,7 @@ class ColorUtils():
         return f"#{r:02X}{g:02X}{b:02X}{a:02X}"
 
     def hex_to_rgba(self, color_hex):
-        color_hex = color_hex.lstrip('#')
+        color_hex = color_hex.lstrip("#")
 
         r = int(color_hex[0:2], 16) / 255.0
         g = int(color_hex[2:4], 16) / 255.0

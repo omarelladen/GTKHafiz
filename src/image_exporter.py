@@ -4,7 +4,12 @@ from gi.repository import Gtk
 
 
 class ImageExporter:
-    def __init__(self, parent, title, default_filename="progress"):
+    def __init__(
+            self,
+            parent,
+            title,
+            default_filename="progress"
+    ):
         self.parent = parent
         self.title = title
         self.default_filename = default_filename
@@ -37,7 +42,7 @@ class ImageExporter:
         padding_bt = 1
 
         bt = Gtk.RadioButton.new_with_label_from_widget(
-            None, "Progress Bars"
+            None, _("Progress Bars")
         )
         bt.connect(
             "toggled",
@@ -49,7 +54,7 @@ class ImageExporter:
         hbox.pack_start(bt, False, False, padding_bt)
 
         bt = Gtk.RadioButton.new_from_widget(bt)
-        bt.set_label("Matrix")
+        bt.set_label(_("Matrix"))
         bt.connect(
             "toggled",
             self._on_bt_toggled,
@@ -79,19 +84,23 @@ class ImageExporter:
 
     def _add_file_filters(self, dialog):
         filefilter = Gtk.FileFilter()
-        filefilter.set_name("PNG Images")
+        filefilter.set_name(_("PNG Images"))
         filefilter.add_mime_type("image/png")
         dialog.add_filter(filefilter)
 
         filefilter = Gtk.FileFilter()
-        filefilter.set_name("Any Files")
+        filefilter.set_name(_("Any Files"))
         filefilter.add_pattern("*")
         dialog.add_filter(filefilter)
 
-    def _save_img_to_png(self, surface, filename):
+    def _save_img_to_png(self, surface, path):
         # Write the surface to a PNG file
         try:
-            surface.write_to_png(filename)
+            surface.write_to_png(path)
             surface.finish()
         except Exception as e:
-            print(f"Failed to save image at '{filename}': {e}")
+            print(
+                _("Failed to save file at '{path}': {e}").format(
+                    path=path, e=e
+                )
+            )
