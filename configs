@@ -6,7 +6,7 @@ WEBSITE_URL="https://gitlab.com/omarelladen/GTKHafiz";
 WEBSITE_LABEL="Repository";
 AUTHORS="Omar El Laden";
 COPYRIGHT="Copyright © 2025-2026 Omar El Laden";
-
+KEYWORDS="Quran;Arabic"
 
 ORIG_BAR_SIZES_FILE="data/csv/bar_sizes.csv";
 ORIG_BIN_FILE="bin/gtkhafiz";

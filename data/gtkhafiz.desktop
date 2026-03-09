@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=GTKHafiz
 Comment=Track Quran memorization visually
+Comment[pt_BR]=Acompanhe a memorização do Alcorão visualmente
 Exec=gtkhafiz
 Type=Application
 Categories=Education
