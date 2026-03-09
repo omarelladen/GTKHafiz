@@ -1,9 +1,7 @@
 APP_NAME="GTKHafiz";
-APP_NAME_LOWER="gtkhafiz"
-APP_DESCRIPTION="Track Quran memorization visually";
+APP_NAME_LOWER="gtkhafiz";
 APP_VERSION="0.8.0";
 WEBSITE_URL="https://gitlab.com/omarelladen/GTKHafiz";
-WEBSITE_LABEL="Repository";
 AUTHORS="Omar El Laden";
 COPYRIGHT="Copyright © 2025-2026 Omar El Laden";
 KEYWORDS="Quran;Arabic"

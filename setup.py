@@ -10,8 +10,9 @@ with open(config_file, "r") as f:
 
 app_name = configs.get("APP_NAME_LOWER")
 keywords = configs.get("KEYWORDS").split(";")
-pkg_dir  = "src"
-license  = "GPLv3"
+pkg_dir = "src"
+license = "GPLv3"
+description = "Track Quran memorization visually"
 
 
 long_description_content_type = "text/markdown"
@@ -50,7 +51,7 @@ setup(
     version                       = configs.get("APP_VERSION"),
     author                        = configs.get("AUTHORS"),
     url                           = configs.get("WEBSITE_URL"),
-    description                   = configs.get("APP_DESCRIPTION"),
+    description                   = description,
     long_description              = long_description,
     long_description_content_type = long_description_content_type,
     classifiers                   = classifiers,
