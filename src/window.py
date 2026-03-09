@@ -251,6 +251,9 @@ class Window(Gtk.Window):
 
     def _set_icon_from_file(self, icon_path):
         if icon_path:
+            if not os.path.exists(icon_path):
+                print(("Failed to find file '{path}'").format(path=icon_path))
+                return
             try:
                 self.pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(
                     icon_path, 64, 64, True
@@ -258,7 +261,7 @@ class Window(Gtk.Window):
                 self.set_icon(self.pixbuf)
             except:
                 self.pixbuf = None
-                print(_("Failed to load file '{path}'")).format(path=icon_path)
+                print(_("Failed to load icon '{path}'")).format(path=icon_path)
 
     def _add_shortcut(self, accelgroup, action, accelerator, callback):
         key, mod = Gtk.accelerator_parse(accelerator)

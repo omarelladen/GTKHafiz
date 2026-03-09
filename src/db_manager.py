@@ -14,7 +14,7 @@ class DBManager():
         db_script_path
     ):
         self._db_path = db_path
-        if not os.path.isfile(self._db_path):
+        if not os.path.exists(self._db_path):
             os.makedirs(os.path.dirname(self._db_path), exist_ok=True)
 
             cmd = [db_script_path, self._db_path]
