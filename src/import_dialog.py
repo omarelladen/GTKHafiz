@@ -49,7 +49,7 @@ class ImportDialog(Gtk.Dialog):
         self.file_chooser_button.add_filter(filter_text)
 
         filter_any = Gtk.FileFilter()
-        filter_any.set_name(_("Any Files"))
+        filter_any.set_name(_("All Files"))
         filter_any.add_pattern("*")
         self.file_chooser_button.add_filter(filter_any)
 

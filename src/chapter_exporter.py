@@ -95,7 +95,7 @@ class ChapterExporter:
         dialog.add_filter(text_filter)
 
         any_filter = Gtk.FileFilter()
-        any_filter.set_name(_("Any Files"))
+        any_filter.set_name(_("All Files"))
         any_filter.add_pattern("*")
         dialog.add_filter(any_filter)
 

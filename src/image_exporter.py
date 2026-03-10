@@ -89,7 +89,7 @@ class ImageExporter:
         dialog.add_filter(filefilter)
 
         filefilter = Gtk.FileFilter()
-        filefilter.set_name(_("Any Files"))
+        filefilter.set_name(_("All Files"))
         filefilter.add_pattern("*")
         dialog.add_filter(filefilter)
 
