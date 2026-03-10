@@ -1,9 +1,9 @@
 APP_NAME="GTKHafiz";
 APP_NAME_LOWER="gtkhafiz";
-APP_VERSION="0.8.0";
+APP_VERSION="0.8.1";
 WEBSITE_URL="https://gitlab.com/omarelladen/GTKHafiz";
-AUTHORS="Omar El Laden";
-COPYRIGHT="Copyright © 2025-2026 Omar El Laden";
+AUTHORS="Omar Zagonel El Laden";
+COPYRIGHT="Copyright © 2025-2026 Omar Zagonel El Laden";
 KEYWORDS="Quran;Arabic"
 
 ORIG_BAR_SIZES_FILE="data/csv/bar_sizes.csv";
