@@ -28,7 +28,7 @@ class App():
         self.version       = self.configs.get("APP_VERSION")
         self.website_url   = self.configs.get("WEBSITE_URL")
         self.website_label = self.configs.get("WEBSITE_LABEL")
-        self.authors       = self.configs.get("AUTHORS").split(",")
+        self.authors       = [self.configs.get("AUTHOR")]
         self.copyright     = self.configs.get("COPYRIGHT")
 
         self.db_manager = None

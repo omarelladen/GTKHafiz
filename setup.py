@@ -11,9 +11,6 @@ with open(config_file, "r") as f:
 app_name = configs.get("APP_NAME_LOWER")
 keywords = configs.get("KEYWORDS").split(";")
 pkg_dir = "src"
-license = "GPLv3"
-description = "Track Quran memorization visually"
-
 
 long_description_content_type = "text/markdown"
 with open("README.md", "r") as f:
@@ -38,6 +35,7 @@ data_files = [
 classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
+    "Operating System :: POSIX",
     "Operating System :: POSIX :: Linux",
     "Environment :: X11 Applications :: GTK",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
@@ -49,14 +47,15 @@ classifiers = [
 setup(
     name                          = app_name,
     version                       = configs.get("APP_VERSION"),
-    author                        = configs.get("AUTHORS"),
+    author                        = configs.get("AUTHOR"),
+    author_email                  = configs.get("AUTHOR_EMAIL"),
     url                           = configs.get("WEBSITE_URL"),
-    description                   = description,
+    description                   = configs.get("DESCRIPTION"),
     long_description              = long_description,
     long_description_content_type = long_description_content_type,
     classifiers                   = classifiers,
     keywords                      = keywords,
-    license                       = license,
+    license                       = configs.get("LICENSE"),
     package_dir                   = {app_name: pkg_dir},
     packages                      = [app_name],
     data_files                    = data_files,

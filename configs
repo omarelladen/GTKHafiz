@@ -1,10 +1,14 @@
 APP_NAME="GTKHafiz";
 APP_NAME_LOWER="gtkhafiz";
 APP_VERSION="0.8.1";
-WEBSITE_URL="https://gitlab.com/omarelladen/GTKHafiz";
-AUTHORS="Omar Zagonel El Laden";
+AUTHOR="Omar Zagonel El Laden";
+AUTHOR_EMAIL="omarzladen@gmail.com";
 COPYRIGHT="Copyright © 2025-2026 Omar Zagonel El Laden";
-KEYWORDS="Quran;Arabic"
+DESCRIPTION="Track Quran memorization visually";
+KEYWORDS="Quran;Arabic";
+LICENCE="GPLv3";
+WEBSITE_URL="https://gitlab.com/omarelladen/GTKHafiz";
+
 
 ORIG_BAR_SIZES_FILE="data/csv/bar_sizes.csv";
 ORIG_BIN_FILE="bin/gtkhafiz";
