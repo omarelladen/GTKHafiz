@@ -1,11 +1,25 @@
 #!/bin/sh
 
-po_dir=po
-pot_file="$po_dir"/gtkhafiz.pot
-lang=pt_BR
+# Include config variables
+. "$PWD"/configs
 
-mkdir -p "$po_dir"
+mkdir -vp "$PO_DIR"
 
-xgettext --from-code=UTF-8 src/*.py -o "$pot_file"
 
-msginit -i "$pot_file" -l "$lang" -o "$po_dir"/"$lang".po
+ls src/*.py > "$POTFILES_FILE"
+xgettext --from-code=UTF-8 -f "$POTFILES_FILE" -o "$POT_FILE"
+
+
+if [ -f "$LINGUAS_FILE" ]; then
+    while read -r lang || [ -n "$lang" ]; do
+        case "$lang" in ''|'#'*) continue ;; esac
+
+        po_file="$PO_DIR/$lang.po"
+
+        if [ -f "$po_file" ]; then
+            msgmerge -v --update "$po_file" "$POT_FILE"
+        else
+            msginit -i "$POT_FILE" -l "$lang" -o "$po_file" --no-translator
+        fi
+    done < "$LINGUAS_FILE"
+fi

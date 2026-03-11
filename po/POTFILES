@@ -1,0 +1,16 @@
+src/app.py
+src/book.py
+src/chapter_exporter.py
+src/chapter.py
+src/chapter_rectangle.py
+src/color_utils.py
+src/db_manager.py
+src/image_exporter.py
+src/import_dialog.py
+src/__init__.py
+src/interval_importer.py
+src/main.py
+src/preferences_manager.py
+src/stats_exporter.py
+src/user.py
+src/window.py

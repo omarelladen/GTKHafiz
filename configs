@@ -21,6 +21,12 @@ ORIG_MAN_FILE="data/man/gtkhafiz.1";
 ORIG_SRC_DIR="src";
 
 LINES_FILE="data/csv/lines.csv";
+LINGUAS_FILE="po/LINGUAS"
+POTFILES_FILE="po/POTFILES"
+POT_FILE="po/gtkhafiz.pot"
+MO_SCRIPT="scripts/gen_mo.sh"
+PO_DIR="po"
+LOCALE_DIR="locale"
 
 
 ICON_FILE="share/icons/hicolor/64x64/apps/gtkhafiz.png";
