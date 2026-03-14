@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Copyright 2026 Omar Zagonel El Laden
+# SPDX-License-Identifier: GPL-3.0-only
+
 # Include config variables
 . "$PWD"/configs
 

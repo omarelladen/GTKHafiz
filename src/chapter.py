@@ -1,3 +1,5 @@
+# Copyright 2025-2026 Omar Zagonel El Laden
+# SPDX-License-Identifier: GPL-3.0-only
 
 class Chapter:
     def __init__(
