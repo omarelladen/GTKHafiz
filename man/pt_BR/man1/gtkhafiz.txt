@@ -1,0 +1,22 @@
+NAME
+  gtkhafiz - Acompanhe a memorização do Alcorão visualmente
+
+SYNOPSIS
+  gtkhafiz [OPÇÃO...]
+
+DESCRIPTION
+  GTKHafiz é um aplicativo simples baseado em GTK3 para acompanhar a
+  memorização do Alcorão visualmente. Após o usuário selecionar quais capítulos
+  ele memorizou, ele pode ver seu progresso representado por retângulos
+  coloridos.
+
+  Cada retângulo corresponde a um capítulo, e seu tamanho na página "Barras de
+  Progresso" é proporcional ao número de linhas no Madani Mushaf em relação ao
+  Juz'.
+
+  O aplicativo ainda provê estatísticas gerais de progresso e opções para
+  importar e exportar dados.
+
+OPTIONS
+  -h, --help     Mostra opções de ajuda.
+  -v, --version  Imprime informações de versão e sai.
