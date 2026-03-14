@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.8.0\n"
+"Project-Id-Version: 0.8.1\n"
 "Report-Msgid-Bugs-To: <omarzladen@gmail.com>\n"
-"POT-Creation-Date: 2026-03-09 17:51-0300\n"
-"PO-Revision-Date: 2026-03-09 17:51-0300\n"
+"POT-Creation-Date: 2026-03-14 08:47-0300\n"
+"PO-Revision-Date: 2026-03-14 08:56-0300\n"
 "Last-Translator: Omar Zagonel El Laden <omarzladen@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <ldpbr-"
 "translation@lists.sourceforge.net>\n"
@@ -18,177 +18,177 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: src/app.py:59
+#: src/app.py:62
 msgid "Failed to start GUI: cannot open display"
 msgstr "Falha ao iniciar a interface gráfica: não é possível abrir o display"
 
-#: src/app.py:85
+#: src/app.py:88
 msgid "Usage:"
 msgstr "Uso:"
 
-#: src/app.py:87
+#: src/app.py:90
 msgid "[OPTION…]"
 msgstr "[OPÇÃO…]"
 
-#: src/app.py:88
+#: src/app.py:91
 msgid "Help Options:"
 msgstr "Opções de Ajuda:"
 
-#: src/app.py:90
+#: src/app.py:93
 msgid "Show help options"
-msgstr "Mostrar opções de ajuda"
+msgstr "Mostra opções de ajuda"
 
-#: src/app.py:91
+#: src/app.py:94
 msgid "Application Options:"
 msgstr "Opções do Aplicativo:"
 
-#: src/app.py:93
+#: src/app.py:96
 msgid "Print version information and exit"
-msgstr "Imprimir informações de versão e sair"
+msgstr "Imprime informações de versão e sai"
 
-#: src/chapter_exporter.py:48
+#: src/chapter_exporter.py:51
 msgid "Intervals"
 msgstr "Intervalos"
 
-#: src/chapter_exporter.py:60 src/window.py:217
+#: src/chapter_exporter.py:63 src/window.py:220
 msgid "List"
 msgstr "Lista"
 
-#: src/chapter_exporter.py:93 src/import_dialog.py:47 src/stats_exporter.py:51
+#: src/chapter_exporter.py:96 src/import_dialog.py:50 src/stats_exporter.py:54
 msgid "Text Files"
 msgstr "Arquivos de Texto"
 
-#: src/chapter_exporter.py:98 src/image_exporter.py:92 src/import_dialog.py:52
-#: src/stats_exporter.py:56
+#: src/chapter_exporter.py:101 src/image_exporter.py:95 src/import_dialog.py:55
+#: src/stats_exporter.py:59
 msgid "All Files"
 msgstr "Todos os Arquivos"
 
-#: src/chapter_exporter.py:108 src/image_exporter.py:103
-#: src/stats_exporter.py:66
+#: src/chapter_exporter.py:111 src/image_exporter.py:106
+#: src/stats_exporter.py:69
 #, python-brace-format
 msgid "Failed to save file at '{path}': {e}"
 msgstr "Falha ao salvar arquivo em '{path}': {e}"
 
-#: src/db_manager.py:27
+#: src/db_manager.py:30
 #, python-brace-format
 msgid "Failed to execute command '{cmd}'"
 msgstr "Falha ao executar comando '{cmd}'"
 
-#: src/db_manager.py:33 src/db_manager.py:63 src/db_manager.py:100
-#: src/db_manager.py:163 src/window.py:418
+#: src/db_manager.py:36 src/db_manager.py:66 src/db_manager.py:103
+#: src/db_manager.py:166 src/window.py:425
 #, python-brace-format
 msgid "Failed to find file '{path}'"
 msgstr "Falha ao encontrar arquivo '{path}'"
 
-#: src/db_manager.py:53 src/db_manager.py:90 src/db_manager.py:153
-#: src/interval_importer.py:79 src/preferences_manager.py:22 src/window.py:450
+#: src/db_manager.py:56 src/db_manager.py:93 src/db_manager.py:156
+#: src/interval_importer.py:82 src/preferences_manager.py:25 src/window.py:457
 #, python-brace-format
 msgid "Failed to load data from file '{path}': {e}"
 msgstr "Falha ao carregar dados do arquivo '{path}': {e}"
 
-#: src/db_manager.py:209 src/preferences_manager.py:37
+#: src/db_manager.py:212 src/preferences_manager.py:40
 #, python-brace-format
 msgid "Failed to write data at file '{path}': {e}"
 msgstr "Falha ao gravar dados no arquivo '{path}': {e}"
 
-#: src/image_exporter.py:45 src/window.py:180
+#: src/image_exporter.py:48 src/window.py:183
 msgid "Progress Bars"
 msgstr "Barras de Progresso"
 
-#: src/image_exporter.py:57 src/window.py:187
+#: src/image_exporter.py:60 src/window.py:190
 msgid "Matrix"
 msgstr "Matriz"
 
-#: src/image_exporter.py:87
+#: src/image_exporter.py:90
 msgid "PNG Images"
 msgstr "Imagens PNG"
 
-#: src/import_dialog.py:26
+#: src/import_dialog.py:29
 msgid "Import From File"
 msgstr "Importar do Arquivo"
 
-#: src/main.py:15
+#: src/main.py:18
 #, python-brace-format
 msgid "Error starting application: {e}"
 msgstr "Erro ao iniciar o aplicativo: {e}"
 
-#: src/window.py:34 src/window.py:116
+#: src/window.py:37 src/window.py:119
 msgid "Export Image"
 msgstr "Exportar Imagem"
 
-#: src/window.py:36
+#: src/window.py:39
 msgid "Import Intervals"
 msgstr "Importar Intervalos"
 
-#: src/window.py:37 src/window.py:111
+#: src/window.py:40 src/window.py:114
 msgid "Export Stats"
 msgstr "Exportar Estatísticas"
 
-#: src/window.py:39 src/window.py:106
+#: src/window.py:42 src/window.py:109
 msgid "Export Chapters"
 msgstr "Exportar Capítulos"
 
-#: src/window.py:63
+#: src/window.py:66
 msgid "Quit"
 msgstr "Sair"
 
-#: src/window.py:66 src/window.py:101
+#: src/window.py:69 src/window.py:104
 msgid "Import Chapters"
 msgstr "Importar Capítulos"
 
-#: src/window.py:121
+#: src/window.py:124
 msgid "Keyboard Shortcuts"
 msgstr "Atalhos de Teclado"
 
-#: src/window.py:126
+#: src/window.py:129
 msgid "About"
 msgstr "Sobre"
 
-#: src/window.py:146
+#: src/window.py:149
 msgid "Main Menu"
 msgstr "Menu Principal"
 
-#: src/window.py:154
+#: src/window.py:157
 msgid "Select Color"
 msgstr "Selecionar Cor"
 
-#: src/window.py:223
+#: src/window.py:226
 msgid "Stats"
 msgstr "Estatísticas"
 
-#: src/window.py:264
+#: src/window.py:268
 #, python-brace-format
-msgid "Failed to load icon '{path}'"
-msgstr "Falha ao carregar ícone '{path}'"
+msgid "Failed to load icon '{path}': {e}"
+msgstr "Falha ao carregar ícone '{path}': {e}"
 
-#: src/window.py:322
+#: src/window.py:329
 msgid "Select Rectangle Color"
-msgstr "Selecionar Cor de Retângulo"
+msgstr "Selecionar Cor do Retângulo"
 
-#: src/window.py:371
+#: src/window.py:378
 msgid "Shortcuts"
 msgstr "Atalhos"
 
-#: src/window.py:395
+#: src/window.py:402
 msgid "Track Quran memorization visually"
 msgstr "Acompanhe a memorização do Alcorão visualmente"
 
-#: src/window.py:397
+#: src/window.py:404
 msgid "Repository"
 msgstr "Repositório"
 
-#: src/window.py:619
+#: src/window.py:626
 msgid "Chapters:"
 msgstr "Capítulos:"
 
-#: src/window.py:620
+#: src/window.py:627
 msgid "Verses:"
 msgstr "Versículos:"
 
-#: src/window.py:621
+#: src/window.py:628
 msgid "Words:"
 msgstr "Palavras:"
 
-#: src/window.py:622
+#: src/window.py:629
 msgid "Letters:"
 msgstr "Letras:"
