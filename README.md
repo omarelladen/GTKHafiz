@@ -10,7 +10,7 @@ Each rectangle corresponds to a chapter, and its size on the "Progress Bars"
 page is proportional to the number of lines in the Madani Mushaf relative to
 the Juz'.
 
-The app also provides global progress statistics and options to import and
+The app also provides general progress statistics and options to import and
 export data.
 
 <p align="center" width="100%">
@@ -47,7 +47,13 @@ sudo scripts/uninstall.sh
 ```
 
 ## Credits
-- Data source: [Quran Analysis]
-(https://qurananalysis.com/analysis/basic-statistics.php?lang=EN)
-- Inspiration: [ColorArabic]
-(https://commons.wikimedia.org/wiki/File:ColorArabic.png)
+- Data source:
+[Quran Analysis](https://qurananalysis.com/analysis/basic-statistics.php?lang=EN)
+- Inspiration:
+[ColorArabic](https://commons.wikimedia.org/wiki/File:ColorArabic.png)
+
+
+## License
+[GPLv3](./LICENSE)
+
+Copyright 2025-2026 Omar Zagonel El Laden
