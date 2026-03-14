@@ -2,13 +2,15 @@
 # SPDX-License-Identifier: GPL-3.0-only
 
 import gettext
-gettext.install("gtkhafiz")
 
 from .app import App
 
 
 def main(prefix):
     try:
+        localedir = f"{prefix}/share/locale"
+        gettext.install("gtkhafiz", localedir)
+
         app = App(prefix)
         app.parse_args()
         if app.setup():
