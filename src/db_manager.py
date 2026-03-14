@@ -23,7 +23,7 @@ class DBManager():
                 cwd=os.path.dirname(db_script_path)
             )
             if result.returncode != 0:
-                raise Exception(
+                raise RuntimeError(
                     _("Failed to execute command '{cmd}'").format(cmd=cmd)
                 )
 
@@ -49,7 +49,7 @@ class DBManager():
                     book_data[6],
                 )
         except Exception as e:
-            raise Exception(
+            raise RuntimeError(
                 _("Failed to load data from file '{path}': {e}").format(
                     path=self._db_path, e=e
                 )
@@ -86,7 +86,7 @@ class DBManager():
                         )
                     )
         except Exception as e:
-            raise Exception(
+            raise RuntimeError(
                 _("Failed to load data from file '{path}': {e}").format(
                     path=self._db_path, e=e
                 )
@@ -149,7 +149,7 @@ class DBManager():
 
                 con.commit()
         except Exception as e:
-            raise Exception(
+            raise RuntimeError(
                 _("Failed to load data from file '{path}': {e}").format(
                     path=self._db_path, e=e
                 )

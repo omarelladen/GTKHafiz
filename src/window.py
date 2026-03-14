@@ -259,9 +259,13 @@ class Window(Gtk.Window):
                     icon_path, 64, 64, True
                 )
                 self.set_icon(self.pixbuf)
-            except:
+            except Exception as e:
                 self.pixbuf = None
-                print(_("Failed to load icon '{path}'")).format(path=icon_path)
+                print(
+                    _("Failed to load icon '{path}': {e}").format(
+                        path=icon_path, e=e
+                    )
+                )
 
     def _add_shortcut(self, accelgroup, action, accelerator, callback):
         key, mod = Gtk.accelerator_parse(accelerator)
@@ -446,7 +450,7 @@ class Window(Gtk.Window):
 
             return list_rects_pb
         except Exception as e:
-            raise Exception(
+            raise RuntimeError(
                 _("Failed to load data from file '{path}': {e}").format(
                     path=bars_sizes_path, e=e
                 )
