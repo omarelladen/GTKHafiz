@@ -71,8 +71,8 @@ class Window(Gtk.Window):
 
 
         # Window dimensions
-        self.set_size_request(580, 550)
-        self.set_resizable(False)
+        self.set_size_request(580,550)
+        self.set_resizable(True)
         self.set_border_width(6)
 
 
@@ -174,20 +174,37 @@ class Window(Gtk.Window):
         self._refresh_rects_colors()
 
 
+        # Calculate start position
+
+        self.min_pb_x = float("inf")
+        for rect in self.list_rects_pb:
+            if rect.x < self.min_pb_x:
+                self.min_pb_x = rect.x
+
+        self.min_pb_y = float("inf")
+        for rect in self.list_rects_pb:
+            if rect.y < self.min_pb_y:
+                self.min_pb_y = rect.y
+
+
         # Progress Bars Page
-        drawingarea_pb = Gtk.DrawingArea()
-        drawingarea_pb.connect("draw", self._draw_juz_text)
-        drawingarea_pb.connect("draw", self._draw_progress_bars)
-        drawingarea_pb.connect("button-press-event", self._on_click_progress_bar)
-        drawingarea_pb.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
-        stack.add_titled(drawingarea_pb, "pb", _("Progress Bars"))
+        self.drawingarea_pb = Gtk.DrawingArea()
+        self.drawingarea_pb.connect("draw", self._draw_juz_text)
+        self.drawingarea_pb.connect("draw", self._draw_progress_bars)
+        self.drawingarea_pb.connect("button-press-event", self._on_click_progress_bar)
+        self.drawingarea_pb.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
+        stack.add_titled(self.drawingarea_pb, "pb", _("Progress Bars"))
+
 
         # Matrix Page
-        drawingarea_matrix = Gtk.DrawingArea()
-        drawingarea_matrix.connect("draw", self._draw_matrix)
-        drawingarea_matrix.connect("button-press-event", self._on_click_matrix)
-        drawingarea_matrix.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
-        stack.add_titled(drawingarea_matrix, "matrix", _("Matrix"))
+        self.drawingarea_matrix = Gtk.DrawingArea()
+        self.drawingarea_matrix.connect("draw", self._draw_matrix)
+        self.drawingarea_matrix.connect("button-press-event", self._on_click_matrix)
+        self.drawingarea_matrix.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
+        stack.add_titled(self.drawingarea_matrix, "matrix", _("Matrix"))
+
+        self.drawingarea_pb.connect    ("size-allocate", self._on_window_resize)
+        self.drawingarea_matrix.connect("size-allocate", self._on_window_resize)
 
         # List Page
         box_checkbutton = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
@@ -240,6 +257,71 @@ class Window(Gtk.Window):
         # to detect clicks outside the popover
         self.connect("button-press-event", self._on_click_outside_popover)
 
+    def _on_window_resize(self, widget, allocation):
+        new_width  = allocation.width - 20
+        new_height = allocation.height  + 8
+
+        base_width  = 500
+        base_height = 400
+
+        scale_x = new_width  / base_width
+        scale_y = new_height / base_height
+
+        self._update_pb_rect_size(scale_x, scale_y)
+        self._update_matrix_rect_size(scale_x, scale_y, allocation.width)
+
+        widget.queue_draw()
+
+    def _update_pb_rect_size(self, scale_x, scale_y):
+        # Calculate new sizes
+        for rect in self.list_rects_pb:
+            rect.x = rect.og_x * scale_x
+            rect.y = rect.og_y * scale_y
+
+            rect.width  = rect.og_width  * scale_x
+            rect.height = rect.og_height * scale_y
+
+        # Move back to x origin
+        min_x = float("inf")
+        for rect in self.list_rects_pb:
+            if rect.x < min_x:
+                min_x = rect.x
+        x_offset = min_x - self.min_pb_x
+        for rect in self.list_rects_pb:
+            rect.x -= x_offset
+            # if rect.x > min_x + 1:
+            #     rect.x -= self.pb_dist * scale_x - self.pb_dist
+
+        # Move back to y origin
+        min_y = float("inf")
+        for rect in self.list_rects_pb:
+            if rect.y < min_y:
+                min_y = rect.y
+        y_offset = min_y - self.min_pb_y
+        for rect in self.list_rects_pb:
+            rect.y -= y_offset
+
+    def _update_matrix_rect_size(self, scale_x, scale_y, win_width):
+        # Calculate new sizes
+        for rect in self.list_rects_matrix:
+            rect.x = rect.og_x * scale_x
+            rect.y = rect.og_y * scale_y
+
+            rect.width  = rect.og_width  * scale_x
+            rect.height = rect.og_height * scale_y
+
+        # Center
+        for rect in self.list_rects_matrix:
+            if rect.chapter == 1:
+                rect_width = rect.width
+            elif rect.chapter == 3:
+                mid_r_x = rect.x
+            elif rect.chapter == 4:
+                mid_l_x = rect.x
+        mid_x = (mid_r_x - mid_l_x - rect_width)/2 + mid_l_x + rect_width
+        offset_x = mid_x - win_width/2
+        for rect in self.list_rects_matrix:
+            rect.x -= offset_x
 
     def _add_menu_bt(self, box, label, funct, padding=2):
         bt = Gtk.ModelButton(label=label)
@@ -441,8 +523,9 @@ class Window(Gtk.Window):
                         ChapterRectangle(
                             pb_offset,
                             self.pb_y0 + self.pb_lines_dist*(juz-1),
-                            width-self.pb_dist,
+                            width - self.pb_dist,
                             self.pb_height,
+                            juz,
                             chapter_num,
                             self.rect_color
                         )
@@ -472,6 +555,7 @@ class Window(Gtk.Window):
                         y,
                         30,
                         10,
+                        None,
                         chapter_num,
                         self.rect_color
                     )
@@ -492,20 +576,21 @@ class Window(Gtk.Window):
 
     def _draw_juz_text(self, widget, cr: cairo.Context):
         cr.set_source_rgb(0.7, 0.7, 0.7)
-        cr.set_font_size(10)
+
+        font_size = 10
+        cr.set_font_size(font_size)
 
         cr.move_to(0, self.pb_y0 - 5)
         cr.show_text("Juz'")
 
         for juz in range(1, 30+1):
-            # Calculate position - offset for single-digit task numbers
+            # Calculate position
             num_pos = 0 if juz >= 10 else self.pb_x0 / 4
             x_pos = num_pos
-            y_pos = (
-                self.pb_y0
-                + self.pb_lines_dist * (juz-1)
-                + self.pb_height - 2
-            )
+            for rect in self.list_rects_pb:
+                if rect.juz == juz:
+                    y_pos = rect.y + (rect.height + font_size)/2
+                    break
 
             # Draw the Juz' line label
             cr.move_to(x_pos, y_pos)
@@ -559,7 +644,7 @@ class Window(Gtk.Window):
         return surface
 
     def _show_chapter_popover(self, rect, widget, event):
-        self.label_chapter.set_text(f"{rect.caption}")
+        self.label_chapter.set_text(f"{rect.chapter}")
 
         e_x = event.x
         e_y = event.y
@@ -592,13 +677,13 @@ class Window(Gtk.Window):
 
     def _refresh_rects_colors(self):
         for rect in self.list_rects_matrix:
-            if rect.caption in self.user.list_mem_chapters:
+            if rect.chapter in self.user.list_mem_chapters:
                 rect.paint_on()
             else:
                 rect.paint_off()
 
         for rect in self.list_rects_pb:
-            if rect.caption in self.user.list_mem_chapters:
+            if rect.chapter in self.user.list_mem_chapters:
                 rect.paint_on()
             else:
                 rect.paint_off()
