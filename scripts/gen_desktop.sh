@@ -7,11 +7,13 @@
 . "$PWD"/configs
 
 
+desktop_file="$ORIG_DESKTOP_DIR/$EXE_NAME.desktop"
+
 echo "[Desktop Entry]
 Name=$APP_NAME
-Comment=$APP_DESCRIPTION
-Exec=$APP_NAME_LOWER
+Comment=$DESCRIPTION
+Exec=$EXE_NAME
 Type=Application
-Categories=Education;GTK
+Categories=$CATEGORIES
 Keywords=$KEYWORDS
-Icon=$APP_NAME_LOWER" > "$ORIG_DESKTOP_FILE"
+Icon=$EXE_NAME" > "$desktop_file"

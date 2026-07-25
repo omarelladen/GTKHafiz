@@ -4,10 +4,14 @@
 # SPDX-License-Identifier: GPL-3.0-only
 
 import os
+import importlib
 
-from gtkhafiz.main import main
 
+exe_name = os.path.basename(__file__)
+prefix = os.path.dirname(__file__).replace("/bin", "")
+
+module = importlib.import_module(f"{exe_name}.main")
+main = getattr(module, "main")
 
 if __name__ == "__main__":
-    prefix = os.path.dirname(__file__).replace("/bin", "")
-    main(prefix)
+    main(exe_name, prefix)

@@ -4,6 +4,6 @@ Comment=Track Quran memorization visually
 Comment[pt_BR]=Acompanhe a memorização do Alcorão visualmente
 Exec=gtkhafiz
 Type=Application
-Categories=Education
+Categories=Education;GTK
 Keywords=Quran;Arabic
 Icon=gtkhafiz

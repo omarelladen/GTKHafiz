@@ -1,22 +1,24 @@
 APP_NAME="GTKHafiz";
-APP_NAME_LOWER="gtkhafiz";
-APP_VERSION="0.8.1";
+EXE_NAME="gtkhafiz";
+APP_VERSION="0.9.0";
 AUTHOR="Omar Zagonel El Laden";
 AUTHOR_EMAIL="omarzladen@gmail.com";
 COPYRIGHT="Copyright 2025-2026 Omar Zagonel El Laden";
 DESCRIPTION="Track Quran memorization visually";
 KEYWORDS="Quran;Arabic";
+CATEGORIES="Education;GTK";
 LICENCE="GPLv3";
 WEBSITE_URL="https://gitlab.com/omarelladen/GTKHafiz";
 
+ICON_EXT="png"
 
 ORIG_BAR_SIZES_FILE="data/csv/bar_sizes.csv";
-ORIG_BIN_FILE="bin/gtkhafiz";
+ORIG_BIN_DIR="bin";
 ORIG_BOOKS_FILE="data/csv/books.csv";
 ORIG_CHAPTERS_FILE="data/csv/chapters.csv";
 ORIG_DB_SCRIPT="scripts/setup_db.sh";
-ORIG_DESKTOP_FILE="data/gtkhafiz.desktop";
-ORIG_ICON_FILE="data/icons/gtkhafiz.png";
+ORIG_DESKTOP_DIR="data";
+ORIG_ICON_DIR="data/icons";
 ORIG_SRC_DIR="src";
 
 LINES_FILE="data/csv/lines.csv";
@@ -25,19 +27,19 @@ LOCALE_DIR="build/locale";
 MAN_DIR="man";
 PKG_DIR="src";
 PO_DIR="po";
-
-LINGUAS_FILE="po/LINGUAS";
 MO_SCRIPT="scripts/gen_mo.sh";
-POTFILES_FILE="po/POTFILES";
-POT_FILE="po/gtkhafiz.pot";
 
+DATA_DIR="share";
+BAR_SIZES_FILENAME="bar_sizes.csv";
+DB_SCRIPT="setup_db.sh";
 
-BAR_SIZES_FILE="share/gtkhafiz/bar_sizes.csv";
-DB_SCRIPT="share/gtkhafiz/setup_db.sh";
-ICON_FILE="share/icons/hicolor/64x64/apps/gtkhafiz.png";
+ICON_DIR="share/icons/hicolor/64x64/apps";
 
 BOOKS_FILE="books.csv";
 CHAPTERS_FILE="chapters.csv";
 
-DB_FILE="~/.local/share/gtkhafiz/db.sqlite3";
-PREFERENCES_FILE="~/.config/gtkhafiz/preferences";
+DB_DIR="~/.local/share";
+DB_FILENAME="db.sqlite3";
+
+PREFERENCES_DIR="~/.config";
+PREFERENCES_FILENAME="preferences";

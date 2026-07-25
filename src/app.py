@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: GPL-3.0-only
 
 import os
-import sys
 
 import gi
 gi.require_version("Gtk", "3.0")
@@ -14,19 +13,13 @@ from .window import Window
 
 
 class App():
-    def __init__(self, prefix):
-        self.args = sys.argv[1:]
-
+    def __init__(self, exe_name, prefix, configs):
         self.prefix = prefix
-
-        # Config variables
-        self.configs = {}
-        with open(f"{self.prefix}/share/gtkhafiz/configs", "r") as f:
-            exec(f.read(), self.configs)
+        self.exe_name = exe_name
 
         # Metadata
+        self.configs = configs
         self.name          = self.configs.get("APP_NAME")
-        self.name_lower    = self.configs.get("APP_NAME_LOWER")
         self.description   = self.configs.get("APP_DESCRIPTION")
         self.version       = self.configs.get("APP_VERSION")
         self.website_url   = self.configs.get("WEBSITE_URL")
@@ -42,8 +35,17 @@ class App():
     def setup(self):
         # DB Manager
         self.db_manager = DBManager(
-            os.path.expanduser(self.configs.get("DB_FILE")),
-            f"{self.prefix}/{self.configs.get('DB_SCRIPT')}"
+            db_path=os.path.join(
+                os.path.expanduser(self.configs.get("DB_DIR")),
+                self.exe_name,
+                self.configs.get("DB_FILENAME")
+            ),
+            db_script_path=os.path.join(
+                self.prefix,
+                self.configs.get("DATA_DIR"),
+                self.exe_name,
+                self.configs.get("DB_SCRIPT")
+            )
         )
         self.user = self.db_manager.load_user()
         book = self.db_manager.load_book()
@@ -51,7 +53,11 @@ class App():
 
         # Preferences Manager
         preferences_manager = PreferencesManager(
-            os.path.expanduser(self.configs.get("PREFERENCES_FILE"))
+            preferences_path=os.path.join(
+                os.path.expanduser(self.configs.get("PREFERENCES_DIR")),
+                self.exe_name,
+                self.configs.get("PREFERENCES_FILENAME")
+            )
         )
 
         # Flag to save data or not on db when the app is closed
@@ -64,39 +70,26 @@ class App():
 
         # Window
         self.win = Window(
-            self,
-            self.user,
-            book,
-            preferences_manager,
-            f"{self.prefix}/{self.configs.get('BAR_SIZES_FILE')}",
-            f"{self.prefix}/{os.path.expanduser(self.configs.get('ICON_FILE'))}"
+            app=self,
+            user=self.user,
+            book=book,
+            preferences_manager=preferences_manager,
+            bars_sizes_path=os.path.join(
+                self.prefix,
+                self.configs.get("DATA_DIR"),
+                self.exe_name,
+                self.configs.get("BAR_SIZES_FILENAME")
+            ),
+            app_icon_path=os.path.join(
+                self.prefix,
+                self.configs.get("ICON_DIR"),
+                self.exe_name + "." + self.configs.get("ICON_EXT")
+            )
         )
         self.win.connect("destroy", self._on_destroy)
         self.win.show_all()
 
         return True
-
-    def parse_args(self):
-        if "--help" in self.args or "-h" in self.args:
-            self.show_help()
-            sys.exit(0)
-        elif "--version" in self.args or "-v" in self.args:
-            self.show_version()
-            sys.exit(0)
-
-    def show_help(self):
-        print(_("Usage:"), end="\n")
-        print(f"  {self.name_lower} ", end="")
-        print(_("[OPTION…]"), end="\n\n")
-        print(_("Help Options:"), end="\n")
-        print("  -h, --help                 ", end="")
-        print(_("Show help options"), end="\n\n")
-        print(_("Application Options:"), end="\n")
-        print("  -v, --version              ", end="")
-        print(_("Print version information and exit"), end="\n\n")
-
-    def show_version(self):
-        print(f"{self.name} {self.version}")
 
     def _on_destroy(self, window):
         self.quit()

@@ -1,17 +1,17 @@
 # Copyright 2025-2026 Omar Zagonel El Laden
 # SPDX-License-Identifier: GPL-3.0-only
 
-import csv
 import os
+import csv
 
 import cairo
 from gi.repository import Gtk, Gio, Gdk, GdkPixbuf, Pango
 
 from .chapter_rectangle import ChapterRectangle
 from .color_utils import ColorUtils
-from .image_exporter import ImageExporter
 from .interval_importer import IntervalImporter
 from .chapter_exporter import ChapterExporter
+from .image_exporter import ImageExporter
 from .stats_exporter import StatsExporter
 
 

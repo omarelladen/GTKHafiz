@@ -6,23 +6,28 @@
 # Include config variables
 . "$PWD"/configs
 
+
+pot_file="$PO_DIR/$EXE_NAME.pot"
+potfiles_file="$PO_DIR/POTFILES"
+linguas_file="$PO_DIR/LINGUAS"
+
 mkdir -vp "$PO_DIR"
 
 
-ls src/*.py > "$POTFILES_FILE"
-xgettext --from-code=UTF-8 -f "$POTFILES_FILE" -o "$POT_FILE"
+ls src/*.py > "$potfiles_file"
+xgettext --from-code=UTF-8 -f "$potfiles_file" -o "$pot_file"
 
 
-if [ -f "$LINGUAS_FILE" ]; then
+if [ -f "$linguas_file" ]; then
     while read -r lang || [ -n "$lang" ]; do
         case "$lang" in ''|'#'*) continue ;; esac
 
         po_file="$PO_DIR/$lang.po"
 
         if [ -f "$po_file" ]; then
-            msgmerge -v --update "$po_file" "$POT_FILE"
+            msgmerge -v --update "$po_file" "$pot_file"
         else
-            msginit -i "$POT_FILE" -l "$lang" -o "$po_file" --no-translator
+            msginit -i "$pot_file" -l "$lang" -o "$po_file" --no-translator
         fi
-    done < "$LINGUAS_FILE"
+    done < "$linguas_file"
 fi

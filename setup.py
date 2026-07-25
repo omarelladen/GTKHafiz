@@ -14,8 +14,9 @@ with open(config_file, "r") as f:
     exec(f.read(), configs)
 
 
-app_name = configs.get("APP_NAME_LOWER")
-
+bin_dir = configs.get("ORIG_BIN_DIR")
+exe_name = os.listdir(bin_dir)[0]
+exe_file = os.path.join(bin_dir, exe_name)
 
 # Get long description from README.md
 long_description_content_type = "text/markdown"
@@ -23,7 +24,6 @@ with open("README.md", "r") as f:
     lines = f.readlines()
 filtered_lines = [ln for ln in lines if not ln.startswith("<")]  # rm tags
 long_description = "".join(filtered_lines)
-
 
 # Map data files
 def map_files(src_dir, ext):
@@ -47,8 +47,9 @@ def gen_mo_files():
     if result.returncode != 0:
         raise RuntimeError("Failed to generate MO files")
 
-    mo_files  = map_files(configs.get("LOCALE_DIR"), "mo")
+    mo_files = map_files(configs.get("LOCALE_DIR"), "mo")
     return mo_files
+
 
 class CustomBuildPy(build_py):
     def run(self):
@@ -60,10 +61,20 @@ class CustomBuildPy(build_py):
 
 man_files = map_files(configs.get("MAN_DIR"), "1")
 
+desktop_file = os.path.join(
+    configs.get("ORIG_DESKTOP_DIR"),
+    exe_name + ".desktop"
+)
+
+icon_file = os.path.join(
+    configs.get("ORIG_ICON_DIR"),
+    exe_name + "." + configs.get("ICON_EXT")
+)
+
 data_files = [
-    ("share/applications",             [configs.get("ORIG_DESKTOP_FILE")]),
-    ("share/icons/hicolor/64x64/apps", [configs.get("ORIG_ICON_FILE")]),
-    (f"share/{app_name}", [
+    ("share/applications",             [desktop_file]),
+    ("share/icons/hicolor/64x64/apps", [icon_file]),
+    (os.path.join("share", exe_name), [
         config_file,
         configs.get("ORIG_BAR_SIZES_FILE"),
         configs.get("ORIG_BOOKS_FILE"),
@@ -71,7 +82,6 @@ data_files = [
         configs.get("ORIG_DB_SCRIPT"),
     ]),
 ] + man_files
-
 
 # PyPI Classifiers
 classifiers = [
@@ -87,7 +97,7 @@ classifiers = [
 
 
 setup(
-    name                          = app_name,
+    name                          = exe_name,
     version                       = configs.get("APP_VERSION"),
     author                        = configs.get("AUTHOR"),
     author_email                  = configs.get("AUTHOR_EMAIL"),
@@ -98,9 +108,9 @@ setup(
     classifiers                   = classifiers,
     keywords                      = configs.get("KEYWORDS").split(";"),
     license                       = configs.get("LICENSE"),
-    package_dir                   = {app_name: configs.get("PKG_DIR")},
-    packages                      = [app_name],
+    package_dir                   = {exe_name: configs.get("PKG_DIR")},
+    packages                      = [exe_name],
     cmdclass                      = {"build_py": CustomBuildPy},
     data_files                    = data_files,
-    scripts                       = [configs.get("ORIG_BIN_FILE")],
+    scripts                       = [exe_file],
 )

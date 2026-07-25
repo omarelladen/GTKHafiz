@@ -15,6 +15,6 @@ while read -r lang || [ -n "$lang" ]; do
 
     if [ -f "$in_file" ]; then
         mkdir -vp "$out_dir"
-        msgfmt -v "$in_file" -o "$out_dir/$APP_NAME_LOWER.mo"
+        msgfmt -v "$in_file" -o "$out_dir/$EXE_NAME.mo"
     fi
 done < "$PO_DIR/LINGUAS"
