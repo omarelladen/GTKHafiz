@@ -10,6 +10,7 @@
 db_file="$1"
 
 sqlite3 "$db_file" <<EOF
+
 CREATE TABLE IF NOT EXISTS
 books
 (
