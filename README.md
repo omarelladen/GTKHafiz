@@ -22,13 +22,9 @@ export data.
 </p>
 
 ## Requirements
-Apart form sqlite3, The dependencies usually come pre-installed on popular Linux
-distributions with desktop environments, however some do not come with the package
-python3-gi-cairo installed by default.
-
 To install all dependencies on Debian:
 ```sh
-sudo apt install gir1.2-gtk-3.0 python3-gi-cairo sqlite3
+sudo apt install gir1.2-gtk-3.0 python3-gi-cairo sqlite3 gettext
 ```
 
 ## Install the app on Linux
@@ -51,7 +47,6 @@ sudo scripts/uninstall.sh
 [Quran Analysis](https://qurananalysis.com/analysis/basic-statistics.php?lang=EN)
 - Inspiration:
 [ColorArabic](https://commons.wikimedia.org/wiki/File:ColorArabic.png)
-
 
 ## License
 [GPLv3](./LICENSE)
