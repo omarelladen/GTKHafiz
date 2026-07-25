@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-14 08:47-0300\n"
+"POT-Creation-Date: 2026-07-25 09:22-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,39 +17,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/app.py:62
+#: src/app.py:68
 msgid "Failed to start GUI: cannot open display"
-msgstr ""
-
-#: src/app.py:88
-msgid "Usage:"
-msgstr ""
-
-#: src/app.py:90
-msgid "[OPTION…]"
-msgstr ""
-
-#: src/app.py:91
-msgid "Help Options:"
-msgstr ""
-
-#: src/app.py:93
-msgid "Show help options"
-msgstr ""
-
-#: src/app.py:94
-msgid "Application Options:"
-msgstr ""
-
-#: src/app.py:96
-msgid "Print version information and exit"
 msgstr ""
 
 #: src/chapter_exporter.py:51
 msgid "Intervals"
 msgstr ""
 
-#: src/chapter_exporter.py:63 src/window.py:220
+#: src/chapter_exporter.py:63 src/window.py:237
 msgid "List"
 msgstr ""
 
@@ -74,13 +50,13 @@ msgid "Failed to execute command '{cmd}'"
 msgstr ""
 
 #: src/db_manager.py:36 src/db_manager.py:66 src/db_manager.py:103
-#: src/db_manager.py:166 src/window.py:425
+#: src/db_manager.py:166 src/window.py:507
 #, python-brace-format
 msgid "Failed to find file '{path}'"
 msgstr ""
 
 #: src/db_manager.py:56 src/db_manager.py:93 src/db_manager.py:156
-#: src/interval_importer.py:82 src/preferences_manager.py:25 src/window.py:457
+#: src/interval_importer.py:82 src/preferences_manager.py:25 src/window.py:540
 #, python-brace-format
 msgid "Failed to load data from file '{path}': {e}"
 msgstr ""
@@ -90,11 +66,11 @@ msgstr ""
 msgid "Failed to write data at file '{path}': {e}"
 msgstr ""
 
-#: src/image_exporter.py:48 src/window.py:183
+#: src/image_exporter.py:48 src/window.py:196
 msgid "Progress Bars"
 msgstr ""
 
-#: src/image_exporter.py:60 src/window.py:190
+#: src/image_exporter.py:60 src/window.py:204
 msgid "Matrix"
 msgstr ""
 
@@ -106,7 +82,31 @@ msgstr ""
 msgid "Import From File"
 msgstr ""
 
+#: src/main.py:13
+msgid "Usage:"
+msgstr ""
+
+#: src/main.py:15
+msgid "[OPTION…]"
+msgstr ""
+
+#: src/main.py:16
+msgid "Help Options:"
+msgstr ""
+
 #: src/main.py:18
+msgid "Show help options"
+msgstr ""
+
+#: src/main.py:19
+msgid "Application Options:"
+msgstr ""
+
+#: src/main.py:21
+msgid "Print version information and exit"
+msgstr ""
+
+#: src/main.py:49
 #, python-brace-format
 msgid "Error starting application: {e}"
 msgstr ""
@@ -151,43 +151,43 @@ msgstr ""
 msgid "Select Color"
 msgstr ""
 
-#: src/window.py:226
+#: src/window.py:243
 msgid "Stats"
 msgstr ""
 
-#: src/window.py:268
+#: src/window.py:350
 #, python-brace-format
 msgid "Failed to load icon '{path}': {e}"
 msgstr ""
 
-#: src/window.py:329
+#: src/window.py:411
 msgid "Select Rectangle Color"
 msgstr ""
 
-#: src/window.py:378
+#: src/window.py:460
 msgid "Shortcuts"
 msgstr ""
 
-#: src/window.py:402
+#: src/window.py:484
 msgid "Track Quran memorization visually"
 msgstr ""
 
-#: src/window.py:404
+#: src/window.py:486
 msgid "Repository"
 msgstr ""
 
-#: src/window.py:626
+#: src/window.py:711
 msgid "Chapters:"
 msgstr ""
 
-#: src/window.py:627
+#: src/window.py:712
 msgid "Verses:"
 msgstr ""
 
-#: src/window.py:628
+#: src/window.py:713
 msgid "Words:"
 msgstr ""
 
-#: src/window.py:629
+#: src/window.py:714
 msgid "Letters:"
 msgstr ""
