@@ -21,25 +21,13 @@ export data.
 <img src="data/imgs/menu.png">
 </p>
 
-## Requirements
-To install all dependencies on Debian:
-```sh
-sudo apt install gir1.2-gtk-3.0 python3-gi-cairo sqlite3 gettext
-```
+## Install
+See [INSTALL](./INSTALL.md)
 
-## Install the app on Linux
-```sh
-sudo scripts/install.sh
-```
-After installing, you can launch the app from the application menu of your
-desktop environment or run:
+## Run the app
+Launch the app from the application menu or run:
 ```sh
 gtkhafiz
-```
-
-## Uninstall the app
-```sh
-sudo scripts/uninstall.sh
 ```
 
 ## Credits
@@ -49,6 +37,6 @@ sudo scripts/uninstall.sh
 [ColorArabic](https://commons.wikimedia.org/wiki/File:ColorArabic.png)
 
 ## License
-[GPLv3](./LICENSE)
+[GPL-3](./LICENSE)
 
 Copyright 2025-2026 Omar Zagonel El Laden
