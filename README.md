@@ -37,6 +37,6 @@ gtkhafiz
 [ColorArabic](https://commons.wikimedia.org/wiki/File:ColorArabic.png)
 
 ## License
-[GPL-3](./LICENSE)
+[GPLv3](./LICENSE)
 
 Copyright 2025-2026 Omar Zagonel El Laden
