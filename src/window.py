@@ -656,7 +656,7 @@ class Window(Gtk.Window):
         self.popover_chapter.show_all()
 
         # Set current popover location and state
-        # so that it is gets hiden only by clicking outside this point
+        # so that it is gets hidden only by clicking outside this point
         self.cursor_x_at_popover = e_x
         self.cursor_y_at_popover = e_y
         self.is_popover_chapter_active = True
